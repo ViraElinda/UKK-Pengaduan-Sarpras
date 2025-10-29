@@ -1,0 +1,201 @@
+/* =========================================
+   PROFILE PAGE — CLASS UNIQUE: pf-*
+========================================= */
+
+.pf-body {
+  font-family: "Poppins", sans-serif;
+  background: #f4f6f9;
+  color: #333;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+}
+
+/* WRAPPER */
+.pf-container {
+  width: 100%;
+  max-width: 450px;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* HEADER */
+.pf-header h2 {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1f2e50;
+}
+
+/* FOTO */
+.pf-profile-pic {
+  width: 120px;
+  height: 120px;
+  margin: auto;
+  position: relative;
+}
+
+.pf-profile-pic img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  object-fit: cover;
+  border: 3px solid #ccc;
+}
+
+.pf-icon-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 38px;
+  height: 38px;
+  background: #1a73e8;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* NOTIF SUCCESS */
+.pf-success-msg {
+  text-align: center;
+  margin: 12px 0;
+  font-weight: 500;
+  color: #1b9c63;
+}
+
+/* FORM */
+.pf-form {
+  margin-top: 16px;
+}
+
+.pf-form-group {
+  margin-bottom: 15px;
+}
+
+.pf-form-group label {
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.pf-form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.25s ease;
+  font-size: 14px;
+}
+
+.pf-form-group input:focus {
+  border-color: #1a73e8;
+}
+.profile-page {
+    background: #f2f4f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-wrap {
+    width: 90%;
+    max-width: 420px;
+}
+
+.profile-card {
+    background: #fff;
+    padding: 32px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.profile-img-wrap {
+    position: relative;
+    margin: 20px auto;
+    width: 120px;
+    height: 120px;
+}
+
+.profile-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.photo-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #1e72ff;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.photo-btn:hover {
+    background: #0057e7;
+}
+
+.form-group {
+    text-align: left;
+    margin-top: 12px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #cdd1d8;
+}
+
+.btn-save {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #1977ff;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+.btn-save:hover {
+    background: #005de0;
+}
+
+/* BUTTON */
+.pf-btn-save {
+  width: 100%;
+  padding: 14px;
+  background: #1a73e8;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.pf-btn-save:hover {
+  background: #115ac2;
+}

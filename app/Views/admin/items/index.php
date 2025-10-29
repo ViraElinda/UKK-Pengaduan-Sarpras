@@ -5,6 +5,7 @@
     <title>Manajemen Item</title>
     <link rel="stylesheet" href="<?= base_url('css/style.css'); ?>" />
 </head>
+
 <body class="user-admin-body">
 
     <div class="user-admin-container">
@@ -49,6 +50,29 @@
             </tbody>
         </table>
     </div>
+<script>
+    // Cek kalau ada flashdata sukses dari PHP
+    <?php if(session()->getFlashdata('success')): ?>
+        showSuccessPopup("<?= session()->getFlashdata('success'); ?>");
+    <?php endif; ?>
 
+    function showSuccessPopup(message) {
+        // Buat element popup
+        const popup = document.createElement('div');
+        popup.classList.add('popup-success');
+        popup.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span>${message}</span>
+        `;
+        document.body.appendChild(popup);
+
+        // Hapus popup setelah animasi selesai
+        setTimeout(() => {
+            popup.remove();
+        }, 3000);
+    }
+</script>
 </body>
 </html>

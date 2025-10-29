@@ -14,22 +14,22 @@
         $tglSelesaiValue = '';
         if (!empty($pengaduan['tgl_selesai'])) {
             $tglSelesaiValue = date('Y-m-d\TH:i', strtotime($pengaduan['tgl_selesai']));
-        }   
+        }
     ?>
 
-    <form action="<?= base_url('admin/pengaduan/update/'.$pengaduan['id_pengaduan']); ?>" method="post" enctype="multipart/form-data" class="pengaduan-form">
+    <form action="<?= base_url('petugas/pengaduan/update/'.$pengaduan['id_pengaduan']); ?>" method="post" enctype="multipart/form-data" class="pengaduan-form">
 
         <label for="nama_pengaduan">Nama Pengaduan</label>
-        <input type="text" id="nama_pengaduan" name="nama_pengaduan" value="<?= esc($pengaduan['nama_pengaduan']); ?>" placeholder="Masukkan nama pengaduan" required>
+        <input type="text" id="nama_pengaduan" name="nama_pengaduan" value="<?= esc($pengaduan['nama_pengaduan']); ?>" required>
 
         <label for="deskripsi">Deskripsi</label>
-        <textarea id="deskripsi" name="deskripsi" placeholder="Masukkan deskripsi pengaduan" required><?= esc($pengaduan['deskripsi']); ?></textarea>
+        <textarea id="deskripsi" name="deskripsi" required><?= esc($pengaduan['deskripsi']); ?></textarea>
 
         <label for="lokasi">Lokasi Kejadian</label>
-        <input type="text" id="lokasi" name="lokasi" value="<?= esc($pengaduan['lokasi']); ?>" placeholder="Masukkan lokasi kejadian" required>
+        <input type="text" id="lokasi" name="lokasi" value="<?= esc($pengaduan['lokasi']); ?>" required>
 
         <?php if(!empty($pengaduan['foto'])): ?>
-            <p>Foto Sekarang:</p>
+            <p>Foto Saat Ini:</p>
             <img src="<?= base_url('uploads/foto_pengaduan/'.$pengaduan['foto']); ?>" alt="foto" width="100">
         <?php endif; ?>
 
@@ -38,33 +38,28 @@
 
         <label for="status">Status</label>
         <select id="status" name="status" required>
-            <option value="Ditolak" <?= $pengaduan['status']=='Ditolak'?'selected':''; ?>>Ditolak</option>
             <option value="Diajukan" <?= $pengaduan['status']=='Diajukan'?'selected':''; ?>>Diajukan</option>
-            <option value="Disetujui" <?= $pengaduan['status']=='Disetujui'?'selected':''; ?>>Disetujui</option>
             <option value="Diproses" <?= $pengaduan['status']=='Diproses'?'selected':''; ?>>Diproses</option>
             <option value="Selesai" <?= $pengaduan['status']=='Selesai'?'selected':''; ?>>Selesai</option>
         </select>
-        <label for="id_user">Pilih User</label>
+
+        <label for="id_user">Pilih User Pelapor</label>
         <select name="id_user" id="id_user" required>
-            <option value="">-- Pilih User --</option>
             <?php foreach ($users as $user): ?>
-                <option value="<?= esc($user['id_user']) ?>" <?= $user['id_user'] == $pengaduan['id_user'] ? 'selected' : '' ?>>
-                    <?= esc($user['nama_pengguna']) ?> (ID: <?= esc($user['id_user']) ?>)
+                <option value="<?= esc($user['id_user']); ?>" <?= $user['id_user'] == $pengaduan['id_user'] ? 'selected' : '' ?>>
+                    <?= esc($user['nama_pengguna']); ?> (ID: <?= esc($user['id_user']); ?>)
                 </option>
             <?php endforeach; ?>
         </select>
 
-        <label for="id_petugas">ID Petugas (opsional)</label>
-        <input type="number" id="id_petugas" name="id_petugas" value="<?= esc($pengaduan['id_petugas'] ?? ''); ?>" placeholder="Masukkan ID Petugas">
-
         <label for="id_item">ID Item (opsional)</label>
-        <input type="number" id="id_item" name="id_item" value="<?= esc($pengaduan['id_item'] ?? ''); ?>" placeholder="Masukkan ID Item">
+        <input type="number" id="id_item" name="id_item" value="<?= esc($pengaduan['id_item'] ?? ''); ?>">
 
         <label for="tgl_selesai">Tanggal Selesai (opsional)</label>
         <input type="datetime-local" id="tgl_selesai" name="tgl_selesai" value="<?= $tglSelesaiValue; ?>">
 
-        <label for="saran_petugas">Saran Petugas (opsional)</label>
-        <textarea id="saran_petugas" name="saran_petugas" placeholder="Masukkan saran petugas"><?= esc($pengaduan['saran_petugas'] ?? ''); ?></textarea>
+        <label for="saran_petugas">Saran Petugas</label>
+        <textarea id="saran_petugas" name="saran_petugas"><?= esc($pengaduan['saran_petugas'] ?? ''); ?></textarea>
 
         <button type="submit" class="pengaduan-btn">Update</button>
     </form>

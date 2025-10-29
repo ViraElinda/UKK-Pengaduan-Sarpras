@@ -19,18 +19,30 @@ class PengaduanController extends BaseController
     }
 
     public function index()
-    {
-        $data['pengaduan'] = $this->pengaduanModel->getAllWithUser();
-        return view('admin/pengaduan/index', $data);
-    }
-
-   public function create()
 {
-    $data['users'] = $this->userModel->findAll();
-    return view('admin/pengaduan/create', $data);
+    $pengaduanModel = $this->pengaduanModel;
+    $userModel = $this->userModel;
+    $itemModel = new \App\Models\ItemModel(); // ✅ tambahkan ini
+
+    $data = [
+        'pengaduan'    => $pengaduanModel->getAllWithUser(),
+        'total_aduan'  => $pengaduanModel->countAllResults(),
+        'total_user'   => $userModel->countAllResults(),
+        'total_item'   => $itemModel->countAllResults(), // ✅ tambahkan ini
+        'username'     => session('username'),
+    ];
+
+    return view('admin/pengaduan/index', $data);
 }
 
-
+    public function create()
+    {
+        $data = [
+            'users'    => $this->userModel->findAll(),
+            'username' => session('username'), // ✅ tambahkan juga biar konsisten
+        ];
+        return view('admin/pengaduan/create', $data);
+    }
 
     public function store()
     {
@@ -59,16 +71,16 @@ class PengaduanController extends BaseController
         return redirect()->to('/admin/pengaduan')->with('success', 'Pengaduan berhasil ditambahkan.');
     }
 
-public function edit($id_pengaduan)
-{
-    $pengaduan = $this->pengaduanModel->find($id_pengaduan);
-    $users = $this->userModel->findAll();
+    public function edit($id_pengaduan)
+    {
+        $data = [
+            'pengaduan' => $this->pengaduanModel->find($id_pengaduan),
+            'users'     => $this->userModel->findAll(),
+            'username'  => session('username'), // ✅ biar tetap tampil di layout
+        ];
 
-    return view('admin/pengaduan/edit', [
-        'pengaduan' => $pengaduan,
-        'users' => $users
-    ]);
-}
+        return view('admin/pengaduan/edit', $data);
+    }
 
     public function update($id)
     {

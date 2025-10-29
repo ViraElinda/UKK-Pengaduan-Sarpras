@@ -12,6 +12,8 @@
 </head>
 <body>
 
+    <?= view('navbar/user') ?>
+
     <!-- Konten halaman -->
     <div class="container py-4">
         <?= $this->renderSection('content') ?>

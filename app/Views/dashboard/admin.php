@@ -1,60 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dashboard Admin - Lapor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="<?= base_url('css/style.css'); ?>">
 </head>
 <body>
+ <?= view('navbar/admin') ?>
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main">
+    <div class="welcome-box">
+      <h2>Selamat Datang, <span><?= $username ?></span> 👋</h2>
+    </div>
 
-    <nav class="navbar">
-        <div class="logo" tabindex="0" role="button" aria-label="Lapor Home">LAPOR!</div>
+    <div class="stats-container">
+      <div class="stat-card">
+        <i data-lucide="message-square"></i>
+        <h3><?= $total_aduan ?></h3>
+        <p>Total Aduan</p>
+      </div>
+      <div class="stat-card">
+        <i data-lucide="users"></i>
+        <h3><?= $total_user ?></h3>
+        <p>Total Pengguna</p>
+      </div>
+      <div class="stat-card">
+        <i data-lucide="package"></i>
+        <h3><?= $total_item ?></h3>
+        <p>Total Barang (Sarpras)</p>
+      </div>
+    </div>
+  </main>
 
-        <div class="nav-links" id="nav-links">
-    <a href="<?= base_url('admin/users'); ?>" tabindex="0">Manajemen User</a>
-    <a href="<?= base_url('admin/pengaduan'); ?>" tabindex="0">Manajemen Aduan</a>
-    <a href="<?= base_url('admin/items'); ?>" tabindex="0">Manajemen Items</a>
-    <a href="<?= base_url('admin/laporan'); ?>" tabindex="0">Generate Laporan</a>
-</div>
+  <script>
+    lucide.createIcons();
 
-
-        <div class="btn-group">
-            <form action="/auth/logout" method="POST">
-                <button class="btn" tabindex="0" type="submit">Logout</button>
-            </form>
-        </div>
-
-        <div class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" role="button" tabindex="0">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </nav>
-
-    <main>
-        <h1>Selamat datang, Admin!</h1>
-        <p>Layanan Aspirasi dan Pengaduan Online Rakyat</p>
-
-        <a href="<?= base_url('admin/index') ?>" tabindex="0" class="btn-primary">Kelola Pengaduan</a>
-    </main>
-
-    <script>
-        // Toggle menu mobile
-        const menuToggle = document.getElementById('menu-toggle');
-        const navLinks = document.getElementById('nav-links');
-
-        function toggleMenu() {
-            navLinks.classList.toggle('active');
-        }
-        menuToggle.addEventListener('click', toggleMenu);
-        menuToggle.addEventListener('keypress', function(e){
-            if(e.key === 'Enter' || e.key === ' ') {
-                toggleMenu();
-            }
-        });
-    </script>
-
+    // Efek klik jembluk
+    document.querySelectorAll('.nav-item').forEach(link => {
+      link.addEventListener('click', (e) => {
+        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active', 'clicked'));
+        e.currentTarget.classList.add('active', 'clicked');
+        setTimeout(() => e.currentTarget.classList.remove('clicked'), 250);
+      });
+    });
+  </script>
 </body>
 </html>

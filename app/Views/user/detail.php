@@ -1,6 +1,6 @@
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
-
+<?= view('navbar/user') ?>
 <div class="container mt-5">
     <h3 class="text-primary mb-4">Detail Pengaduan</h3>
 

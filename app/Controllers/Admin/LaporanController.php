@@ -16,7 +16,8 @@ class LaporanController extends BaseController
 
     public function index()
     {
-        return view('admin/laporan/index');
+        $data['pengaduan'] = $this->pengaduanModel->orderBy('tgl_pengajuan', 'DESC')->findAll();
+        return view('admin/laporan/index', $data);
     }
 
     public function preview()
