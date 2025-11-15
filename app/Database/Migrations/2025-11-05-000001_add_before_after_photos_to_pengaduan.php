@@ -7,26 +7,64 @@ class AddBeforeAfterPhotosToPengaduan extends Migration
 {
     public function up()
     {
-        $fields = [
-            'foto_before' => [
+        // Check if columns already exist before adding
+        $beforeQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_before'");
+        $afterQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_after'");
+        
+        $fieldsToAdd = [];
+        
+        if ($beforeQuery->getNumRows() == 0) {
+            $fieldsToAdd['foto_before'] = [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
                 'null'       => true,
                 'after'      => 'foto'
-            ],
-            'foto_after' => [
+            ];
+        }
+        
+        if ($afterQuery->getNumRows() == 0) {
+            $fieldsToAdd['foto_after'] = [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
                 'null'       => true,
                 'after'      => 'foto_before'
-            ],
-        ];
-
-        $this->forge->addColumn('pengaduan', $fields);
+            ];
+        }
+        
+        if (!empty($fieldsToAdd)) {
+            $this->forge->addColumn('pengaduan', $fieldsToAdd);
+            
+            if (function_exists('log_message')) {
+                log_message('info', '[MIGRATION] Added columns: ' . implode(', ', array_keys($fieldsToAdd)));
+            }
+        } else {
+            if (function_exists('log_message')) {
+                log_message('info', '[MIGRATION] foto_before and foto_after columns already exist, skipping');
+            }
+        }
     }
 
     public function down()
     {
-        $this->forge->dropColumn('pengaduan', ['foto_before', 'foto_after']);
+        $columnsToDrop = [];
+        
+        $beforeQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_before'");
+        $afterQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_after'");
+        
+        if ($beforeQuery->getNumRows() > 0) {
+            $columnsToDrop[] = 'foto_before';
+        }
+        
+        if ($afterQuery->getNumRows() > 0) {
+            $columnsToDrop[] = 'foto_after';
+        }
+        
+        if (!empty($columnsToDrop)) {
+            $this->forge->dropColumn('pengaduan', $columnsToDrop);
+            
+            if (function_exists('log_message')) {
+                log_message('info', '[MIGRATION] Dropped columns: ' . implode(', ', $columnsToDrop));
+            }
+        }
     }
 }

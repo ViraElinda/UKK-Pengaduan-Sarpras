@@ -8,8 +8,12 @@ class AlterTemporaryItemLokasi extends Migration
 {
     public function up()
     {
-        // Hapus foreign key constraint
-        $this->forge->dropForeignKey('temporary_item', 'fk_temp_lokasi');
+        // Hapus foreign key constraint jika ada
+        try {
+            $this->forge->dropForeignKey('temporary_item', 'fk_temp_lokasi');
+        } catch (\Exception $e) {
+            // Foreign key mungkin tidak ada, lanjutkan saja
+        }
         
         // Ubah kolom lokasi_barang_baru dari INT menjadi VARCHAR untuk menyimpan nama lokasi
         $this->forge->modifyColumn('temporary_item', [
