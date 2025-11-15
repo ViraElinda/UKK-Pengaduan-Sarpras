@@ -15,9 +15,21 @@ class UserModel extends Model
         'nama_pengguna',
         'role',
         'foto',
-        'created_at'
+        'created_at',
+        'updated_at'
     ];
 
-    protected $useTimestamps = false;
-    protected $returnType = 'array';
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
+    protected $returnType    = 'array';
+
+    public function findAll(?int $limit = null, int $offset = 0)
+    {
+        if ($limit !== null) {
+            $this->limit($limit, $offset);
+        }
+        return $this->orderBy('id_user', 'DESC')->find();
+    }
 }

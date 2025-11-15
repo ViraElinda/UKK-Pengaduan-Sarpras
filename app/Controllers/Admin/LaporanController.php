@@ -3,7 +3,8 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\PengaduanModel;
-// tidak usah “use \TCPDF;” kalau kita pakai \TCPDF langsung
+use App\Models\LokasiModel;
+use Config\Database;
 
 class LaporanController extends BaseController
 {
@@ -16,24 +17,112 @@ class LaporanController extends BaseController
 
     public function index()
     {
+        // Provide lists for the filter selects (petugas and lokasi)
+        $db = Database::connect();
+        // Join petugas with users so we can show the related username and any petugas-specific photo
+        $petugasList = $db->table('petugas p')
+            ->select('p.id_petugas, p.nama as nama_petugas, u.id_user, u.username')
+            ->join('user u', 'u.id_user = p.id_user', 'left')
+            ->orderBy('p.nama', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $lokasiModel = new LokasiModel();
+        $lokasiList = $lokasiModel->orderBy('id_lokasi', 'ASC')->findAll();
+
+        // Status options (key => label)
+        $statusList = [
+            '' => 'Semua Status',
+            'diajukan' => 'Diajukan',
+            'diproses' => 'Diproses',
+            'selesai' => 'Selesai',
+            'disetujui' => 'Disetujui',
+            'ditolak' => 'Ditolak',
+        ];
+
         $data['pengaduan'] = $this->pengaduanModel->orderBy('tgl_pengajuan', 'DESC')->findAll();
+        $data['petugasList'] = $petugasList;
+        $data['lokasiList'] = $lokasiList;
+        $data['statusList'] = $statusList;
+
         return view('admin/laporan/index', $data);
     }
 
     public function preview()
     {
-        $tgl_mulai = $this->request->getPost('tgl_mulai');
-        $tgl_selesai = $this->request->getPost('tgl_selesai');
+        $tgl_mulai_raw = $this->request->getPost('tgl_mulai');
+        $tgl_selesai_raw = $this->request->getPost('tgl_selesai');
+        $filterPetugas = $this->request->getPost('petugas');
+        $filterStatus = $this->request->getPost('status');
+        $filterLokasi = $this->request->getPost('lokasi');
 
-        $data['laporan'] = $this->pengaduanModel
+        // Normalize date inputs (accept date-only YYYY-MM-DD or date-time)
+        $tgl_mulai = $this->normalizeDateInput($tgl_mulai_raw, false);
+        $tgl_selesai = $this->normalizeDateInput($tgl_selesai_raw, true);
+
+        $builder = $this->pengaduanModel
             ->where('tgl_pengajuan >=', $tgl_mulai)
-            ->where('tgl_pengajuan <=', $tgl_selesai)
-            ->findAll();
+            ->where('tgl_pengajuan <=', $tgl_selesai);
 
-        $data['tgl_mulai'] = $tgl_mulai;
-        $data['tgl_selesai'] = $tgl_selesai;
+        if (!empty($filterPetugas)) {
+            $builder->where('id_petugas', $filterPetugas);
+        }
+        if (!empty($filterStatus)) {
+            $builder->where('status', $filterStatus);
+        }
+        if (!empty($filterLokasi)) {
+            $builder->where('id_lokasi', $filterLokasi);
+        }
 
-        if (empty($data['laporan'])) {
+        $laporan = $builder->orderBy('tgl_pengajuan', 'ASC')->findAll();
+
+        // prepare view data
+        $data = [];
+        $data['laporan'] = $laporan;
+        $data['tgl_mulai'] = $tgl_mulai_raw;
+        $data['tgl_selesai'] = $tgl_selesai_raw;
+        $data['filterPetugas'] = $filterPetugas;
+    $data['filterStatus'] = $filterStatus;
+        $data['filterLokasi'] = $filterLokasi;
+
+        // Resolve human-readable names for selected filters
+        $data['filterPetugasName'] = null;
+        $data['filterLokasiName'] = null;
+        if (!empty($filterPetugas)) {
+            // fetch petugas with user info for display
+            $row = Database::connect()->table('petugas p')
+                ->select('p.nama as nama_petugas, u.username')
+                ->join('user u', 'u.id_user = p.id_user', 'left')
+                ->where('p.id_petugas', $filterPetugas)
+                ->get()
+                ->getRowArray();
+            if (!empty($row)) {
+                $display = $row['nama_petugas'] ?? null;
+                if (!empty($row['username'])) $display .= ' (' . $row['username'] . ')';
+                $data['filterPetugasName'] = $display;
+            } else {
+                $data['filterPetugasName'] = null;
+            }
+        }
+        if (!empty($filterLokasi)) {
+            $lokasiModel = new LokasiModel();
+            $lok = $lokasiModel->find($filterLokasi);
+            $data['filterLokasiName'] = $lok['nama_lokasi'] ?? null;
+        }
+        // Resolve status label
+        $data['filterStatusName'] = null;
+        if (!empty($filterStatus)) {
+            $map = [
+                'diajukan' => 'Diajukan',
+                'diproses' => 'Diproses',
+                'selesai' => 'Selesai',
+                'disetujui' => 'Disetujui',
+                'ditolak' => 'Ditolak',
+            ];
+            $data['filterStatusName'] = $map[$filterStatus] ?? ucfirst($filterStatus);
+        }
+
+        if (empty($laporan)) {
             return redirect()->to('/admin/laporan')
                 ->with('error', 'Tidak ada laporan di rentang tanggal tersebut.');
         }
@@ -43,78 +132,109 @@ class LaporanController extends BaseController
 
     public function cetak($tgl_mulai, $tgl_selesai)
     {
-        $laporan = $this->pengaduanModel
-            ->where('tgl_pengajuan >=', $tgl_mulai)
-            ->where('tgl_pengajuan <=', $tgl_selesai)
-            ->findAll();
-        // pastikan kelas TCPDF tersedia (Composer mungkin belum lengkap)
-        if (!class_exists('\\TCPDF')) {
-            $tcpdfPath = ROOTPATH . 'vendor/tecnickcom/tcpdf/tcpdf.php';
-            if (is_file($tcpdfPath)) {
-                require_once $tcpdfPath;
+        // Check if user is admin
+        if (session('role') !== 'admin') {
+            return redirect()->to('/auth/unauthorized');
+        }
+
+        // Clear output buffers
+        while (ob_get_level()) ob_end_clean();
+
+        $mulai = $this->normalizeDateInput($tgl_mulai, false);
+        $selesai = $this->normalizeDateInput($tgl_selesai, true);
+
+        $filterPetugas = $this->request->getGet('petugas');
+    $filterStatus = $this->request->getGet('status');
+        $filterLokasi = $this->request->getGet('lokasi');
+
+        $builder = $this->pengaduanModel
+            ->where('tgl_pengajuan >=', $mulai)
+            ->where('tgl_pengajuan <=', $selesai);
+
+        if (!empty($filterPetugas)) $builder->where('id_petugas', $filterPetugas);
+    if (!empty($filterStatus)) $builder->where('status', $filterStatus);
+        if (!empty($filterLokasi)) $builder->where('id_lokasi', $filterLokasi);
+
+        $laporan = $builder->orderBy('tgl_pengajuan', 'ASC')->findAll();
+
+        // stats
+        $stats = ['diajukan' => 0, 'diproses' => 0, 'selesai' => 0, 'ditolak' => 0];
+        foreach ($laporan as $item) {
+            $status = strtolower($item['status'] ?? '');
+            if (isset($stats[$status])) $stats[$status]++;
+        }
+
+        // prepare foto paths for TCPDF
+        foreach ($laporan as $k => $row) {
+            $laporan[$k]['foto_path'] = null;
+            if (!empty($row['foto'])) {
+                $possible = FCPATH . 'uploads/foto_pengaduan/' . $row['foto'];
+                if (is_file($possible)) $laporan[$k]['foto_path'] = $possible;
             }
         }
 
-        // kalau masih belum ada, tampilkan pesan yang membantu
+        // ensure TCPDF
         if (!class_exists('\\TCPDF')) {
-            // kembalikan response 500 dengan instruksi singkat
-            return service('response')
-                ->setStatusCode(500)
-                ->setBody("TCPDF class not found. Please run 'composer install' in project root or place the TCPDF library in vendor/tecnickcom/tcpdf.\n");
+            $tcpdfPath = ROOTPATH . 'vendor/tecnickcom/tcpdf/tcpdf.php';
+            if (is_file($tcpdfPath)) require_once $tcpdfPath;
+        }
+        if (!class_exists('\\TCPDF')) {
+            return service('response')->setStatusCode(500)->setBody("TCPDF tidak ditemukan. Jalankan 'composer install'.\n");
         }
 
-    // Pastikan konstanta-konstanta TCPDF ada (fallback agar tidak error jika tcpdf belum
-    // sepenuhnya di-load oleh composer). Nilai ini mengikuti nilai default TCPDF.
-    if (!defined('PDF_PAGE_ORIENTATION')) define('PDF_PAGE_ORIENTATION', 'P');
-    if (!defined('PDF_UNIT')) define('PDF_UNIT', 'mm');
-    if (!defined('PDF_PAGE_FORMAT')) define('PDF_PAGE_FORMAT', 'A4');
-    if (!defined('PDF_CREATOR')) define('PDF_CREATOR', 'TCPDF');
-    if (!defined('PDF_FONT_NAME_MAIN')) define('PDF_FONT_NAME_MAIN', 'helvetica');
-    if (!defined('PDF_FONT_SIZE_MAIN')) define('PDF_FONT_SIZE_MAIN', 10);
-    if (!defined('PDF_FONT_NAME_DATA')) define('PDF_FONT_NAME_DATA', 'helvetica');
-    if (!defined('PDF_FONT_SIZE_DATA')) define('PDF_FONT_SIZE_DATA', 8);
-    if (!defined('PDF_MARGIN_LEFT')) define('PDF_MARGIN_LEFT', 15);
-    if (!defined('PDF_MARGIN_RIGHT')) define('PDF_MARGIN_RIGHT', 15);
-    if (!defined('PDF_MARGIN_TOP')) define('PDF_MARGIN_TOP', 27);
-    if (!defined('PDF_MARGIN_HEADER')) define('PDF_MARGIN_HEADER', 5);
-    if (!defined('PDF_MARGIN_FOOTER')) define('PDF_MARGIN_FOOTER', 10);
-    if (!defined('PDF_MARGIN_BOTTOM')) define('PDF_MARGIN_BOTTOM', 25);
+        // PDF setup
+        if (!defined('PDF_PAGE_ORIENTATION')) define('PDF_PAGE_ORIENTATION', 'L');
+        if (!defined('PDF_UNIT')) define('PDF_UNIT', 'mm');
+        if (!defined('PDF_PAGE_FORMAT')) define('PDF_PAGE_FORMAT', 'A4');
+        if (!defined('PDF_CREATOR')) define('PDF_CREATOR', 'Sistem Pengaduan Sarpras');
 
-    // instansiasi TCPDF dengan nama global
-    $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Sistem Pengaduan');
-        $pdf->SetTitle("Laporan Pengaduan");
-        $pdf->SetHeaderData('', 0, 'Laporan Pengaduan', "$tgl_mulai s/d $tgl_selesai");
-        $pdf->setHeaderFont([PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN]);
-        $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        $pdf->setFontSubsetting(true);
-
+        $pdf = new \TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetCreator('Sistem Pengaduan Sarpras');
+        $pdf->SetAuthor('Admin Sekolah');
+        $pdf->SetTitle('Laporan Pengaduan Sarana & Prasarana');
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        $pdf->SetMargins(12, 12, 12);
+        $pdf->SetAutoPageBreak(true, 15);
+        $pdf->SetFont('dejavusans', '', 10);
+        $pdf->setImageScale(1.25);
         $pdf->AddPage();
 
-        $pdf->SetFont('helvetica', 'B', 16);
-        $pdf->Cell(0, 10, "Laporan Pengaduan $tgl_mulai s/d $tgl_selesai", 0, 1, 'C');
+        $data = [
+            'laporan' => $laporan,
+            'tgl_mulai' => $mulai,
+            'tgl_selesai' => $selesai,
+            'stats' => $stats,
+            'filterPetugas' => $filterPetugas,
+            'filterStatus' => $filterStatus,
+            'filterLokasi' => $filterLokasi,
+        ];
 
-        $pdf->SetFont('helvetica', '', 12);
-        // header tabel
-        $pdf->Cell(20, 10, 'ID', 1);
-        $pdf->Cell(50, 10, 'Nama Pengaduan', 1);
-        $pdf->Cell(40, 10, 'Tanggal', 1);
-        $pdf->Cell(30, 10, 'Status', 1);
-        $pdf->Cell(0, 10, 'User', 1, 1);
+        $logoPath = FCPATH . 'uploads/logo.png';
+        $data['logo'] = is_file($logoPath) ? $logoPath : null;
 
-        foreach ($laporan as $row) {
-            $pdf->Cell(20, 8, $row['id_pengaduan'], 1);
-            $pdf->Cell(50, 8, $row['nama_pengaduan'], 1);
-            $pdf->Cell(40, 8, $row['tgl_pengajuan'], 1);
-            $pdf->Cell(30, 8, $row['status'], 1);
-            $pdf->Cell(0, 8, $row['id_user'], 1, 1);
+        $html = view('admin/laporan/pdf_template', $data);
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        $filename = 'Laporan_Pengaduan_' . date('Ymd_His') . '.pdf';
+        $pdf->Output($filename, 'D');
+        exit;
+    }
+
+    private function normalizeDateInput($value, bool $isEnd = false): string
+    {
+        $v = urldecode((string)$value);
+        // if just date YYYY-MM-DD
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $v)) {
+            return $v . ($isEnd ? ' 23:59:59' : ' 00:00:00');
         }
-
-        $pdf->Output("laporan_pengaduan_{$tgl_mulai}_{$tgl_selesai}.pdf", 'I');  
+        // replace T with space if present
+        $v = str_replace('T', ' ', $v);
+        // if format YYYY-MM-DD HH:MM (no seconds)
+        if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $v)) {
+            $v .= $isEnd ? ':59' : ':00';
+        }
+        return $v;
     }
 }
+

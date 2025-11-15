@@ -1,51 +1,133 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="<?= base_url('css/style.css'); ?>">
-</head>
-<body>
- <?= view('navbar/admin') ?>
-  <!-- MAIN CONTENT -->
-  <main class="dashboard-main">
-    <div class="welcome-box">
-      <h2>Selamat Datang, <span><?= $username ?></span> 👋</h2>
+<?= $this->extend('layout/admin') ?>
+
+<?= $this->section('title') ?>
+Dashboard Admin
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
+<div class="min-h-screen bg-ui-page py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Welcome -->
+    <div class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+        👋 Selamat Datang, <span class="text-ui-primary font-extrabold"><?= $username ?></span>
+      </h1>
+      <p class="text-gray-600 font-medium">Sistem Pengaduan Sarana & Prasarana Sekolah</p>
+      <p class="text-gray-500 text-xs mt-1">Hari ini: <?= date('l, d F Y'); ?> | Data diperbarui otomatis setiap 24 jam ⏰</p>
     </div>
 
-    <div class="stats-container">
-      <div class="stat-card">
-        <i data-lucide="message-square"></i>
-        <h3><?= $total_aduan ?></h3>
-        <p>Total Aduan</p>
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5 mb-8">
+  <div class="ui-card rounded-2xl shadow-2xl p-6 flex flex-col items-center hover:scale-105 transition-all">
+        <i data-lucide="x-circle" class="text-ui-primary w-10 h-10 mb-2" stroke-width="2.5"></i>
+        <h3 class="text-4xl font-extrabold text-gray-900 tracking-wide"><?= $aduan_ditolak ?></h3>
+        <p class="text-muted text-base font-semibold mt-1">Ditolak</p>
       </div>
-      <div class="stat-card">
-        <i data-lucide="users"></i>
-        <h3><?= $total_user ?></h3>
-        <p>Total Pengguna</p>
+  <div class="ui-card rounded-2xl shadow-2xl p-6 flex flex-col items-center hover:scale-105 transition-all">
+        <i data-lucide="send" class="text-ui-primary w-10 h-10 mb-2" stroke-width="2.5"></i>
+        <h3 class="text-4xl font-extrabold text-gray-900 tracking-wide"><?= $aduan_diajukan ?></h3>
+        <p class="text-muted text-base font-semibold mt-1">Diajukan</p>
       </div>
-      <div class="stat-card">
-        <i data-lucide="package"></i>
-        <h3><?= $total_item ?></h3>
-        <p>Total Barang (Sarpras)</p>
+  <div class="ui-card rounded-2xl shadow-2xl p-6 flex flex-col items-center hover:scale-105 transition-all">
+        <i data-lucide="check-square" class="text-ui-primary w-10 h-10 mb-2" stroke-width="2.5"></i>
+        <h3 class="text-4xl font-extrabold text-gray-900 tracking-wide"><?= $aduan_disetujui ?></h3>
+        <p class="text-muted text-base font-semibold mt-1">Disetujui</p>
+      </div>
+  <div class="ui-card rounded-2xl shadow-2xl p-6 flex flex-col items-center hover:scale-105 transition-all">
+        <i data-lucide="clock" class="text-ui-primary w-10 h-10 mb-2" stroke-width="2.5"></i>
+        <h3 class="text-4xl font-extrabold text-gray-900 tracking-wide"><?= $aduan_diproses ?></h3>
+        <p class="text-muted text-base font-semibold mt-1">Diproses</p>
+      </div>
+  <div class="ui-card rounded-2xl shadow-2xl p-6 flex flex-col items-center hover:scale-105 transition-all">
+        <i data-lucide="check-circle" class="text-ui-primary w-10 h-10 mb-2" stroke-width="2.5"></i>
+        <h3 class="text-4xl font-extrabold text-gray-900 tracking-wide"><?= $aduan_selesai ?></h3>
+        <p class="text-muted text-base font-semibold mt-1">Selesai</p>
       </div>
     </div>
-  </main>
 
-  <script>
-    lucide.createIcons();
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-6 border border-white/30">
+        <h4 class="text-base font-bold text-ui-primary mb-4 flex items-center gap-2">📊 Statistik Pengaduan 7 Hari Terakhir</h4>
+        <canvas id="chartBar" class="w-full h-56"></canvas>
+      </div>
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-6 border border-white/30">
+        <h4 class="text-base font-bold text-ui-primary mb-4 flex items-center gap-2">📈 Persentase Status Pengaduan</h4>
+        <canvas id="chartDonut" class="w-full h-56"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<?= $this->endSection() ?>
 
-    // Efek klik jembluk
-    document.querySelectorAll('.nav-item').forEach(link => {
-      link.addEventListener('click', (e) => {
-        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active', 'clicked'));
-        e.currentTarget.classList.add('active', 'clicked');
-        setTimeout(() => e.currentTarget.classList.remove('clicked'), 250);
-      });
-    });
-  </script>
-</body>
-</html>
+<?= $this->section('scripts') ?>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  lucide.createIcons();
+
+  // ===== Grafik Harian
+  new Chart(document.getElementById('chartBar'), {
+    type: 'bar',
+    data: {
+      labels: <?= $tanggal_harian ?>,
+      datasets: [{
+        label: 'Jumlah Pengaduan',
+        data: <?= $jumlah_harian ?>,
+        backgroundColor: [
+          '#f43f5e', // rose-500
+          '#0ea5e9', // sky-500
+          '#8bf0ffff', // cyan-400
+          '#22c55e', // green-500
+          '#f59e42', // orange-400
+          '#eab308', // yellow-400
+          '#6366f1'  // indigo-500
+        ],
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '#fff',
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { color: '#2563eb', font: { weight: 'bold' } } },
+        x: { ticks: { color: '#2563eb', font: { weight: 'bold' } } }
+      }
+    }
+  });
+
+  // ===== Grafik Donut
+  new Chart(document.getElementById('chartDonut'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Ditolak', 'Diajukan', 'Disetujui', 'Diproses', 'Selesai'],
+      datasets: [{
+        data: [
+          <?= $aduan_ditolak ?>,
+          <?= $aduan_diajukan ?>,
+          <?= $aduan_disetujui ?>,
+          <?= $aduan_diproses ?>,
+          <?= $aduan_selesai ?>
+        ],
+        backgroundColor: [
+          '#f43f5e', // rose-500
+          '#0ea5e9', // sky-500
+          '#22c55e', // green-500
+          '#eab308', // yellow-400
+          '#06b6d4'  // cyan-500
+        ],
+        borderWidth: 2,
+        borderColor: '#fff',
+      }]
+    },
+    options: {
+      cutout: '70%',
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#2563eb', font: { weight: 'bold' } } }
+      }
+    }
+  });
+</script>
+<?= $this->endSection() ?>

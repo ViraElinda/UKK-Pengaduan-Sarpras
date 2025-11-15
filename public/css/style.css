@@ -304,205 +304,6 @@
         box-sizing: border-box;
     }
 
-    /* FORM PENGADUAN */
-    /* === Base Layout === */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    }
-
-    body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f0f4ff, #ffffff);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    color: #333;
-    overflow-y: auto;
-    padding: 100px 20px 60px; /* tambah padding atas agar tidak nempel ke atas */
-    }
-
-    /* === Container Form === */
-    .pgdn-wrapper {
-    width: 100%;
-    max-width: 580px;
-    margin-top: 20px; /* beri jarak tambahan agar lebih nyaman */
-    }
-
-    .pgdn-form {
-    background: #ffffff;
-    width: 100%;
-    border-radius: 20px;
-    padding: 50px 50px 60px; /* tambah padding atas & bawah */
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    margin-bottom: 80px;
-    position: relative;
-    }
-
-    .pgdn-form:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    }
-
-    .pgdn-form h2 {
-    text-align: center;
-    color: #0050e6;
-    margin-bottom: 35px;
-    font-weight: 600;
-    font-size: 24px;
-    }
-
-    /* === Field Area === */
-    .pgdn-field {
-    margin-bottom: 22px;
-    }
-
-    .pgdn-field label {
-    font-weight: 500;
-    display: block;
-    margin-bottom: 8px;
-    color: #1d3557;
-    font-size: 15px;
-    }
-
-    .pgdn-field input,
-    .pgdn-field textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border: 1.8px solid #d7e3ff;
-    border-radius: 12px;
-    font-size: 15px;
-    transition: 0.25s ease;
-    background-color: #f9fbff;
-    }
-
-    .pgdn-field input:focus,
-    .pgdn-field textarea:focus {
-    border-color: #0050e6;
-    box-shadow: 0 0 0 3px rgba(0, 80, 230, 0.1);
-    outline: none;
-    }
-
-    /* === Upload Area === */
-    .pgdn-upload {
-    border: 2px dashed #0050e6;
-    border-radius: 16px;
-    padding: 40px 25px;
-    text-align: center;
-    background-color: #f1f6ff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    }
-
-    .pgdn-upload:hover {
-    background-color: #e8f0ff;
-    border-color: #0044cc;
-    }
-
-    .pgdn-upload svg {
-    margin-bottom: 12px;
-    stroke: #0050e6;
-    transition: transform 0.3s ease;
-    }
-
-    .pgdn-upload:hover svg {
-    transform: translateY(-3px);
-    }
-
-    .pgdn-upload p {
-    margin: 0;
-    color: #0050e6;
-    font-weight: 500;
-    font-size: 15px;
-    }
-
-    .pgdn-preview {
-    display: none;
-    width: 100%;
-    max-height: 280px;
-    object-fit: cover;
-    border-radius: 14px;
-    margin-top: 18px;
-    border: 1px solid #dce5f8;
-    animation: fadeIn 0.4s ease;
-    }
-
-    /* === Submit Button === */
-    .pgdn-btn {
-    background-color: #0050e6;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-    }
-
-    .pgdn-btn:hover {
-    background-color: #003ecb;
-    box-shadow: 0 6px 15px rgba(0, 80, 230, 0.25);
-    }
-
-    /* === Alert Box === */
-    .pgdn-alert {
-    background-color: #ffecec;
-    color: #e74c3c;
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin-bottom: 22px;
-    font-size: 14px;
-    border-left: 4px solid #e74c3c;
-    }
-
-    .pgdn-alert ul {
-    padding-left: 20px;
-    margin: 0;
-    }
-
-    /* === Animations === */
-    @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-    }
-
-    /* === Responsive === */
-    @media (max-width: 480px) {
-    body {
-        padding: 60px 10px 40px; /* lebih longgar untuk scroll */
-    }
-
-    .pgdn-form {
-        padding: 35px 25px;
-    }
-
-    .pgdn-form h2 {
-        font-size: 22px;
-    }
-    }
-
-    /* === Pastikan preview foto tetap scrollable === */
-    .pgdn-preview {
-    display: block; /* tetap ditampilkan saat ada gambar */
-    max-height: 280px;
-    }
-
     /* ============================== */
     /* RIWAYAT PENGADUAN - BLUE THEME */
     /* ============================== */
@@ -902,16 +703,7 @@ body {
             font-size: 2rem;
         }
     }
-
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  background: linear-gradient(180deg, #0046cc, #006eff);
-  color: #fff;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-/* NAVBAR FIXED & STABIL */
+/* 🌐 NAVBAR UTAMA */
 .navbar {
   width: 100%;
   background: #002b80;
@@ -923,67 +715,98 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  flex-wrap: wrap; /* responsif */
+  flex-wrap: wrap;
+  transition: all 0.3s ease;
 }
 
+/* 🏫 LOGO / NAMA SISTEM */
 .nav-left h1 {
   font-size: 22px;
   font-weight: 700;
   color: #fff;
+  letter-spacing: 0.5px;
 }
 
 .nav-left span {
   color: #ffdb4d;
 }
 
+/* 🔗 MENU */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
   flex-wrap: wrap;
 }
 
-.nav-item,
-.logout-btn {
+/* ITEM NAVBAR */
+.nav-item {
+  position: relative;
   font-size: 16px;
   font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 12px;
-  text-decoration: none;
   color: #cdd9ff;
+  text-decoration: none;
+  padding: 8px 4px;
+  transition: color 0.3s ease;
+}
+
+/* GARIS BAWAH (EFEK HALUS) */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #4da9ff;
   transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  transform: translateX(-50%);
 }
 
-/* Hover tanpa jembluk */
-.nav-item:hover,
-.logout-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+.nav-item:hover {
   color: #fff;
-  transform: none; /* hapus scale */
 }
 
-/* Active menu */
+.nav-item:hover::after {
+  width: 100%;
+}
+
 .nav-item.active {
-  background: #0052ff;
   color: #fff;
-  box-shadow: 0 0 12px rgba(0, 100, 255, 0.5);
 }
 
-/* Logout tombol */
+.nav-item.active::after {
+  width: 100%;
+  background: #fff;
+}
+
+/* 🔘 LOGOUT BUTTON */
 .logout-btn {
-  background: #1a73e8;
-  border: none;
+  background: transparent;
+  border: 2px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-  background: #0059ff;
+  background: #ff4d4d;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
 }
 
-/* RESPONSIVE NAVBAR */
+/* Efek saat diklik (aktif) */
+.logout-btn:active {
+  background: #cc0000;
+  border-color: #cc0000;
+  transform: scale(0.97);
+}
+
+/* 📱 RESPONSIVE */
 @media (max-width: 768px) {
   .navbar {
     padding: 12px 20px;
@@ -991,72 +814,721 @@ body {
     align-items: flex-start;
     gap: 10px;
   }
+
   .nav-right {
     width: 100%;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .nav-item::after {
+    display: none;
+  }
+
+  .logout-btn {
+    margin-top: 5px;
   }
 }
+/* 🌐 MAIN CONTENT */
 
-/* MAIN CONTENT */
-.dashboard-main {
-  text-align: center;
-  margin-top: 80px;
-  padding: 0 20px;
-}
 
-/* WELCOME BOX */
+/* 🎉 WELCOME BOX */
+
 .welcome-box h2 {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
-  color: #fff;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 8px;
 }
 
 .welcome-box span {
   color: #ffe680;
 }
 
-/* STATS */
+.welcome-box p {
+  font-size: 17px;
+  margin-bottom: 5px;
+  opacity: 0.95;
+}
+
+.welcome-box small {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+/* 📊 STATS SECTION (tanpa kotak) */
 .stats-container {
   display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-top: 60px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 30px;
+  margin-top: 40px;
+  flex-wrap: nowrap;
+  padding: 0 10px;
 }
 
 .stat-card {
-  background: #fff;
+  flex: 1;
+  min-width: 200px;
+  background: #ffffff; /* hilangkan kotak putih */
   color: #002b80;
-  border-radius: 20px;
-  padding: 30px;
-  width: 250px;
+  border-radius: 18px;
+  text-align: center;
+  padding: 15px;
   transition: 0.3s ease;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px);
 }
 
 .stat-card i {
   color: #0046cc;
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   margin-bottom: 10px;
 }
 
 .stat-card h3 {
-  margin: 0;
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 700;
+  margin: 0;
 }
 
 .stat-card p {
+  font-size: 15px;
   color: #002b80;
-  margin-top: 5px;
   font-weight: 500;
 }
 
+/* 📈 CHARTS */
+.charts-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 60px auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.chart-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 20px;
+  padding: 25px 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  height: 420px;
+}
+
+.chart-card h4 {
+  text-align: left;
+  font-weight: 600;
+  color: #002b80;
+  margin-bottom: 20px;
+}
+
+/* 📋 TABLE */
+.table-container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 3px 20px rgba(0,0,0,0.1);
+  padding: 25px 40px;
+  margin: 60px auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.table-container h4 {
+  text-align: left;
+  color: #002b80;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dashboard-table th {
+  background: #1b3c8a;
+  color: #fff;
+}
+
+.dashboard-table tr:hover {
+  background: #eef3ff;
+}
+
+/* 🟢 STATUS BADGES */
+.status {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.status.diajukan { background: #007bff; }
+.status.disetujui { background: #28a745; }
+.status.diproses { background: #ffc107; color: #222; }
+.status.selesai { background: #20c997; }
+.status.ditolak { background: #dc3545; }
+
+/* 🌍 RESPONSIVE */
+@media (max-width: 1100px) {
+  .dashboard-main { padding: 0 20px; }
+  .stats-container { flex-wrap: wrap; justify-content: center; gap: 20px; }
+  .charts-row { flex-wrap: wrap; }
+  .chart-card { width: 100%; height: 350px; }
+}
+
+/* ======== STYLE MODERN ELEGAN BIRU GLASS ======== */
+
+body {
+    background: linear-gradient(135deg, #e8f0ff 0%, #f9fbff 100%);
+    font-family: 'Poppins', sans-serif;
+    color: #2a2a2a;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== CONTAINER ===== */
+.adminusers-container {
+    max-width: 90%;
+    margin: 60px auto;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* ===== HEADER ===== */
+.adminusers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.adminusers-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #143c8c;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* ===== BUTTON ===== */
+.adminusers-btn,
+.adminusers-btn-back {
+    background: linear-gradient(135deg, #4b7bff, #1f5fff);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(63,99,255,0.25);
+    transition: all 0.3s ease;
+}
+
+.adminusers-btn:hover,
+.adminusers-btn-back:hover {
+    background: linear-gradient(135deg, #315bff, #1b45d8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(63,99,255,0.3);
+}
+
+/* ===== TABLE ===== */
+.adminusers-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffffcc;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.adminusers-table thead {
+    background: linear-gradient(135deg, #ebf2ff, #f8faff);
+    color: #1f3e89;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.adminusers-table th,
+.adminusers-table td {
+    text-align: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(230,230,255,0.5);
+    font-size: 14px;
+}
+
+.adminusers-table tbody tr {
+    background-color: rgba(255,255,255,0.7);
+    transition: all 0.3s ease;
+}
+
+.adminusers-table tbody tr:hover {
+    background-color: rgba(230,240,255,0.7);
+    transform: scale(1.01);
+    box-shadow: 0 4px 10px rgba(63,99,255,0.05);
+}
+
+/* ===== BUTTON DALAM TABEL ===== */
+.adminusers-btn-edit {
+    background: linear-gradient(135deg, #3a6ff8, #5a8dff);
+    color: #fff;
+    padding: 7px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.adminusers-btn-edit:hover {
+    background: linear-gradient(135deg, #2e5be6, #4f7bff);
+    box-shadow: 0 3px 8px rgba(58,111,248,0.3);
+}
+
+.adminusers-btn-delete {
+    background: linear-gradient(135deg, #ff5f5f, #ff7a7a);
+    color: white;
+    padding: 7px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.adminusers-btn-delete:hover {
+    background: linear-gradient(135deg, #ff4444, #ff6a6a);
+    box-shadow: 0 3px 8px rgba(255,95,95,0.3);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .adminusers-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .adminusers-btn,
+    .adminusers-btn-back {
+        width: 100%;
+        text-align: center;
+    }
+
+    .adminusers-table th,
+    .adminusers-table td {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
+
+/* ============================================ */
+/* 📱 COMPREHENSIVE MOBILE RESPONSIVE DESIGN */
+/* ============================================ */
+
+/* Tablet & Medium Devices (768px - 1024px) */
+@media (max-width: 1024px) {
+    /* Navbar adjustments */
+    .navbar {
+        padding: 14px 30px;
+    }
+    
+    /* Dashboard stats */
+    .stats-container {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .stat-card {
+        min-width: calc(50% - 10px);
+    }
+    
+    /* Charts */
+    .charts-row {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .chart-card {
+        width: 100%;
+        height: 350px;
+    }
+    
+    /* Tables */
+    .dashboard-table,
+    .riwayat-table,
+    .adminusers-table {
+        font-size: 14px;
+    }
+    
+    .dashboard-table th,
+    .dashboard-table td,
+    .riwayat-table th,
+    .riwayat-table td,
+    .adminusers-table th,
+    .adminusers-table td {
+        padding: 10px 8px;
+    }
+}
+
+/* Mobile Devices (576px - 768px) */
+@media (max-width: 768px) {
+    /* Global container adjustments */
+    .adminusers-container,
+    .riwayat-container,
+    .table-container {
+        margin: 30px 15px;
+        padding: 20px;
+        border-radius: 16px;
+    }
+    
+    /* Headers */
+    .adminusers-title,
+    .riwayat-title {
+        font-size: 20px;
+    }
+    
+    /* Welcome boxes */
+    .welcome-box h2 {
+        font-size: 26px;
+    }
+    
+    .welcome-box p {
+        font-size: 15px;
+    }
+    
+    /* Stats grid to single column */
+    .stats-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .stat-card {
+        min-width: 100%;
+        width: 100%;
+    }
+    
+    .stat-card h3 {
+        font-size: 28px;
+    }
+    
+    .stat-card p {
+        font-size: 14px;
+    }
+    
+    /* Buttons full width on mobile */
+    .adminusers-btn,
+    .adminusers-btn-back,
+    .riwayat-btn-back,
+    .cta-btn {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
+    }
+    
+    /* Navigation menu stack */
+    .menu {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .menu a {
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* Table responsive mode - Card view */
+    .dashboard-table thead,
+    .adminusers-table thead {
+        display: none;
+    }
+    
+    .dashboard-table,
+    .dashboard-table tbody,
+    .dashboard-table tr,
+    .dashboard-table td,
+    .adminusers-table,
+    .adminusers-table tbody,
+    .adminusers-table tr,
+    .adminusers-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .dashboard-table tr,
+    .adminusers-table tr {
+        margin-bottom: 15px;
+        background: #f9fbff;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .dashboard-table td,
+    .adminusers-table td {
+        text-align: left;
+        padding: 8px 0;
+        border: none;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    .dashboard-table td::before,
+    .adminusers-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        font-weight: 600;
+        color: #143c8c;
+        text-align: left;
+    }
+    
+    /* Action buttons in tables */
+    .dashboard-table td:last-child,
+    .adminusers-table td:last-child {
+        display: flex;
+        gap: 8px;
+        padding-left: 0;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    .adminusers-btn-edit,
+    .adminusers-btn-delete {
+        flex: 1;
+        min-width: calc(50% - 4px);
+        text-align: center;
+    }
+}
+
+/* Small Mobile Devices (320px - 576px) */
+@media (max-width: 576px) {
+    /* Typography scaling */
+    body {
+        font-size: 14px;
+    }
+    
+    /* Containers with more padding reduction */
+    .adminusers-container,
+    .riwayat-container,
+    .table-container,
+    .login-container {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+    
+    /* Headers smaller */
+    .adminusers-title,
+    .riwayat-title {
+        font-size: 18px;
+    }
+    
+    .landing-title {
+        font-size: 1.6rem;
+    }
+    
+    .welcome-box h2 {
+        font-size: 22px;
+    }
+    
+    /* Navbar compact */
+    .navbar {
+        padding: 10px 15px;
+        width: 95%;
+        top: 20px;
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    /* Stats cards smaller */
+    .stat-card {
+        padding: 12px;
+    }
+    
+    .stat-card h3 {
+        font-size: 24px;
+    }
+    
+    .stat-card p {
+        font-size: 12px;
+    }
+    
+    /* Buttons */
+    .landing-btn,
+    .adminusers-btn,
+    .riwayat-btn,
+    .cta-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    /* Forms */
+    .login-form input,
+    .login-form select {
+        padding: 11px 14px;
+        font-size: 14px;
+    }
+    
+    .login-form button {
+        padding: 11px;
+        font-size: 15px;
+    }
+    
+    /* Charts height reduction */
+    .chart-card {
+        height: 300px;
+        padding: 15px;
+    }
+    
+    /* Table text sizing */
+    .dashboard-table,
+    .riwayat-table,
+    .adminusers-table {
+        font-size: 13px;
+    }
+    
+    .dashboard-table td::before,
+    .adminusers-table td::before,
+    .riwayat-table td::before {
+        font-size: 12px;
+    }
+    
+    /* Status badges smaller */
+    .status,
+    .riwayat-badge {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    /* Action buttons stack on very small screens */
+    .adminusers-btn-edit,
+    .adminusers-btn-delete {
+        min-width: 100%;
+    }
+}
+
+/* Extra Small Devices (< 375px) */
+@media (max-width: 375px) {
+    .landing-title {
+        font-size: 1.4rem;
+    }
+    
+    .landing-desc {
+        font-size: 0.85rem;
+    }
+    
+    .welcome-box h2 {
+        font-size: 20px;
+    }
+    
+    .stat-card h3 {
+        font-size: 20px;
+    }
+    
+    .navbar {
+        padding: 8px 10px;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .adminusers-container,
+    .riwayat-container,
+    .table-container {
+        padding: 12px;
+    }
+}
+
+/* Landscape orientation for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .landing-body,
+    .login-body {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+    
+    .navbar {
+        position: relative;
+        top: 0;
+        width: 100%;
+    }
+    
+    .content {
+        margin-top: 100px;
+    }
+    
+    .chart-card {
+        height: 280px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .menu,
+    .logout,
+    .logout-btn,
+    .adminusers-btn,
+    .adminusers-btn-back,
+    .riwayat-btn-back,
+    .cta-btn {
+        display: none !important;
+    }
+    
+    .adminusers-container,
+    .riwayat-container,
+    .table-container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    body {
+        background: white;
+    }
+}
+
+/* Accessibility - High contrast mode */
+@media (prefers-contrast: high) {
+    .navbar,
+    .stat-card,
+    .chart-card,
+    .table-container {
+        border: 2px solid #000;
+    }
+    
+    .nav-item,
+    .menu a {
+        font-weight: 700;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

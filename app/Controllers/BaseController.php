@@ -54,5 +54,12 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = service('session');
+        
+        // Prevent browser caching for authenticated pages
+        // User tidak bisa back setelah logout
+        $this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0')
+                       ->setHeader('Pragma', 'no-cache')
+                       ->setHeader('Expires', '0')
+                       ->setHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT');
     }
 }

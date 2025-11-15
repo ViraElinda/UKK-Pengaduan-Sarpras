@@ -16,7 +16,9 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost:8080/';
+    // Leave empty to auto-detect at runtime. We'll set it in the constructor
+    // so the app works when accessed via IP/ngrok/other hosts (mobile testing).
+    public string $baseURL = '';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
@@ -93,7 +95,26 @@ class App extends BaseConfig
      * strings (like currency markers, numbers, etc), that your program
      * should run under for this request.
      */
-    public string $defaultLocale = 'en';
+    public string $defaultLocale = 'id';
+
+    public function __construct()
+    {
+        // Attempt to set baseURL dynamically so links and redirects use the
+        // actual host the client requested (works for LAN IP and ngrok).
+        $host = $_SERVER['HTTP_HOST'] ?? null;
+        $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+
+        if ($host) {
+            $scheme = $https ? 'https' : 'http';
+            // ensure trailing slash
+            $this->baseURL = rtrim($scheme . '://' . $host, '/') . '/';
+        } else {
+            // fallback to localhost:8080 for CLI or missing server vars
+            $this->baseURL = 'http://localhost:8000/';
+        }
+
+        parent::__construct();
+    }
 
     /**
      * --------------------------------------------------------------------------
@@ -199,4 +220,18 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+    /**
+     * -----------------------------------------------------------------
+     * Cookie / Session defaults
+     * -----------------------------------------------------------------
+     * These defaults are set to be permissive for local LAN / ngrok
+     * development so that cookies/sessions work when accessing the app
+     * from a mobile device or public tunnel.
+     */
+    public string $cookiePrefix = '';
+    public string $cookieDomain = '';
+    public string $cookiePath = '/';
+    public bool $cookieSecure = false;     public bool $cookieHTTPOnly = true;
+    public string $cookieSameSite = 'Lax';
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout</title>
+</head>
+<body>
+    <h2>Klik tombol di bawah untuk logout:</h2>
+    <form action="http://localhost/pengaduan4/pengaduan4/public/auth/logout" method="POST">
+        <button type="submit" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+            LOGOUT
+        </button>
+    </form>
+    
+    <br><br>
+    <p>Atau akses langsung ke halaman login:</p>
+    <a href="http://localhost/pengaduan4/pengaduan4/public/auth/login">
+        Go to Login Page
+    </a>
+    
+    <script>
+        // Auto submit after 2 seconds
+        setTimeout(function() {
+            if(confirm('Auto logout dalam 2 detik. Klik OK untuk logout sekarang.')) {
+                document.querySelector('form').submit();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

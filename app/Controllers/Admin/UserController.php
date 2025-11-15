@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\Admin;
+
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 
@@ -22,11 +23,21 @@ class UserController extends BaseController
     {
         $userModel = new UserModel();
 
+        $fotoName = null;
+
+        if ($file = $this->request->getFile('foto')) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                $fotoName = $file->getRandomName();
+                $file->move('uploads/user', $fotoName);
+            }
+        }
+
         $userModel->insert([
             'username'      => $this->request->getPost('username'),
             'password'      => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'nama_pengguna' => $this->request->getPost('nama_pengguna'),
             'role'          => $this->request->getPost('role'),
+            'foto'          => $fotoName,
         ]);
 
         return redirect()->to('/admin/users')->with('success', 'User berhasil ditambahkan');
@@ -56,6 +67,14 @@ class UserController extends BaseController
 
         if ($this->request->getPost('password')) {
             $dataUpdate['password'] = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
+        }
+
+        if ($file = $this->request->getFile('foto')) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                $fotoName = $file->getRandomName();
+                $file->move('uploads/user', $fotoName);
+                $dataUpdate['foto'] = $fotoName;
+            }
         }
 
         $userModel->update($id, $dataUpdate);

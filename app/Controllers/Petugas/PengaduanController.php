@@ -4,100 +4,176 @@ namespace App\Controllers\Petugas;
 
 use App\Controllers\BaseController;
 use App\Models\PengaduanModel;
-use App\Models\UserModel;
 
 class PengaduanController extends BaseController
 {
     protected $pengaduanModel;
-    protected $userModel;
 
     public function __construct()
     {
         $this->pengaduanModel = new PengaduanModel();
-        $this->userModel = new UserModel();
-        date_default_timezone_set('Asia/Jakarta');
     }
 
+    /**
+     * Tampilkan SEMUA pengaduan untuk petugas kelola
+     */
     public function index()
     {
-        // Ambil semua pengaduan dengan data user
-        $data['pengaduan'] = $this->pengaduanModel->getAllWithUser();
+        $idPetugas = session('id_petugas');
+
+        if (!$idPetugas) {
+            return redirect()->to('/auth/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        // Ambil SEMUA pengaduan dengan join user untuk nama pelapor
+        $data['pengaduan'] = $this->pengaduanModel
+            ->select('pengaduan.*, user.nama_pengguna, lokasi.nama_lokasi')
+            ->join('user', 'pengaduan.id_user = user.id_user', 'left')
+            ->join('lokasi', 'pengaduan.id_lokasi = lokasi.id_lokasi', 'left')
+            ->orderBy('pengaduan.tgl_pengajuan', 'DESC')
+            ->findAll();
+            
         return view('petugas/pengaduan/index', $data);
     }
 
-    public function create()
+    /**
+     * Tampilkan form edit pengaduan
+     */
+    public function edit($id)
     {
-        $data['users'] = $this->userModel->findAll();
-        return view('petugas/pengaduan/create', $data);
-    }
+        $pengaduan = $this->pengaduanModel->find($id);
 
-    public function store()
-    {
-        $fotoFile = $this->request->getFile('foto');
-        $fotoName = null;
-
-        if ($fotoFile && $fotoFile->isValid() && !$fotoFile->hasMoved()) {
-            $fotoName = 'foto_' . time() . '.' . $fotoFile->getExtension();
-            $fotoFile->move(FCPATH . 'uploads/foto_pengaduan/', $fotoName);
+        if (!$pengaduan) {
+            return redirect()->to('/petugas/pengaduan')->with('error', 'Pengaduan tidak ditemukan.');
         }
 
-        $this->pengaduanModel->insert([
-            'nama_pengaduan' => $this->request->getPost('nama_pengaduan'),
-            'deskripsi'      => $this->request->getPost('deskripsi'),
-            'lokasi'         => $this->request->getPost('lokasi'),
-            'foto'           => $fotoName,
-            'status'         => $this->request->getPost('status'),
-            'id_user'        => $this->request->getPost('id_user'),
-            'id_petugas'     => session()->get('id_user'), // otomatis petugas aktif
-            'id_item'        => $this->request->getPost('id_item') ?: null,
-            'tgl_pengajuan'  => date('Y-m-d H:i:s'),
-            'tgl_selesai'    => $this->request->getPost('tgl_selesai') ?: null,
-            'saran_petugas'  => $this->request->getPost('saran_petugas') ?: null,
-        ]);
+        // VALIDASI: Jika status sudah Selesai, tidak boleh diubah
+        if (strtolower($pengaduan['status']) === 'selesai') {
+            return redirect()->to('/petugas/pengaduan')->with('error', 'Pengaduan sudah selesai dan tidak bisa diubah lagi.');
+        }
 
-        return redirect()->to('/petugas/pengaduan')->with('success', 'Pengaduan berhasil ditambahkan.');
+        $data['pengaduan'] = $pengaduan;
+        return view('petugas/pengaduan/edit', $data);
     }
 
-    public function edit($id_pengaduan)
-    {
-        $pengaduan = $this->pengaduanModel->find($id_pengaduan);
-        $users = $this->userModel->findAll();
-
-        return view('petugas/pengaduan/edit', [
-            'pengaduan' => $pengaduan,
-            'users' => $users
-        ]);
-    }
-
+    /**
+     * Update status pengaduan (hanya untuk petugas)
+     */
     public function update($id)
-    {
-        $dataUpdate = [
-            'nama_pengaduan' => $this->request->getPost('nama_pengaduan'),
-            'deskripsi'      => $this->request->getPost('deskripsi'),
-            'lokasi'         => $this->request->getPost('lokasi'),
-            'status'         => $this->request->getPost('status'),
-            'id_user'        => $this->request->getPost('id_user'),
-            'id_petugas'     => session()->get('id_user'), // update otomatis ke petugas aktif
-            'id_item'        => $this->request->getPost('id_item') ?: null,
-            'tgl_selesai'    => $this->request->getPost('tgl_selesai') ?: null,
-            'saran_petugas'  => $this->request->getPost('saran_petugas') ?: null,
-        ];
+{
+    // Pastikan petugas login
+    $idPetugas = session('id_petugas');
+    if (!$idPetugas) {
+        return redirect()->to('/auth/login')->with('error', 'Silakan login terlebih dahulu.');
+    }
 
-        $fotoFile = $this->request->getFile('foto');
-        if ($fotoFile && $fotoFile->isValid() && !$fotoFile->hasMoved()) {
-            $fotoName = 'foto_' . time() . '.' . $fotoFile->getExtension();
-            $fotoFile->move(FCPATH . 'uploads/foto_pengaduan/', $fotoName);
-            $dataUpdate['foto'] = $fotoName;
+    // Pastikan kolom before/after tersedia (fallback jika migrasi belum jalan)
+    try {
+        $db = \Config\Database::connect();
+        $forge = \Config\Database::forge();
+        $fields = array_map('strtolower', $db->getFieldNames('pengaduan'));
+        $add = [];
+        if (!in_array('foto_before', $fields, true)) {
+            $add['foto_before'] = ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true];
         }
-
-        $this->pengaduanModel->update($id, $dataUpdate);
-
-        return redirect()->to('/petugas/pengaduan')->with('success', 'Pengaduan berhasil diperbarui.');
+        if (!in_array('foto_after', $fields, true)) {
+            $add['foto_after'] = ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true];
+        }
+        if (!in_array('foto_balasan', $fields, true)) {
+            $add['foto_balasan'] = ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true];
+        }
+        if (!empty($add)) {
+            $forge->addColumn('pengaduan', $add);
+        }
+    } catch (\Throwable $e) {
+        // ignore; we'll still try to proceed
     }
 
-    public function delete($id)
-    {
-        $this->pengaduanModel->delete($id);
-        return redirect()->to('/petugas/pengaduan')->with('success', 'Pengaduan berhasil dihapus.');
+    // Ambil data pengaduan saat ini untuk validasi & penghapusan file lama
+    $current = $this->pengaduanModel->find($id);
+    if (!$current) {
+        return redirect()->to('/petugas/pengaduan')->with('error', 'Pengaduan tidak ditemukan.');
     }
+
+    // VALIDASI: Jika status sudah Selesai, tidak boleh diubah
+    if (strtolower($current['status']) === 'selesai') {
+        return redirect()->to('/petugas/pengaduan')->with('error', 'Pengaduan sudah selesai dan tidak bisa diubah lagi.');
+    }
+
+    $postData = $this->request->getPost([
+        'status',
+        'saran_petugas',
+        'alasan_penolakan'
+    ]);
+
+    // Jika status bukan Ditolak → hapus alasan
+    if ($postData['status'] !== 'Ditolak') {
+        $postData['alasan_penolakan'] = null;
+    }
+
+    // Set id_petugas agar tercatat siapa yang menangani
+    $postData['id_petugas'] = $idPetugas;
+
+    // Handle foto_balasan (foto balasan dari petugas)
+    $fotoBalasan = $this->request->getFile('foto_balasan');
+
+    $updateFiles = [];
+
+    // Prepare upload directory
+    $balasanDir = FCPATH . 'uploads/foto_balasan/';
+    if (!is_dir($balasanDir)) { @mkdir($balasanDir, 0755, true); }
+
+    // ===== Server-side validations =====
+    $errors = [];
+    $allowedExt = ['jpg','jpeg','png','webp'];
+    $maxBytes = 5 * 1024 * 1024; // 5MB
+
+    // Validate Foto Balasan when provided
+    if ($fotoBalasan && $fotoBalasan->getName() !== '' && $fotoBalasan->isValid() && !$fotoBalasan->hasMoved()) {
+        $ext = strtolower($fotoBalasan->getExtension());
+        if (!in_array($ext, $allowedExt, true)) {
+            $errors[] = 'Format Foto Balasan harus jpg, jpeg, png, atau webp.';
+        }
+        if ($fotoBalasan->getSize() > $maxBytes) {
+            $errors[] = 'Ukuran Foto Balasan maksimal 5MB.';
+        }
+    }
+
+    if (!empty($errors)) {
+        return redirect()->back()->withInput()->with('error', implode(' ', $errors));
+    }
+
+    // Process Foto Balasan
+    if ($fotoBalasan && $fotoBalasan->isValid() && !$fotoBalasan->hasMoved()) {
+        try {
+            $ext = $fotoBalasan->getExtension();
+            $name = 'balasan_' . $id . '_' . time() . '.' . $ext;
+            // Remove old file if exists
+            if (!empty($current['foto_balasan'])) {
+                $old = $balasanDir . $current['foto_balasan'];
+                if (is_file($old)) { @unlink($old); }
+            }
+            $fotoBalasan->move($balasanDir, $name);
+
+            \Config\Services::image()
+                ->withFile($balasanDir . $name)
+                ->resize(1280, 1280, true, 'auto')
+                ->save($balasanDir . $name, 75);
+
+            $updateFiles['foto_balasan'] = $name;
+        } catch (\Throwable $e) {
+            // ignore image errors silently but do not block status update
+        }
+    }
+
+    // Auto set tgl_selesai if status becomes Selesai
+    if ($postData['status'] === 'Selesai') {
+        $postData['tgl_selesai'] = date('Y-m-d H:i:s');
+    }
+
+    $this->pengaduanModel->update($id, array_merge($postData, $updateFiles));
+
+    return redirect()->to('/petugas/pengaduan')->with('success', 'Status pengaduan diperbarui.');
+}
+
 }

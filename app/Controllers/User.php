@@ -6,28 +6,17 @@ use App\Controllers\BaseController;
 use App\Models\UserModel;
 
 class User extends BaseController
+{public function profile()
 {
-    public function updateProfile()
-    {
-        $userId = session()->get('user_id');
+    $session = session();
+    $user = $session->get('user') ?? [];
 
-        $file = $this->request->getFile('profile_image');
-        $model = new UserModel();
+    // Pastikan semua key ada
+    $user['nama_pengguna'] = $user['nama_pengguna'] ?? '';
+    $user['username']     = $user['username'] ?? '';
+    $user['foto']         = $user['foto'] ?? '';
 
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-            // Nama acak
-            $newName = $file->getRandomName();
-            $file->move('uploads/profile', $newName);
+    return view('user/profile', ['user' => $user]);
+}
 
-            // Update database
-            $model->update($userId, [
-                'foto' => $newName
-            ]);
-
-            // Update session juga!
-            session()->set('foto', $newName);
-        }
-
-        return redirect()->to('/user/profile')->with('success', 'Foto profil berhasil diperbarui!');
-    }
 }
