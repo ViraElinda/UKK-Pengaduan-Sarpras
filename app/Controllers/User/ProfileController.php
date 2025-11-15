@@ -59,7 +59,7 @@ class ProfileController extends BaseController
 
         if (!$this->validate($rules)) {
             // Periksa apakah error karena password
-            $errors = $this->validator->getErrors();
+            $errors = service('validation')->getErrors();
             if (isset($errors['password'])) {
                 return redirect()->back()->withInput()->with('error', 'Password minimal 6 karakter jika ingin mengganti.');
             }

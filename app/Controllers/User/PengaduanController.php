@@ -40,7 +40,7 @@ class PengaduanController extends BaseController
     {
         // Validasi ID lokasi
         if (empty($id_lokasi) || !is_numeric($id_lokasi)) {
-            return $this->response->setJSON([]);
+            return response()->setJSON([]);
         }
 
         // Query items berdasarkan lokasi
@@ -51,7 +51,7 @@ class PengaduanController extends BaseController
             ->findAll();
 
         // Return JSON response
-        return $this->response
+        return response()
             ->setContentType('application/json')
             ->setJSON($items ?: []);
     }
@@ -71,7 +71,7 @@ class PengaduanController extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('errors', service('validation')->getErrors());
         }
 
         $idLokasi   = $this->request->getVar('id_lokasi');

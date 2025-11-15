@@ -22,7 +22,7 @@ class NotifController extends BaseController
         $idUser = session('id_user');
         
         if (!$idUser) {
-            return $this->response->setJSON([
+            return response()->setJSON([
                 'success' => false,
                 'message' => 'User tidak terautentikasi',
                 'notifications' => [],
@@ -34,7 +34,7 @@ class NotifController extends BaseController
             $notifikasi = $this->notifModel->getByUser($idUser, 10);
             $unreadCount = $this->notifModel->countUnread($idUser);
 
-            return $this->response->setJSON([
+            return response()->setJSON([
                 'success' => true,
                 'notifications' => $notifikasi,
                 'unread_count' => $unreadCount
@@ -45,7 +45,7 @@ class NotifController extends BaseController
                 log_message('error', '[Notif] getNotifications failed: ' . $e->getMessage());
             }
 
-            return $this->response->setJSON([
+            return response()->setJSON([
                 'success' => false,
                 'message' => 'Gagal memuat notifikasi (server).',
                 'notifications' => [],
@@ -61,7 +61,7 @@ class NotifController extends BaseController
     {
         $this->notifModel->markAsRead($idNotif);
         
-        return $this->response->setJSON([
+        return response()->setJSON([
             'success' => true,
             'message' => 'Notifikasi ditandai sebagai sudah dibaca'
         ]);
@@ -75,7 +75,7 @@ class NotifController extends BaseController
         $idUser = session('id_user');
         $this->notifModel->markAllAsRead($idUser);
         
-        return $this->response->setJSON([
+        return response()->setJSON([
             'success' => true,
             'message' => 'Semua notifikasi ditandai sebagai sudah dibaca'
         ]);
@@ -88,7 +88,7 @@ class NotifController extends BaseController
     {
         $this->notifModel->delete($idNotif);
         
-        return $this->response->setJSON([
+        return response()->setJSON([
             'success' => true,
             'message' => 'Notifikasi berhasil dihapus'
         ]);
