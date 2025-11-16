@@ -34,6 +34,7 @@ Manajemen Aduan
             <tr>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">No</th>
               <th class="px-6 py-4 text-left font-bold text-sm uppercase tracking-wider">Nama</th>
+              <th class="px-6 py-4 text-left font-bold text-sm uppercase tracking-wider">Nama User</th>
               <th class="px-6 py-4 text-left font-bold text-sm uppercase tracking-wider">Lokasi</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Tgl</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Foto User</th>
@@ -49,6 +50,7 @@ Manajemen Aduan
             <tr class="hover:bg-blue-50/50 transition-all">
               <td data-label="No" class="px-6 py-4 text-center text-gray-700 font-semibold"><?= $no++ ?></td>
               <td data-label="Nama" class="px-6 py-4 text-gray-700 font-medium"><?= esc($p['nama_pengaduan']) ?></td>
+              <td data-label="Nama User" class="px-6 py-4 text-gray-700 font-medium"><?= esc($p['nama_user'] ?? '-') ?></td>
               <td data-label="Lokasi" class="px-6 py-4 text-gray-700 font-medium"><?= esc($p['lokasi']) ?></td>
               <td data-label="Tanggal" class="px-6 py-4 text-center text-gray-600"><?= !empty($p['tgl_pengajuan']) ? date('d/m/Y', strtotime($p['tgl_pengajuan'])) : '-' ?></td>
               <td data-label="Foto User" class="px-6 py-4 text-center">

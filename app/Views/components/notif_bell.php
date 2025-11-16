@@ -37,6 +37,9 @@
     </div>
 </div>
 
+<!-- SweetAlert2 for popup toasts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 // Notification JavaScript
 (function() {
@@ -175,21 +178,61 @@
         return created.toLocaleDateString('id-ID');
     }
 
-    // Auto load notifikasi setiap 30 detik (keystroke: update badge only)
-    setInterval(function() {
-        fetch('<?= base_url('notif/get') ?>')
+    // Track last known unread count to detect new notifications
+    let lastUnread = 0;
+
+    // Load notifications on page load to populate badge and set baseline
+    function initialLoad() {
+        return fetch('<?= base_url('notif/get') ?>')
             .then(response => response.json())
             .then(data => {
                 if (data && (data.success || data.notifications)) {
                     updateNotifBadge(data.unread_count || 0);
+                    lastUnread = data.unread_count || 0;
+                    // Render list only when dropdown opened; keep minimal DOM updates now
                 }
+            })
+            .catch(() => {});
+    }
+
+    initialLoad();
+
+    // Auto-poll notifikasi setiap 15 detik; if there's a new unread > lastUnread, fetch latest and show toast
+    setInterval(function() {
+        fetch('<?= base_url('notif/get') ?>')
+            .then(response => response.json())
+            .then(data => {
+                if (!data) return;
+                const unread = data.unread_count || 0;
+                // update badge always
+                updateNotifBadge(unread);
+
+                if (unread > lastUnread) {
+                    // New notification(s) arrived. Fetch the latest notifications to display popup content.
+                    fetch('<?= base_url('notif/get') ?>')
+                        .then(r => r.json())
+                        .then(d => {
+                            const newest = (d.notifications && d.notifications[0]) ? d.notifications[0] : null;
+                            if (newest) {
+                                // Show toast popup using SweetAlert2
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 5000,
+                                    icon: newest.tipe || 'info',
+                                    title: newest.judul || 'Notifikasi',
+                                    text: newest.pesan || ''
+                                });
+                            }
+                        }).catch(() => {});
+                }
+
+                lastUnread = unread;
             })
             .catch(() => {
                 // ignore network errors silently to avoid console spam
             });
-    }, 30000);
-
-    // Load notifications on page load to populate badge
-    loadNotifications();
+    }, 15000);
 })();
 </script>

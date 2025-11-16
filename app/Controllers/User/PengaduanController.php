@@ -40,7 +40,7 @@ class PengaduanController extends BaseController
     {
         // Validasi ID lokasi
         if (empty($id_lokasi) || !is_numeric($id_lokasi)) {
-            return response()->setJSON([]);
+            return $this->response->setJSON([]);
         }
 
         // Query items berdasarkan lokasi
@@ -51,7 +51,7 @@ class PengaduanController extends BaseController
             ->findAll();
 
         // Return JSON response
-        return response()
+        return $this->response
             ->setContentType('application/json')
             ->setJSON($items ?: []);
     }
