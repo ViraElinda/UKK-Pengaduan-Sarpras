@@ -1,25 +1,25 @@
 
-<!-- NAVBAR ADMIN - Modern & Professional Design -->
-<nav class="bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-600 shadow-lg sticky top-0 z-50 backdrop-blur-sm" role="navigation" aria-label="Main navigation">
+<!-- NAVBAR ADMIN - Elegant Blue Design -->
+<nav class="bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-500 shadow-xl sticky top-0 z-50 backdrop-blur-md border-b border-blue-400/20" role="navigation" aria-label="Main navigation">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Brand + Mobile Toggle -->
       <div class="flex items-center gap-4">
-        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-200" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-white/90 hover:text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-blue-300/50 transition-all duration-200" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
 
         <a href="<?= base_url('admin/dashboard') ?>" class="flex items-center gap-3 no-underline group">
-          <div class="w-11 h-11 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
-            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
             </svg>
           </div>
           <div class="leading-tight hidden sm:block">
-            <div class="text-white text-lg font-bold tracking-tight">Admin Panel</div>
-            <div class="text-indigo-100 text-xs font-medium">Sistem Pengaduan Sarpras</div>
+            <div class="text-white text-lg font-bold tracking-tight drop-shadow-sm">Admin Panel</div>
+            <div class="text-blue-50 text-xs font-medium">Sistem Pengaduan Sarpras</div>
           </div>
         </a>
       </div>
@@ -44,15 +44,15 @@
         ?>
           <a href="<?= base_url($u) ?>" 
              role="menuitem" 
-             class="group relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 <?= $isActive ? 'bg-white/25 text-white shadow-lg scale-105' : 'text-white/90 hover:bg-white/15 hover:text-white hover:scale-105' ?>" 
+             class="group relative flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 <?= $isActive ? 'bg-white/20 text-white shadow-lg' : 'text-blue-50 hover:bg-white/10 hover:text-white' ?>" 
              aria-current="<?= $isActive ? 'page' : 'false' ?>" 
              title="<?= esc($it['label']) ?>">
-            <span class="transition-transform duration-300 <?= $isActive ? 'scale-110' : 'group-hover:scale-110' ?>">
+            <span class="transition-transform duration-200 <?= $isActive ? '' : 'group-hover:scale-110' ?>">
               <?= $it['icon'] ?>
             </span>
             <span class="hidden lg:inline"><?= $it['label'] ?></span>
             <?php if ($isActive): ?>
-              <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full"></span>
+              <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-white rounded-full shadow-md"></span>
             <?php endif; ?>
           </a>
         <?php endforeach; ?>
@@ -69,7 +69,7 @@
         <form action="<?= base_url('auth/logout') ?>" method="post" class="hidden md:inline">
           <?= function_exists('csrf_field') ? csrf_field() : '' ?>
           <button type="submit" 
-                  class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50" 
+                  class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white rounded-lg text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300/50" 
                   aria-label="Logout">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -81,10 +81,10 @@
         <!-- Profile Dropdown -->
         <div class="relative">
           <button id="profileMenuBtn" 
-                  class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300" 
+                  class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white focus:outline-none focus:ring-2 focus:ring-blue-300/50 transition-all duration-200" 
                   aria-haspopup="true" 
                   aria-expanded="false">
-            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/30 shadow-md">
+            <div class="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/30 shadow-sm">
               <?php if (session('foto')): ?>
                 <img src="<?= base_url('writable/uploads/profile/' . session('foto')) ?>" alt="Profile" class="w-full h-full object-cover" />
               <?php else: ?>
@@ -101,10 +101,10 @@
 
           <!-- Dropdown Menu -->
           <div id="profileMenu" 
-               class="hidden absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 transform origin-top-right transition-all duration-300">
-            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-4">
+               class="hidden absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-2xl border border-blue-100 overflow-hidden z-50 transform origin-top-right transition-all duration-300">
+            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-4">
               <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/50">
+                <div class="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/40">
                   <?php if (session('foto')): ?>
                     <img src="<?= base_url('writable/uploads/profile/' . session('foto')) ?>" alt="Profile" class="w-full h-full object-cover" />
                   <?php else: ?>
@@ -115,16 +115,16 @@
                 </div>
                 <div class="flex-1 min-w-0">
                   <p class="text-white font-bold text-sm truncate"><?= session('nama_pengguna') ?></p>
-                  <p class="text-indigo-100 text-xs font-medium">Administrator</p>
-                  <p class="text-indigo-200 text-xs truncate">@<?= session('username') ?></p>
+                  <p class="text-blue-50 text-xs font-medium">Administrator</p>
+                  <p class="text-blue-100 text-xs truncate">@<?= session('username') ?></p>
                 </div>
               </div>
             </div>
             
             <div class="py-2">
               <a href="<?= base_url('admin/dashboard') ?>" 
-                 class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 transition-colors duration-200">
-                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors duration-200">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
                 <span class="font-medium text-sm">Dashboard</span>
@@ -151,19 +151,19 @@
 
   <!-- Mobile Menu (Slide-in from top) -->
   <div id="mobileMenu" 
-       class="md:hidden hidden bg-gradient-to-b from-indigo-700 to-purple-700 border-t border-white/10 shadow-lg">
+       class="md:hidden hidden bg-gradient-to-b from-blue-600 to-cyan-600 border-t border-blue-400/20 shadow-lg">
     <div class="px-4 py-4 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <?php foreach ($items as $it): 
         $u = $it['url']; 
         $isActive = ($active == $u || strpos($active, $u) === 0); 
       ?>
         <a href="<?= base_url($u) ?>" 
-           class="flex items-center gap-3 px-4 py-3 rounded-lg text-white font-medium transition-all duration-200 <?= $isActive ? 'bg-white/25 shadow-md' : 'hover:bg-white/15' ?>">
+           class="flex items-center gap-3 px-4 py-3 rounded-lg text-white font-medium transition-all duration-200 <?= $isActive ? 'bg-white/20 shadow-sm' : 'hover:bg-white/10' ?>">
           <?= $it['icon'] ?>
           <span><?= $it['label'] ?></span>
           <?php if ($isActive): ?>
-            <svg class="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            <svg class="w-5 h-5 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
             </svg>
           <?php endif; ?>
         </a>
@@ -173,7 +173,7 @@
         <form action="<?= base_url('auth/logout') ?>" method="post">
           <?= function_exists('csrf_field') ? csrf_field() : '' ?>
           <button type="submit" 
-                  class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg transition-all duration-200">
+                  class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold shadow-sm transition-all duration-200">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
             </svg>
