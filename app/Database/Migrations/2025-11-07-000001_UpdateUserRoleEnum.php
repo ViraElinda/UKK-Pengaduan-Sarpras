@@ -8,6 +8,15 @@ class UpdateUserRoleEnum extends Migration
 {
     public function up()
     {
+        // Ensure user table exists before checking/modifying role column
+        $tableCheck = $this->db->query("SHOW TABLES LIKE 'user'");
+        if ($tableCheck->getNumRows() == 0) {
+            if (function_exists('log_message')) {
+                log_message('info', '[MIGRATION] user table does not exist, skipping UpdateUserRoleEnum');
+            }
+            return;
+        }
+
         // Check current role enum values
         $query = $this->db->query("SHOW COLUMNS FROM `user` LIKE 'role'");
         $result = $query->getRow();
@@ -46,6 +55,12 @@ class UpdateUserRoleEnum extends Migration
 
     public function down()
     {
+        // Ensure user table exists before attempting rollback
+        $tableCheck = $this->db->query("SHOW TABLES LIKE 'user'");
+        if ($tableCheck->getNumRows() == 0) {
+            return;
+        }
+
         // Check if we need to rollback
         $query = $this->db->query("SHOW COLUMNS FROM `user` LIKE 'role'");
         $result = $query->getRow();
