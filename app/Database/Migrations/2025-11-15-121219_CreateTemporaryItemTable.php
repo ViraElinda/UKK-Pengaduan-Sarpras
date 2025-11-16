@@ -40,14 +40,12 @@ class CreateTemporaryItemTable extends Migration
                     'default'    => 'pending',
                 ],
                 'created_at' => [
-                    'type'    => 'DATETIME',
-                    'null'    => true,
-                    'default' => 'CURRENT_TIMESTAMP',
+                    'type' => 'DATETIME',
+                    'null' => true, // no default to avoid MySQL strict invalid default errors
                 ],
                 'updated_at' => [
-                    'type'    => 'DATETIME',
-                    'null'    => true,
-                    'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+                    'type' => 'DATETIME',
+                    'null' => true, // application can set this; remove ON UPDATE for portability
                 ],
             ];
 
