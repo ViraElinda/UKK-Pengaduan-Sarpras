@@ -12,14 +12,14 @@
         </button>
 
         <a href="<?= base_url('admin/dashboard') ?>" class="flex items-center gap-3 no-underline group">
-          <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300">
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-200">
             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
             </svg>
           </div>
           <div class="leading-tight hidden sm:block">
-            <div class="text-white text-lg font-bold tracking-tight drop-shadow-sm">Admin Panel</div>
-            <div class="text-blue-50 text-xs font-medium">Sistem Pengaduan Sarpras</div>
+            <div class="text-white text-lg font-semibold tracking-tight">Panel</div>
+            <div class="text-blue-50 text-xs">Sistem Pengaduan</div>
           </div>
         </a>
       </div>
@@ -37,23 +37,21 @@
           ['url' => 'admin/laporan', 'label' => 'Laporan', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'],
         ];
       ?>
-      <div class="hidden md:flex items-center gap-1 flex-1 justify-center px-4" role="menubar">
+      <div class="hidden md:flex items-center gap-2 flex-1 pl-6 max-w-3xl" role="menubar">
         <?php foreach ($items as $it): 
           $u = $it['url']; 
           $isActive = ($active == $u || strpos($active, $u) === 0); 
         ?>
           <a href="<?= base_url($u) ?>" 
              role="menuitem" 
-             class="group relative flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 <?= $isActive ? 'bg-white/20 text-white shadow-lg' : 'text-blue-50 hover:bg-white/10 hover:text-white' ?>" 
+             class="group relative flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 <?= $isActive ? 'bg-white/10 text-white shadow-sm' : 'text-blue-50 hover:bg-white/8 hover:text-white' ?>" 
              aria-current="<?= $isActive ? 'page' : 'false' ?>" 
              title="<?= esc($it['label']) ?>">
             <span class="transition-transform duration-200 <?= $isActive ? '' : 'group-hover:scale-110' ?>">
               <?= $it['icon'] ?>
             </span>
             <span class="hidden lg:inline"><?= $it['label'] ?></span>
-            <?php if ($isActive): ?>
-              <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-white rounded-full shadow-md"></span>
-            <?php endif; ?>
+            
           </a>
         <?php endforeach; ?>
       </div>
@@ -68,8 +66,8 @@
         <!-- Logout Button (Desktop) -->
         <form action="<?= base_url('auth/logout') ?>" method="post" class="hidden md:inline">
           <?= function_exists('csrf_field') ? csrf_field() : '' ?>
-          <button type="submit" 
-                  class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white rounded-lg text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300/50" 
+    <button type="submit" 
+      class="inline-flex items-center gap-2 px-3 py-2 bg-white/8 hover:bg-white/12 text-white rounded-md text-sm font-medium shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300/40" 
                   aria-label="Logout">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -80,8 +78,8 @@
 
         <!-- Profile Dropdown -->
         <div class="relative">
-          <button id="profileMenuBtn" 
-                  class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white focus:outline-none focus:ring-2 focus:ring-blue-300/50 transition-all duration-200" 
+    <button id="profileMenuBtn" 
+      class="flex items-center gap-2 px-3 py-2 rounded-md bg-white/8 hover:bg-white/14 text-white focus:outline-none focus:ring-2 focus:ring-blue-300/40 transition-all duration-200" 
                   aria-haspopup="true" 
                   aria-expanded="false">
             <div class="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/30 shadow-sm">
@@ -100,8 +98,8 @@
           </button>
 
           <!-- Dropdown Menu -->
-          <div id="profileMenu" 
-               class="hidden absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-2xl border border-blue-100 overflow-hidden z-50 transform origin-top-right transition-all duration-300">
+    <div id="profileMenu" 
+      class="hidden absolute right-0 mt-3 w-64 bg-white rounded-lg shadow-lg border border-blue-50 overflow-hidden z-50 transform origin-top-right transition-all duration-200">
             <div class="bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-4">
               <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/40">
@@ -151,7 +149,7 @@
 
   <!-- Mobile Menu (Slide-in from top) -->
   <div id="mobileMenu" 
-       class="md:hidden hidden bg-gradient-to-b from-blue-600 to-cyan-600 border-t border-blue-400/20 shadow-lg">
+    class="md:hidden hidden bg-gradient-to-b from-blue-600 to-cyan-600 border-t border-blue-400/12 shadow-md">
     <div class="px-4 py-4 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <?php foreach ($items as $it): 
         $u = $it['url']; 
