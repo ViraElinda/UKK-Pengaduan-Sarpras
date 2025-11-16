@@ -21,7 +21,6 @@ class CreateUserTable extends Migration
                 'username' => [
                     'type'       => 'VARCHAR',
                     'constraint' => 50,
-                    'unique'     => true,
                 ],
                 'password' => [
                     'type'       => 'VARCHAR',
@@ -58,6 +57,7 @@ class CreateUserTable extends Migration
 
             $this->forge->addField($fields);
             $this->forge->addKey('id_user', true);
+            // Define unique index for username (field definition above is not marked unique to avoid duplicate key creation)
             $this->forge->addUniqueKey('username');
             $this->forge->createTable('user');
 
