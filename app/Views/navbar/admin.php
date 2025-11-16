@@ -1,117 +1,240 @@
 
-<!-- NAVBAR ADMIN (cleaner & responsive) -->
-<nav class="bg-blue-600 shadow-md px-4 py-3 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
-  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-    <!-- Brand + mobile toggle -->
-    <div class="flex items-center gap-3">
-      <button id="mobileMenuBtn" class="md:hidden p-2 rounded-md text-white hover:bg-white/10 focus:outline-none" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-      </button>
-
-      <a href="<?= base_url('admin/dashboard') ?>" class="flex items-center gap-3 no-underline">
-        <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-sm">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M8 3h8l3 4H5l3-4z"/>
+<!-- NAVBAR ADMIN - Modern & Professional Design -->
+<nav class="bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-600 shadow-lg sticky top-0 z-50 backdrop-blur-sm" role="navigation" aria-label="Main navigation">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Brand + Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-200" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
-        </div>
-        <div class="leading-tight">
-          <div class="text-white text-base font-semibold">Sistem Pengaduan</div>
-          <div class="text-blue-100 text-xs">Area Admin</div>
-        </div>
-      </a>
-    </div>
-
-    <!-- Desktop menu (compact, left-aligned with icons) -->
-    <?php $active = uri_string(); ?>
-    <?php
-      $items = [
-        ['url' => 'admin/dashboard', 'label' => 'Dashboard', 'icon' => '<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6"/></svg>'],
-        ['url' => 'admin/users', 'label' => 'User', 'icon' => '<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.12 17.804z"/></svg>'],
-        ['url' => 'admin/petugas', 'label' => 'Petugas', 'icon' => '<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7a4 4 0 018 0M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/></svg>'],
-        ['url' => 'admin/pengaduan', 'label' => 'Aduan', 'icon' => '<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 0a2 2 0 100-4H7a2 2 0 100 4m0 8h10"/></svg>'],
-        ['url' => 'admin/items', 'label' => 'Sarpras', 'icon' => '<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6"/></svg>'],
-        ['url' => 'admin/temporary_items', 'label' => 'Temporary', 'icon' => '<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg>'],
-        ['url' => 'admin/laporan', 'label' => 'Laporan', 'icon' => '<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>'],
-      ];
-    ?>
-    <div class="hidden md:flex items-center gap-2 flex-1 pl-6" role="menubar">
-      <?php foreach ($items as $it): $u = $it['url']; $isActive = ($active == $u || strpos($active, $u) === 0); ?>
-        <a href="<?= base_url($u) ?>" role="menuitem" class="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold transition-colors duration-150 <?= $isActive ? 'bg-white/20 text-white shadow-md' : 'text-white/90 hover:bg-white/10 hover:text-white' ?>" aria-current="<?= $isActive ? 'page' : 'false' ?>" title="<?= esc($it['label']) ?>">
-          <?= $it['icon'] ?> <span class="hidden md:inline"><?= $it['label'] ?></span>
-        </a>
-      <?php endforeach; ?>
-    </div>
-
-    <!-- Right controls: notifications + profile + logout -->
-    <div class="flex items-center gap-3">
-      <?= view('components/notif_bell') ?>
-
-      <!-- Visible logout button (desktop) -->
-      <form action="<?= base_url('auth/logout') ?>" method="post" class="hidden md:inline">
-        <?= function_exists('csrf_field') ? csrf_field() : '' ?>
-        <button type="submit" class="ml-2 inline-flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-semibold shadow-sm focus:outline-none" aria-label="Logout">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"/></svg>
-          Logout
         </button>
-      </form>
 
-      <!-- Profile dropdown -->
-      <div class="relative group">
-        <button class="flex items-center gap-2 text-white focus:outline-none" aria-haspopup="true" aria-expanded="false">
-          <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
-            <?php if (session('foto')): ?>
-              <img src="<?= base_url('writable/uploads/profile/' . session('foto')) ?>" alt="Profile" class="w-full h-full object-cover" />
-            <?php else: ?>
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-            <?php endif; ?>
+        <a href="<?= base_url('admin/dashboard') ?>" class="flex items-center gap-3 no-underline group">
+          <div class="w-11 h-11 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
+            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+            </svg>
           </div>
-          <span class="text-white font-medium hidden lg:inline"><?= session('username') ?></span>
-          <svg class="w-4 h-4 text-white hidden lg:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </button>
+          <div class="leading-tight hidden sm:block">
+            <div class="text-white text-lg font-bold tracking-tight">Admin Panel</div>
+            <div class="text-indigo-100 text-xs font-medium">Sistem Pengaduan Sarpras</div>
+          </div>
+        </a>
+      </div>
 
-        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-          <div class="py-1">
-            <div class="px-4 py-2 border-b border-gray-200">
-              <p class="text-sm font-semibold text-gray-800"><?= session('nama_pengguna') ?></p>
-              <p class="text-xs text-gray-500">Administrator</p>
-            </div>
-            <a href="<?= base_url('auth/logout') ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition duration-200">
-              <div class="flex items-center space-x-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+      <!-- Desktop Navigation Menu -->
+      <?php $active = uri_string(); ?>
+      <?php
+        $items = [
+          ['url' => 'admin/dashboard', 'label' => 'Dashboard', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>'],
+          ['url' => 'admin/users', 'label' => 'Users', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>'],
+          ['url' => 'admin/petugas', 'label' => 'Petugas', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>'],
+          ['url' => 'admin/pengaduan', 'label' => 'Pengaduan', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>'],
+          ['url' => 'admin/items', 'label' => 'Sarpras', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>'],
+          ['url' => 'admin/temporary_items', 'label' => 'Temp', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'],
+          ['url' => 'admin/laporan', 'label' => 'Laporan', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'],
+        ];
+      ?>
+      <div class="hidden md:flex items-center gap-1 flex-1 justify-center px-4" role="menubar">
+        <?php foreach ($items as $it): 
+          $u = $it['url']; 
+          $isActive = ($active == $u || strpos($active, $u) === 0); 
+        ?>
+          <a href="<?= base_url($u) ?>" 
+             role="menuitem" 
+             class="group relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 <?= $isActive ? 'bg-white/25 text-white shadow-lg scale-105' : 'text-white/90 hover:bg-white/15 hover:text-white hover:scale-105' ?>" 
+             aria-current="<?= $isActive ? 'page' : 'false' ?>" 
+             title="<?= esc($it['label']) ?>">
+            <span class="transition-transform duration-300 <?= $isActive ? 'scale-110' : 'group-hover:scale-110' ?>">
+              <?= $it['icon'] ?>
+            </span>
+            <span class="hidden lg:inline"><?= $it['label'] ?></span>
+            <?php if ($isActive): ?>
+              <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full"></span>
+            <?php endif; ?>
+          </a>
+        <?php endforeach; ?>
+      </div>
+
+      <!-- Right Side: Notifications + Profile + Logout -->
+      <div class="flex items-center gap-3">
+        <!-- Notification Bell -->
+        <div class="relative">
+          <?= view('components/notif_bell') ?>
+        </div>
+
+        <!-- Logout Button (Desktop) -->
+        <form action="<?= base_url('auth/logout') ?>" method="post" class="hidden md:inline">
+          <?= function_exists('csrf_field') ? csrf_field() : '' ?>
+          <button type="submit" 
+                  class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50" 
+                  aria-label="Logout">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            <span class="hidden xl:inline">Logout</span>
+          </button>
+        </form>
+
+        <!-- Profile Dropdown -->
+        <div class="relative">
+          <button id="profileMenuBtn" 
+                  class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300" 
+                  aria-haspopup="true" 
+                  aria-expanded="false">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/30 shadow-md">
+              <?php if (session('foto')): ?>
+                <img src="<?= base_url('writable/uploads/profile/' . session('foto')) ?>" alt="Profile" class="w-full h-full object-cover" />
+              <?php else: ?>
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                <span>Logout</span>
+              <?php endif; ?>
+            </div>
+            <span class="text-white font-semibold text-sm hidden lg:inline max-w-[120px] truncate"><?= session('username') ?></span>
+            <svg id="profileMenuIcon" class="w-4 h-4 text-white hidden lg:inline transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div id="profileMenu" 
+               class="hidden absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 transform origin-top-right transition-all duration-300">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/50">
+                  <?php if (session('foto')): ?>
+                    <img src="<?= base_url('writable/uploads/profile/' . session('foto')) ?>" alt="Profile" class="w-full h-full object-cover" />
+                  <?php else: ?>
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                  <?php endif; ?>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-white font-bold text-sm truncate"><?= session('nama_pengguna') ?></p>
+                  <p class="text-indigo-100 text-xs font-medium">Administrator</p>
+                  <p class="text-indigo-200 text-xs truncate">@<?= session('username') ?></p>
+                </div>
               </div>
-            </a>
+            </div>
+            
+            <div class="py-2">
+              <a href="<?= base_url('admin/dashboard') ?>" 
+                 class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 transition-colors duration-200">
+                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                <span class="font-medium text-sm">Dashboard</span>
+              </a>
+              
+              <div class="border-t border-gray-100 my-2"></div>
+              
+              <form action="<?= base_url('auth/logout') ?>" method="post">
+                <?= function_exists('csrf_field') ? csrf_field() : '' ?>
+                <button type="submit" 
+                        class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-200">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                  </svg>
+                  <span class="font-semibold text-sm">Logout</span>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Mobile menu (hidden by default) -->
-  <div id="mobileMenu" class="md:hidden hidden bg-blue-600/95 px-4 pb-4">
-    <div class="space-y-2 pt-3">
-      <?php foreach ($items as $it): $u = $it['url']; $isActive = ($active == $u || strpos($active, $u) === 0); ?>
-        <a href="<?= base_url($u) ?>" class="block px-3 py-2 rounded-md text-white <?= $isActive ? 'bg-white/20' : 'hover:bg-white/10' ?>"><?= $it['label'] ?></a>
+  <!-- Mobile Menu (Slide-in from top) -->
+  <div id="mobileMenu" 
+       class="md:hidden hidden bg-gradient-to-b from-indigo-700 to-purple-700 border-t border-white/10 shadow-lg">
+    <div class="px-4 py-4 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
+      <?php foreach ($items as $it): 
+        $u = $it['url']; 
+        $isActive = ($active == $u || strpos($active, $u) === 0); 
+      ?>
+        <a href="<?= base_url($u) ?>" 
+           class="flex items-center gap-3 px-4 py-3 rounded-lg text-white font-medium transition-all duration-200 <?= $isActive ? 'bg-white/25 shadow-md' : 'hover:bg-white/15' ?>">
+          <?= $it['icon'] ?>
+          <span><?= $it['label'] ?></span>
+          <?php if ($isActive): ?>
+            <svg class="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+          <?php endif; ?>
+        </a>
       <?php endforeach; ?>
-      <form action="<?= base_url('auth/logout') ?>" method="post" class="pt-2">
-        <?= function_exists('csrf_field') ? csrf_field() : '' ?>
-        <button type="submit" class="w-full text-left px-3 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white font-semibold">Logout</button>
-      </form>
+      
+      <div class="pt-4 mt-4 border-t border-white/20">
+        <form action="<?= base_url('auth/logout') ?>" method="post">
+          <?= function_exists('csrf_field') ? csrf_field() : '' ?>
+          <button type="submit" 
+                  class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg transition-all duration-200">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            Logout
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </nav>
 
 <script>
-  // Mobile toggle (safe minimal)
+  // Mobile Menu Toggle with smooth animation
   (function(){
     const btn = document.getElementById('mobileMenuBtn');
     const menu = document.getElementById('mobileMenu');
-    if (btn && menu) btn.addEventListener('click', function(){
-      const expanded = this.getAttribute('aria-expanded') === 'true';
-      this.setAttribute('aria-expanded', (!expanded).toString());
-      menu.classList.toggle('hidden');
-    });
+    
+    if (btn && menu) {
+      btn.addEventListener('click', function(){
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', (!expanded).toString());
+        menu.classList.toggle('hidden');
+        
+        // Animate icon rotation
+        const icon = this.querySelector('svg');
+        if (icon) {
+          icon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(90deg)';
+          icon.style.transition = 'transform 0.3s ease';
+        }
+      });
+    }
+  })();
+
+  // Profile Dropdown Toggle
+  (function(){
+    const btn = document.getElementById('profileMenuBtn');
+    const menu = document.getElementById('profileMenu');
+    const icon = document.getElementById('profileMenuIcon');
+    
+    if (btn && menu) {
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', (!expanded).toString());
+        menu.classList.toggle('hidden');
+        
+        if (icon) {
+          icon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e){
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+          btn.setAttribute('aria-expanded', 'false');
+          menu.classList.add('hidden');
+          if (icon) {
+            icon.style.transform = 'rotate(0deg)';
+          }
+        }
+      });
+    }
   })();
 </script>
