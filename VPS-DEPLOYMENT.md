@@ -1,6 +1,51 @@
 # VPS Deployment Guide - UKK Pengaduan Sarpras
 
-## 🚀 Quick Deploy (Recommended)
+## � Auto Deploy from GitHub (CI/CD)
+
+Set up once, then every push to `main` will automatically pull on the VPS, install deps, run migrations, and refresh the app.
+
+### 1) Configure GitHub Secrets
+
+Add these in your repository Settings → Secrets and variables → Actions:
+
+- `SSH_HOST` → e.g. `your.server.com`
+- `SSH_USER` → SSH user on the VPS (e.g. `virael`)
+- `SSH_PORT` → SSH port (e.g. `22`)
+- `SSH_KEY` → Paste your private key for that user (PEM contents)
+- `APP_DIR` → Absolute path to your app, e.g. `/var/www/UKK-Pengaduan-Sarpras`
+- `PHP_FPM_SERVICE` (optional) → e.g. `php8.2-fpm` (only if you want the workflow to reload PHP-FPM)
+
+The workflow file is at `.github/workflows/deploy.yml` and triggers on push to `main`.
+
+### 2) Prepare the VPS (one time)
+
+```bash
+# Ensure the repo is already cloned on the VPS to APP_DIR
+cd /var/www
+git clone https://github.com/ViraElinda/UKK-Pengaduan-Sarpras.git
+cd UKK-Pengaduan-Sarpras
+
+# Prepare environment and vendor on first run
+cp .env.production .env # then edit DB credentials
+composer install --no-dev --optimize-autoloader
+php spark key:generate
+php spark migrate -n
+```
+
+Ensure your SSH user has write permissions to the project (especially `writable/`).
+
+### 3) Deploy flow (automatic)
+
+When you push to `main`:
+1. GitHub Action connects to VPS via SSH.
+2. Runs `git reset --hard origin/main`, `composer install --no-dev`.
+3. Runs `php spark migrate -n`.
+4. Clears cache and sets perms for `writable/`.
+5. Optionally reloads PHP-FPM if `PHP_FPM_SERVICE` is provided and sudo is allowed.
+
+You can also trigger it manually in GitHub → Actions → Deploy to VPS → Run workflow.
+
+## �🚀 Quick Deploy (Recommended)
 
 ```bash
 # 1. Clone repository
@@ -154,6 +199,7 @@ server {
 - [ ] SSL certificate configured (optional)
 - [ ] Admin password changed
 - [ ] Application accessible via browser
+ - [ ] (CI/CD) GitHub Secrets configured and workflow green
 
 ## 📞 Support
 
