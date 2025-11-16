@@ -7,6 +7,15 @@ class AddBeforeAfterPhotosToPengaduan extends Migration
 {
     public function up()
     {
+        // Ensure table exists before checking/adding columns
+        $tableCheck = $this->db->query("SHOW TABLES LIKE 'pengaduan'");
+        if ($tableCheck->getNumRows() == 0) {
+            if (function_exists('log_message')) {
+                log_message('info', '[MIGRATION] pengaduan table does not exist, skipping AddBeforeAfterPhotosToPengaduan');
+            }
+            return;
+        }
+
         // Check if columns already exist before adding
         $beforeQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_before'");
         $afterQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_after'");
@@ -46,8 +55,14 @@ class AddBeforeAfterPhotosToPengaduan extends Migration
 
     public function down()
     {
+        // If table doesn't exist, nothing to rollback
+        $tableCheck = $this->db->query("SHOW TABLES LIKE 'pengaduan'");
+        if ($tableCheck->getNumRows() == 0) {
+            return;
+        }
+
         $columnsToDrop = [];
-        
+
         $beforeQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_before'");
         $afterQuery = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_after'");
         
