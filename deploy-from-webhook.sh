@@ -27,6 +27,7 @@ else
 fi
 
 echo "==> [5/5] Menjalankan migrasi database..."
-php spark migrate -n
+# Menjalankan migrasi untuk semua namespace, tidak perlu konfirmasi (aman untuk CI/CD)
+php spark migrate --all
 
 echo "✅ Proses deploy selesai."
