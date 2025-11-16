@@ -46,6 +46,18 @@ if ($github_event === 'push') {
         $output = array_merge($output_reset, $output_pull);
         file_put_contents($log_file, "Git output: " . implode("\n", $output) . "\n", FILE_APPEND);
         
+        // Run database migrations
+        exec('php spark migrate 2>&1', $output_migrate, $migrate_status);
+        file_put_contents($log_file, "Migrate (status: $migrate_status): " . implode("\n", $output_migrate) . "\n", FILE_APPEND);
+        
+        // Clear all caches
+        exec('php spark cache:clear 2>&1', $output_cache);
+        file_put_contents($log_file, "Cache clear: " . implode("\n", $output_cache) . "\n", FILE_APPEND);
+        
+        // Clear views cache
+        exec('rm -rf writable/cache/views/* 2>&1', $output_views);
+        file_put_contents($log_file, "Views cache clear: " . implode("\n", $output_views) . "\n", FILE_APPEND);
+        
         // Fix permissions
         exec('chmod -R 755 /var/www/UKK-Pengaduan-Sarpras 2>&1');
         exec('chmod -R 775 /var/www/UKK-Pengaduan-Sarpras/writable 2>&1');
@@ -53,7 +65,7 @@ if ($github_event === 'push') {
         file_put_contents($log_file, "Deployment completed successfully!\n", FILE_APPEND);
         
         http_response_code(200);
-        echo "Deployment successful!";
+        echo "Deployment successful! Migrations and cache cleared.";
     } else {
         file_put_contents($log_file, "Not main branch, skipping deployment\n", FILE_APPEND);
         echo "Not main branch";
