@@ -8,6 +8,15 @@ class AddFotoBalasanToPengaduan extends Migration
 {
     public function up()
     {
+        // Ensure 'pengaduan' table exists before proceeding
+        $tableCheck = $this->db->query("SHOW TABLES LIKE 'pengaduan'");
+        if ($tableCheck->getNumRows() == 0) {
+            if (function_exists('log_message')) {
+                log_message('info', '[MIGRATION] pengaduan table does not exist, skipping AddFotoBalasanToPengaduan');
+            }
+            return;
+        }
+
         // Check if column already exists before adding
         $query = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_balasan'");
         
@@ -37,6 +46,12 @@ class AddFotoBalasanToPengaduan extends Migration
 
     public function down()
     {
+        // If table doesn't exist, nothing to rollback
+        $tableCheck = $this->db->query("SHOW TABLES LIKE 'pengaduan'");
+        if ($tableCheck->getNumRows() == 0) {
+            return;
+        }
+
         // Check if column exists before dropping (safe rollback for VPS)
         $query = $this->db->query("SHOW COLUMNS FROM pengaduan LIKE 'foto_balasan'");
         
