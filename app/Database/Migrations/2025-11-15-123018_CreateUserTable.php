@@ -40,14 +40,12 @@ class CreateUserTable extends Migration
                     'constraint' => ['admin', 'petugas', 'user'],
                 ],
                 'created_at' => [
-                    'type'    => 'TIMESTAMP',
-                    'null'    => true,
-                    'default' => 'CURRENT_TIMESTAMP',
+                    'type' => 'DATETIME',
+                    'null' => true, // no default for portability under strict SQL modes
                 ],
                 'updated_at' => [
-                    'type'    => 'TIMESTAMP',
-                    'null'    => true,
-                    'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+                    'type' => 'DATETIME',
+                    'null' => true, // application/model will manage timestamps
                 ],
                 'deleted_at' => [
                     'type' => 'DATETIME',

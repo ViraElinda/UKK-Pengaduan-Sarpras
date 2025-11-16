@@ -66,9 +66,8 @@ class CreatePengaduanTable extends Migration
                     'null'       => true,
                 ],
                 'tgl_pengajuan' => [
-                    'type'    => 'TIMESTAMP',
-                    'null'    => true,
-                    'default' => 'CURRENT_TIMESTAMP',
+                    'type' => 'DATETIME',
+                    'null' => true, // no default to avoid strict mode invalid default errors
                 ],
                 'tgl_selesai' => [
                     'type' => 'DATE',
@@ -88,11 +87,11 @@ class CreatePengaduanTable extends Migration
                     'null' => true,
                 ],
                 'created_at' => [
-                    'type' => 'TIMESTAMP',
+                    'type' => 'DATETIME',
                     'null' => true,
                 ],
                 'updated_at' => [
-                    'type' => 'TIMESTAMP',
+                    'type' => 'DATETIME',
                     'null' => true,
                 ],
                 'foto_before' => [
