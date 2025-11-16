@@ -37,14 +37,14 @@
           ['url' => 'admin/laporan', 'label' => 'Laporan', 'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'],
         ];
       ?>
-      <div class="hidden md:flex items-center gap-2 flex-1 pl-6 max-w-3xl" role="menubar">
+  <div class="hidden md:flex items-center gap-2 flex-1 pl-6 max-w-3xl justify-start overflow-x-auto whitespace-nowrap" role="menubar">
         <?php foreach ($items as $it): 
           $u = $it['url']; 
           $isActive = ($active == $u || strpos($active, $u) === 0); 
         ?>
-          <a href="<?= base_url($u) ?>" 
-             role="menuitem" 
-             class="group relative flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 <?= $isActive ? 'bg-white/10 text-white shadow-sm' : 'text-blue-50 hover:bg-white/8 hover:text-white' ?>" 
+       <a href="<?= base_url($u) ?>" 
+         role="menuitem" 
+         class="group relative flex items-center gap-2 px-2 py-2 rounded-md text-sm font-medium transition-all duration-200 whitespace-nowrap <?= $isActive ? 'bg-white/10 text-white shadow-sm' : 'text-blue-50 hover:bg-white/8 hover:text-white' ?>" 
              aria-current="<?= $isActive ? 'page' : 'false' ?>" 
              title="<?= esc($it['label']) ?>">
             <span class="transition-transform duration-200 <?= $isActive ? '' : 'group-hover:scale-110' ?>">
@@ -57,7 +57,7 @@
       </div>
 
       <!-- Right Side: Notifications + Profile + Logout -->
-      <div class="flex items-center gap-3">
+  <div class="flex items-center gap-3 flex-shrink-0">
         <!-- Notification Bell -->
         <div class="relative">
           <?= view('components/notif_bell') ?>
