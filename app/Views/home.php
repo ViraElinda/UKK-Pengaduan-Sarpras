@@ -192,38 +192,6 @@
         <p class="text-gray-700 text-lg max-w-2xl mx-auto">Kepercayaan dari ratusan pengguna yang telah merasakan manfaatnya</p>
       </div>
       
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Stat 1 -->
-        <div class="group bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl shadow-xl hover:shadow-2xl p-10 text-center transition-all hover:-translate-y-2">
-          <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">
-            <i data-lucide="file-text" class="text-blue-600 w-10 h-10"></i>
-          </div>
-          <h4 class="text-5xl font-extrabold text-white mb-2">320+</h4>
-          <p class="text-white font-bold text-lg">Laporan Diajukan</p>
-          <p class="text-blue-100 text-sm mt-2">Sejak tahun 2024</p>
-        </div>
-
-        <!-- Stat 2 -->
-        <div class="group bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-xl hover:shadow-2xl p-10 text-center transition-all hover:-translate-y-2">
-          <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">
-            <i data-lucide="trending-up" class="text-emerald-600 w-10 h-10"></i>
-          </div>
-          <h4 class="text-5xl font-extrabold text-white mb-2">280+</h4>
-          <p class="text-white font-bold text-lg">Laporan Diproses</p>
-          <p class="text-green-100 text-sm mt-2">Dalam penanganan</p>
-        </div>
-
-        <!-- Stat 3 -->
-        <div class="group bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-xl hover:shadow-2xl p-10 text-center transition-all hover:-translate-y-2">
-          <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">
-            <i data-lucide="check-circle-2" class="text-orange-600 w-10 h-10"></i>
-          </div>
-          <h4 class="text-5xl font-extrabold text-white mb-2">250+</h4>
-          <p class="text-white font-bold text-lg">Laporan Selesai</p>
-          <p class="text-orange-100 text-sm mt-2">Tingkat kepuasan 98%</p>
-        </div>
-      </div>
-
       <!-- CTA Section -->
       <div class="mt-16 bg-blue-600 rounded-3xl p-12 text-center shadow-2xl">
         <h4 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Siap Mulai Melaporkan?</h4>
