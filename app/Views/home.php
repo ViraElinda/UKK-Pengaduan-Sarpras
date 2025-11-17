@@ -94,7 +94,7 @@
           Mudah, cepat, dan transparan. Semua laporan ditindaklanjuti oleh petugas sekolah dengan sistem tracking real-time.
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="<?= base_url('auth/login') ?>" class="group bg-white hover:bg-white/95 text-blue-600 px-8 py-4 rounded-xl font-bold shadow-2xl hover:shadow-3xl transition-all flex items-center justify-center gap-2">
+          <a href="<?= base_url('user/pengaduan/create') ?>" class="group bg-white hover:bg-white/95 text-blue-600 px-8 py-4 rounded-xl font-bold shadow-2xl hover:shadow-3xl transition-all flex items-center justify-center gap-2">
             <span>Mulai Lapor</span>
             <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
           </a>
@@ -197,8 +197,8 @@
         <h4 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Siap Mulai Melaporkan?</h4>
         <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto">Bergabunglah dengan ratusan pengguna lainnya untuk menciptakan lingkungan sekolah yang lebih baik</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="<?= base_url('auth/register') ?>" class="bg-white hover:bg-gray-50 text-blue-600 px-8 py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl transition-all inline-flex items-center justify-center gap-2">
-            <span>Daftar Gratis</span>
+          <a href="<?= base_url('user/pengaduan/create') ?>" class="bg-white hover:bg-gray-50 text-blue-600 px-8 py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl transition-all inline-flex items-center justify-center gap-2">
+            <span>Buat Pengaduan</span>
             <i data-lucide="arrow-right" class="w-5 h-5"></i>
           </a>
           <a href="<?= base_url('auth/login') ?>" class="bg-white/20 backdrop-blur-sm hover:bg-white/30 border-2 border-white text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl transition-all">

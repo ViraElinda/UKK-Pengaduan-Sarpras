@@ -139,6 +139,7 @@ $routes->group('user', ['filter' => 'role:user'], function ($routes) {
     // Pengaduan
     $routes->group('pengaduan', function ($routes) {
         $routes->get('/', 'User\PengaduanController::index');
+        $routes->get('create', 'User\PengaduanController::create');
         $routes->post('store', 'User\PengaduanController::store');
         $routes->get('riwayat', 'User\PengaduanController::riwayat');
        

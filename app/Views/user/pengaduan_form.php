@@ -5,88 +5,95 @@ Form Pengaduan Baru
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="min-h-screen bg-ui-page py-8 px-6">
+<div class="min-h-screen bg-ui-page py-4 md:py-8 px-3 md:px-6">
   <style>
     /* Choices dropdown styling: keep it compact and scrollable so it won't overflow screen */
     .choices__list--dropdown .choices__list {
-      max-height: 240px;
+      max-height: 180px;
       overflow-y: auto;
     }
     .choices__item--choice {
-      padding: 0.5rem 0.75rem;
-      font-size: 1rem;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
     }
     /* Ensure the original select isn't forcing strange native appearance when Choices is active */
     select { -webkit-appearance: none; appearance: none; }
+    
+    /* Mobile-first responsive sizing */
+    @media (max-width: 640px) {
+      .form-input, .form-textarea, .form-select {
+        padding: 0.75rem !important;
+        font-size: 0.95rem !important;
+      }
+    }
   </style>
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-4xl mx-auto">
     
     <!-- Header -->
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-4 md:mb-6">
       <div>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1">📝 Buat Pengaduan</h1>
-        <p class="text-gray-600 font-medium">Laporkan masalah sarana dan prasarana</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-1">📝 Buat Pengaduan</h1>
+        <p class="text-sm md:text-base text-gray-600 font-medium">Laporkan masalah sarana dan prasarana</p>
       </div>
-
     </div>
 
     <!-- Form Container -->
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-2xl mx-auto">
       <!-- use ui-card for consistent look -->
-      <form action="<?= base_url('user/pengaduan/store') ?>" method="POST" enctype="multipart/form-data" class="ui-card p-8 space-y-6">
-        <div class="text-center mb-6">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-3 shadow-lg">
-            <svg class="w-8 h-8 text-ui-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <form action="<?= base_url('user/pengaduan/store') ?>" method="POST" enctype="multipart/form-data" class="ui-card p-4 md:p-6 space-y-4 md:space-y-5">
+        <div class="text-center mb-4 md:mb-6">
+          <div class="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full mb-2 md:mb-3 shadow-lg">
+            <svg class="w-6 h-6 md:w-7 md:h-7 text-ui-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-ui-primary">Formulir Pengaduan</h2>
+          <h2 class="text-lg md:text-xl font-bold text-ui-primary">Formulir Pengaduan</h2>
         </div>
 
         <!-- Error Messages -->
         <?php if(session()->getFlashdata('errors')): ?>
-          <div class="bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium shadow border border-red-200">
+          <div class="bg-red-50 text-red-700 p-3 md:p-4 rounded-xl text-xs md:text-sm font-medium shadow border border-red-200">
             <?php foreach(session()->getFlashdata('errors') as $err) echo '• '.$err.'<br>'; ?>
           </div>
         <?php endif; ?>
 
         <!-- Nama Pengaduan -->
         <div>
-          <label class="block font-bold text-gray-700 mb-2">
-            <span class="inline-flex items-center gap-2">
+          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
+            <span class="inline-flex items-center gap-1.5 md:gap-2">
               📌 Nama Pengaduan
               <span class="text-red-500">*</span>
             </span>
           </label>
           <input type="text" name="nama_pengaduan" value="<?= old('nama_pengaduan') ?>" required
-            class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium"
+            class="form-input w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base"
             placeholder="Contoh: Kursi rusak di kelas XII-A">
         </div>
 
         <!-- Deskripsi -->
         <div>
-          <label class="block font-bold text-gray-700 mb-2">
-            <span class="inline-flex items-center gap-2">
+          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
+            <span class="inline-flex items-center gap-1.5 md:gap-2">
               📄 Deskripsi
               <span class="text-red-500">*</span>
             </span>
           </label>
-          <textarea name="deskripsi" rows="4" required
-            class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium resize-none"
+          <textarea name="deskripsi" rows="3" required
+            class="form-textarea w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium resize-none text-sm md:text-base"
             placeholder="Jelaskan masalah secara detail..."><?= old('deskripsi') ?></textarea>
         </div>
 
         <!-- Pilih Lokasi & Item (responsive two-column) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           <div>
-            <label class="block font-bold text-gray-700 mb-2">
-              <span class="inline-flex items-center gap-2">
+            <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
+              <span class="inline-flex items-center gap-1.5 md:gap-2">
                 📍 Pilih Lokasi
                 <span class="text-red-500">*</span>
               </span>
             </label>
             <select id="lokasi" name="id_lokasi" required
-              class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium">
+              class="form-select w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base">
               <option value="">-- Pilih Lokasi --</option>
               <?php foreach($lokasi as $lok): ?>
                 <option value="<?= $lok['id_lokasi'] ?>"><?= esc($lok['nama_lokasi']) ?></option>
@@ -95,13 +102,13 @@ Form Pengaduan Baru
           </div>
 
           <div>
-            <label class="block font-bold text-gray-700 mb-2">
-              <span class="inline-flex items-center gap-2">
+            <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
+              <span class="inline-flex items-center gap-1.5 md:gap-2">
                 🔧 Pilih Item
               </span>
             </label>
             <select id="item" name="id_item"
-              class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium">
+              class="form-select w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base">
               <option value="">Pilih lokasi terlebih dahulu</option>
             </select>
           </div>
@@ -109,45 +116,45 @@ Form Pengaduan Baru
 
         <!-- Item Baru -->
         <div>
-          <label class="block font-bold text-gray-700 mb-2">
-            <span class="inline-flex items-center gap-2">
+          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
+            <span class="inline-flex items-center gap-1.5 md:gap-2">
               ➕ Item Tidak Ada? Tulis di sini
             </span>
           </label>
           <input type="text" name="item_baru" placeholder="Masukkan nama item baru"
-            class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium">
-          <p class="text-sm text-blue-600 mt-1">💡 <strong>Tip:</strong> Jika Anda mengisi field ini, pilihan item di atas akan diabaikan</p>
+            class="form-input w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base">
+          <p class="text-xs md:text-sm text-blue-600 mt-1">💡 <strong>Tip:</strong> Jika Anda mengisi field ini, pilihan item di atas akan diabaikan</p>
         </div>
 
         <!-- Upload Foto with preview -->
         <div>
-          <label class="block font-bold text-gray-700 mb-2">
-            <span class="inline-flex items-center gap-2">
+          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
+            <span class="inline-flex items-center gap-1.5 md:gap-2">
               📷 Upload Foto
               <span class="text-red-500">*</span>
             </span>
           </label>
           <div class="relative">
             <input type="file" name="foto" accept="image/*" id="foto-input" required
-              class="w-full p-4 border-2 border-dashed border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-100 file:text-purple-700 file:font-semibold hover:file:bg-purple-200">
+              class="w-full p-2.5 md:p-3 border-2 border-dashed border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-xs md:text-sm file:mr-2 md:file:mr-4 file:py-1.5 md:file:py-2 file:px-3 md:file:px-4 file:rounded-lg file:border-0 file:bg-purple-100 file:text-purple-700 file:font-semibold file:text-xs md:file:text-sm hover:file:bg-purple-200">
           </div>
-          <div id="foto-preview" class="mt-3 hidden">
-            <div class="inline-flex items-center gap-3">
-              <img id="foto-preview-img" src="#" alt="Preview" class="w-20 h-20 object-cover rounded-lg shadow-sm border" />
+          <div id="foto-preview" class="mt-2 md:mt-3 hidden">
+            <div class="inline-flex items-center gap-2 md:gap-3">
+              <img id="foto-preview-img" src="#" alt="Preview" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg shadow-sm border" />
               <div>
-                <div id="foto-preview-name" class="text-sm font-medium text-gray-700"></div>
+                <div id="foto-preview-name" class="text-xs md:text-sm font-medium text-gray-700"></div>
                 <div id="foto-preview-size" class="text-xs text-gray-500"></div>
               </div>
             </div>
           </div>
-          <p class="text-sm text-gray-500 mt-1">* Foto wajib diunggah untuk mendukung pengaduan Anda</p>
+          <p class="text-xs md:text-sm text-gray-500 mt-1">* Foto wajib diunggah untuk mendukung pengaduan Anda</p>
         </div>
 
         <!-- Submit Button -->
-        <div class="pt-4">
-          <button type="submit" id="submit-btn" class="w-full btn-ui py-4 rounded-xl shadow-xl hover:shadow-2xl">
+        <div class="pt-2 md:pt-4">
+          <button type="submit" id="submit-btn" class="w-full btn-ui py-3 md:py-3.5 rounded-lg md:rounded-xl shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl text-sm md:text-base">
             <span class="inline-flex items-center justify-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               Kirim Pengaduan

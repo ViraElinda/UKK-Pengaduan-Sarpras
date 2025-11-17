@@ -36,6 +36,13 @@ class PengaduanController extends BaseController
         ]);
     }
 
+    public function create()
+    {
+        return view('user/pengaduan_form', [
+            'lokasi' => $this->lokasiModel->findAll()
+        ]);
+    }
+
     public function getItems($id_lokasi)
     {
         // Validasi ID lokasi
