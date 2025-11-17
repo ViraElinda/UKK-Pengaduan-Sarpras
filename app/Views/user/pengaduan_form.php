@@ -32,7 +32,8 @@ Form Pengaduan Baru
 
     <!-- Form Container -->
     <div class="max-w-3xl mx-auto">
-  <form action="<?= base_url('user/pengaduan/store') ?>" method="POST" enctype="multipart/form-data" class="bg-white rounded-3xl shadow-2xl p-8 space-y-6">
+      <!-- use ui-card for consistent look -->
+      <form action="<?= base_url('user/pengaduan/store') ?>" method="POST" enctype="multipart/form-data" class="ui-card p-8 space-y-6">
         <div class="text-center mb-6">
           <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-3 shadow-lg">
             <svg class="w-8 h-8 text-ui-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,34 +76,35 @@ Form Pengaduan Baru
             placeholder="Jelaskan masalah secara detail..."><?= old('deskripsi') ?></textarea>
         </div>
 
-        <!-- Pilih Lokasi -->
-        <div>
-          <label class="block font-bold text-gray-700 mb-2">
-            <span class="inline-flex items-center gap-2">
-              📍 Pilih Lokasi
-              <span class="text-red-500">*</span>
-            </span>
-          </label>
-          <select id="lokasi" name="id_lokasi" required
-            class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium">
-            <option value="">-- Pilih Lokasi --</option>
-            <?php foreach($lokasi as $lok): ?>
-              <option value="<?= $lok['id_lokasi'] ?>"><?= esc($lok['nama_lokasi']) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
+        <!-- Pilih Lokasi & Item (responsive two-column) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-gray-700 mb-2">
+              <span class="inline-flex items-center gap-2">
+                📍 Pilih Lokasi
+                <span class="text-red-500">*</span>
+              </span>
+            </label>
+            <select id="lokasi" name="id_lokasi" required
+              class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium">
+              <option value="">-- Pilih Lokasi --</option>
+              <?php foreach($lokasi as $lok): ?>
+                <option value="<?= $lok['id_lokasi'] ?>"><?= esc($lok['nama_lokasi']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
 
-        <!-- Pilih Item -->
-        <div>
-          <label class="block font-bold text-gray-700 mb-2">
-            <span class="inline-flex items-center gap-2">
-              🔧 Pilih Item
-            </span>
-          </label>
-          <select id="item" name="id_item"
-            class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium">
-            <option value="">Pilih lokasi terlebih dahulu</option>
-          </select>
+          <div>
+            <label class="block font-bold text-gray-700 mb-2">
+              <span class="inline-flex items-center gap-2">
+                🔧 Pilih Item
+              </span>
+            </label>
+            <select id="item" name="id_item"
+              class="w-full p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium">
+              <option value="">Pilih lokasi terlebih dahulu</option>
+            </select>
+          </div>
         </div>
 
         <!-- Item Baru -->
@@ -117,7 +119,7 @@ Form Pengaduan Baru
           <p class="text-sm text-blue-600 mt-1">💡 <strong>Tip:</strong> Jika Anda mengisi field ini, pilihan item di atas akan diabaikan</p>
         </div>
 
-        <!-- Upload Foto -->
+        <!-- Upload Foto with preview -->
         <div>
           <label class="block font-bold text-gray-700 mb-2">
             <span class="inline-flex items-center gap-2">
@@ -128,6 +130,15 @@ Form Pengaduan Baru
           <div class="relative">
             <input type="file" name="foto" accept="image/*" id="foto-input" required
               class="w-full p-4 border-2 border-dashed border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-100 file:text-purple-700 file:font-semibold hover:file:bg-purple-200">
+          </div>
+          <div id="foto-preview" class="mt-3 hidden">
+            <div class="inline-flex items-center gap-3">
+              <img id="foto-preview-img" src="#" alt="Preview" class="w-20 h-20 object-cover rounded-lg shadow-sm border" />
+              <div>
+                <div id="foto-preview-name" class="text-sm font-medium text-gray-700"></div>
+                <div id="foto-preview-size" class="text-xs text-gray-500"></div>
+              </div>
+            </div>
           </div>
           <p class="text-sm text-gray-500 mt-1">* Foto wajib diunggah untuk mendukung pengaduan Anda</p>
         </div>

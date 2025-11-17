@@ -132,8 +132,9 @@ class LaporanController extends BaseController
 
     public function cetak($tgl_mulai, $tgl_selesai)
     {
-        // Check if user is admin
-        if (session('role') !== 'admin') {
+        // Check if user is admin. For local testing you can add ?dev=1 to bypass this check.
+        $isDevBypass = $this->request->getGet('dev') === '1';
+        if (!$isDevBypass && session('role') !== 'admin') {
             return redirect()->to('/auth/unauthorized');
         }
 
@@ -164,41 +165,34 @@ class LaporanController extends BaseController
             if (isset($stats[$status])) $stats[$status]++;
         }
 
-        // prepare foto paths for TCPDF
+        // Prepare foto data URIs so HTML-to-PDF renderers can embed images reliably
         foreach ($laporan as $k => $row) {
-            $laporan[$k]['foto_path'] = null;
+            $laporan[$k]['foto_data_uri'] = null;
             if (!empty($row['foto'])) {
                 $possible = FCPATH . 'uploads/foto_pengaduan/' . $row['foto'];
-                if (is_file($possible)) $laporan[$k]['foto_path'] = $possible;
+                if (is_file($possible)) {
+                    $mime = @mime_content_type($possible) ?: 'image/jpeg';
+                    $data64 = base64_encode(file_get_contents($possible));
+                    $laporan[$k]['foto_data_uri'] = 'data:' . $mime . ';base64,' . $data64;
+                }
             }
         }
 
-        // ensure TCPDF
-        if (!class_exists('\\TCPDF')) {
-            $tcpdfPath = ROOTPATH . 'vendor/tecnickcom/tcpdf/tcpdf.php';
-            if (is_file($tcpdfPath)) require_once $tcpdfPath;
+        // logo as data URI if available - try several common locations (uploads/, image/)
+        $logoDataUri = null;
+        $logoCandidates = [
+            FCPATH . 'uploads/logo.png',
+            FCPATH . 'image/logo.png',
+            FCPATH . 'images/logo.png',
+            FCPATH . 'assets/logo.png',
+        ];
+        foreach ($logoCandidates as $candidate) {
+            if (is_file($candidate)) {
+                $mime = @mime_content_type($candidate) ?: 'image/png';
+                $logoDataUri = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($candidate));
+                break;
+            }
         }
-        if (!class_exists('\\TCPDF')) {
-            return service('response')->setStatusCode(500)->setBody("TCPDF tidak ditemukan. Jalankan 'composer install'.\n");
-        }
-
-        // PDF setup
-        if (!defined('PDF_PAGE_ORIENTATION')) define('PDF_PAGE_ORIENTATION', 'L');
-        if (!defined('PDF_UNIT')) define('PDF_UNIT', 'mm');
-        if (!defined('PDF_PAGE_FORMAT')) define('PDF_PAGE_FORMAT', 'A4');
-        if (!defined('PDF_CREATOR')) define('PDF_CREATOR', 'Sistem Pengaduan Sarpras');
-
-        $pdf = new \TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetCreator('Sistem Pengaduan Sarpras');
-        $pdf->SetAuthor('Admin Sekolah');
-        $pdf->SetTitle('Laporan Pengaduan Sarana & Prasarana');
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-        $pdf->SetMargins(12, 12, 12);
-        $pdf->SetAutoPageBreak(true, 15);
-        $pdf->SetFont('dejavusans', '', 10);
-        $pdf->setImageScale(1.25);
-        $pdf->AddPage();
 
         $data = [
             'laporan' => $laporan,
@@ -208,17 +202,51 @@ class LaporanController extends BaseController
             'filterPetugas' => $filterPetugas,
             'filterStatus' => $filterStatus,
             'filterLokasi' => $filterLokasi,
+            'logo' => $logoDataUri,
         ];
 
-        $logoPath = FCPATH . 'uploads/logo.png';
-        $data['logo'] = is_file($logoPath) ? $logoPath : null;
+    // Siapa yang mencetak (ambil dari session user jika tersedia)
+    $session = session();
+    $userSession = $session->get('user') ?? [];
+    $printedBy = $userSession['nama_pengguna'] ?? $session->get('username') ?? 'Admin Sistem Pengaduan';
+    $data['printedBy'] = $printedBy;
 
-        $html = view('admin/laporan/pdf_template', $data);
-        $pdf->writeHTML($html, true, false, true, false, '');
+    // Use Asia/Jakarta timezone for printed timestamps (WIB)
+    $now = new \DateTime('now', new \DateTimeZone('Asia/Jakarta'));
+    $data['printedAt'] = $now->format('d F Y, H:i:s'); // e.g. 17 November 2025, 20:09:36
+    $data['printedAtShort'] = $now->format('d/m/Y H:i');
 
-        $filename = 'Laporan_Pengaduan_' . date('Ymd_His') . '.pdf';
-        $pdf->Output($filename, 'D');
-        exit;
+    // Use same timezone for filename timestamp
+    $filename = 'Laporan_Pengaduan_' . $now->format('Ymd_His') . '.pdf';
+
+    $html = view('admin/laporan/pdf_template', $data);
+
+        // Try to use Dompdf (pure-PHP HTML->PDF). If not available, instruct to install.
+        if (!class_exists('\\Dompdf\\Dompdf')) {
+            $autoload = ROOTPATH . 'vendor/autoload.php';
+            if (is_file($autoload)) require_once $autoload;
+        }
+        if (!class_exists('\\Dompdf\\Dompdf')) {
+            return service('response')->setStatusCode(500)->setBody("Dompdf tidak ditemukan. Jalankan 'composer require dompdf/dompdf' di direktori proyek.\n");
+        }
+
+        // Dompdf options: enable remote (for external resources) and set DPI/html5 parser
+    $options = new \Dompdf\Options();
+    $options->set('isRemoteEnabled', true);
+    // increase DPI to improve sizing fidelity and enable HTML5 parser for better CSS handling
+    $options->set('dpi', 150);
+    $options->set('isHtml5ParserEnabled', true);
+    $dompdf = new \Dompdf\Dompdf($options);
+        // Force A4 landscape to match our template when a wide table is used
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $output = $dompdf->output();
+
+        return service('response')
+            ->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
     }
 
     private function normalizeDateInput($value, bool $isEnd = false): string

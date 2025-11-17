@@ -75,13 +75,13 @@ Dashboard Admin
         label: 'Jumlah Pengaduan',
         data: <?= $jumlah_harian ?>,
         backgroundColor: [
-          '#f43f5e', // rose-500
-          '#0ea5e9', // sky-500
-          '#8bf0ffff', // cyan-400
-          '#22c55e', // green-500
-          '#f59e42', // orange-400
-          '#eab308', // yellow-400
-          '#6366f1'  // indigo-500
+          '#f43f5e', 
+          '#0ea5e9', 
+          '#8bf0ffff', 
+          '#22c55e',
+          '#f59e42', 
+          '#eab308', 
+          '#6366f1'  
         ],
         borderRadius: 10,
         borderWidth: 2,
@@ -98,7 +98,6 @@ Dashboard Admin
     }
   });
 
-  // ===== Grafik Donut
   new Chart(document.getElementById('chartDonut'), {
     type: 'doughnut',
     data: {
@@ -112,11 +111,11 @@ Dashboard Admin
           <?= $aduan_selesai ?>
         ],
         backgroundColor: [
-          '#f43f5e', // rose-500
-          '#0ea5e9', // sky-500
-          '#22c55e', // green-500
-          '#eab308', // yellow-400
-          '#06b6d4'  // cyan-500
+          '#f43f5e', 
+          '#0ea5e9', 
+          '#22c55e', 
+          '#eab308', 
+          '#06b6d4'  
         ],
         borderWidth: 2,
         borderColor: '#fff',

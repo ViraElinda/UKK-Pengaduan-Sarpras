@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Register - Pengaduan Sarpras</title>
+    <title>Daftar - Pengaduan Sarpras</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -44,7 +44,6 @@
     </a>
 
     <div class="w-full max-w-md animate-fadeIn">
-        <!-- Logo/Brand -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl shadow-2xl mb-4 border border-white/30">
                 <i data-lucide="user-plus" class="w-12 h-12 text-white"></i>
@@ -53,11 +52,9 @@
             <p class="text-white/80 font-medium">Buat akun baru untuk mulai melaporkan</p>
         </div>
 
-        <!-- Register Card -->
         <div class="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/50">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Daftar Akun</h2>
 
-            <!-- Flash message -->
             <?php if (session()->getFlashdata('error')): ?>
                 <div class="bg-red-50 text-red-700 px-4 py-3 rounded-xl mb-6 flex items-center gap-3 shadow border border-red-200" role="alert">
                     <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0"></i>
@@ -66,7 +63,6 @@
             <?php endif; ?>
 
             <form action="<?= base_url('/auth/register') ?>" method="post" class="space-y-5">
-                <!-- Nama Pengguna -->
                 <div>
                     <label for="nama_pengguna" class="block text-gray-700 font-bold mb-2 text-sm">Nama Lengkap</label>
                     <div class="relative">
@@ -78,7 +74,6 @@
                     </div>
                 </div>
 
-                <!-- Username -->
                 <div>
                     <label for="username" class="block text-gray-700 font-bold mb-2 text-sm">Username</label>
                     <div class="relative">
@@ -90,7 +85,6 @@
                     </div>
                 </div>
 
-                <!-- Password -->
                 <div>
                     <label for="password" class="block text-gray-700 font-bold mb-2 text-sm">Password</label>
                     <div class="relative">
@@ -103,25 +97,21 @@
                             <i data-lucide="eye" class="w-5 h-5"></i>
                         </button>
                     </div>
-                    <!-- Password Strength -->
                     <div class="password-strength">
                         <div id="passwordStrengthBar" class="password-strength-bar"></div>
                     </div>
                     <p id="passwordStrengthText" class="text-xs text-gray-500 mt-1"></p>
                 </div>
 
-                <!-- Role (Hidden - default user) -->
                 <input type="hidden" name="role" value="user">
 
-                <!-- Info Box -->
                 <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
                     <i data-lucide="info" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
                     <p class="text-sm text-blue-800 leading-relaxed">
-                        <strong>Catatan:</strong> Akun Anda akan terdaftar sebagai <strong>User</strong> dan dapat langsung digunakan untuk melaporkan.
+                        <strong>Catatan:</strong> Akun Anda akan terdaftar sebagai <strong>Pengguna</strong> dan dapat langsung digunakan untuk melaporkan.
                     </p>
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit"
                         class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                     <span>Daftar Sekarang</span>
@@ -129,7 +119,6 @@
                 </button>
             </form>
 
-            <!-- Divider -->
             <div class="relative my-6">
                 <div class="absolute inset-0 flex items-center">
                     <div class="w-full border-t border-gray-200"></div>
@@ -139,24 +128,20 @@
                 </div>
             </div>
 
-            <!-- Login Link -->
-            <p class="text-center text-gray-600 font-medium">
+                <p class="text-center text-gray-600 font-medium">
                 Sudah punya akun?
-                <a href="<?= base_url('auth/login') ?>" class="text-emerald-600 hover:text-emerald-700 font-bold hover:underline">Login Sekarang</a>
+                <a href="<?= base_url('auth/login') ?>" class="text-emerald-600 hover:text-emerald-700 font-bold hover:underline">Masuk Sekarang</a>
             </p>
         </div>
 
-        <!-- Additional Info -->
         <p class="text-center text-white/80 text-sm mt-6">
             Dengan mendaftar, Anda menyetujui <a href="#" class="underline font-semibold">Syarat & Ketentuan</a> kami
         </p>
     </div>
 
     <script>
-        // Initialize Lucide icons
         lucide.createIcons();
 
-        // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         
@@ -173,7 +158,6 @@
             lucide.createIcons();
         });
 
-        // Password strength indicator
         const strengthBar = document.getElementById('passwordStrengthBar');
         const strengthText = document.getElementById('passwordStrengthText');
         
@@ -211,7 +195,6 @@
             strengthText.style.color = color;
         });
 
-        // Prevent back button to this page after login
         (function() {
             if (window.history && window.history.pushState) {
                 window.history.pushState('forward', null, window.location.href);
@@ -220,7 +203,6 @@
                 });
             }
 
-            // Reload if accessed via back button (cache buster)
             if (performance.navigation.type === 2) {
                 window.location.reload(true);
             }

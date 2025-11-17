@@ -63,19 +63,6 @@
           <?= view('components/notif_bell') ?>
         </div>
 
-        <!-- Logout Button (Desktop) -->
-        <form action="<?= base_url('auth/logout') ?>" method="post" class="hidden md:inline">
-          <?= function_exists('csrf_field') ? csrf_field() : '' ?>
-    <button type="submit" 
-      class="inline-flex items-center gap-2 px-3 py-2 bg-white/8 hover:bg-white/12 text-white rounded-md text-sm font-medium shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300/40" 
-                  aria-label="Logout">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-            </svg>
-            <span class="hidden xl:inline">Logout</span>
-          </button>
-        </form>
-
         <!-- Profile Dropdown -->
         <div class="relative">
     <button id="profileMenuBtn" 

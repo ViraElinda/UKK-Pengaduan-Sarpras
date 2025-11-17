@@ -40,7 +40,6 @@ Manajemen Aduan
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Foto User</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Foto Balasan</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Status</th>
-              <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">ID</th>
               <th class="px-6 py-4 text-left font-bold text-sm uppercase tracking-wider">Petugas</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Aksi</th>
             </tr>
@@ -87,7 +86,6 @@ Manajemen Aduan
                   <?= esc(ucfirst($p['status'])) ?>
                 </span>
               </td>
-              <td data-label="ID Petugas" class="px-6 py-4 text-center text-gray-700 font-semibold"><?= esc($p['id_petugas'] ?? '-') ?></td>
               <td data-label="Petugas" class="px-6 py-4 text-gray-600"><?= esc($p['nama_petugas'] ?? '-') ?></td>
               <td data-label="Aksi" class="px-6 py-4">
                 <div class="flex gap-2 justify-center items-center flex-nowrap">

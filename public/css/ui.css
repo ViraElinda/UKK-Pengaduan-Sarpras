@@ -14,6 +14,22 @@
   --ui-danger: #ef4444; /* red-500 */
 }
 
+/* Small desktop tweaks for table spacing and action buttons */
+@media (min-width: 769px) {
+  /* give the last column extra right padding so action buttons don't hug the card edge */
+  .table-responsive table th:last-child,
+  .table-responsive table td:last-child {
+    padding-right: 1.25rem; /* reduce right padding so content doesn't feel shifted */
+  }
+
+  /* make sure action buttons don't wrap and have a consistent minimum width */
+  .table-actions { white-space: nowrap; }
+
+  .btn-ui, .btn-danger-ui {
+    min-width: 95px;
+  }
+}
+
 /* Page background alternative to gradient */
 .bg-ui-page {
   background-color: var(--ui-bg) !important;

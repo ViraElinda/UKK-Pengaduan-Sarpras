@@ -13,13 +13,12 @@ Dashboard - Pengaduan Sarpras
 
 <?= $this->section('content') ?>
 <?php
-// Hitung statistik pengaduan user
+
 $total = count($pengaduan);
 $diajukan = count(array_filter($pengaduan, fn($p) => strtolower($p['status']) == 'diajukan'));
 $diproses = count(array_filter($pengaduan, fn($p) => strtolower($p['status']) == 'diproses'));
 $selesai = count(array_filter($pengaduan, fn($p) => strtolower($p['status']) == 'selesai'));
 
-// Greeting berdasarkan waktu
 $hour = date('H');
 if ($hour < 11) {
     $greeting = "Selamat Pagi";
@@ -47,9 +46,8 @@ if ($hour < 11) {
       <p class="text-gray-600">Kelola pengaduan sarana dan prasarana Anda dengan mudah</p>
     </div>
 
-    <!-- Stats Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-      <!-- Total Pengaduan -->
+
       <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-xl p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between mb-3">
           <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
@@ -62,7 +60,6 @@ if ($hour < 11) {
         <p class="text-sm text-blue-100 font-semibold">Total Pengaduan</p>
       </div>
 
-      <!-- Diajukan -->
       <div class="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-xl p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between mb-3">
           <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
@@ -75,7 +72,6 @@ if ($hour < 11) {
         <p class="text-sm text-amber-100 font-semibold">Menunggu</p>
       </div>
 
-      <!-- Diproses -->
       <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-xl p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between mb-3">
           <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
@@ -89,7 +85,6 @@ if ($hour < 11) {
         <p class="text-sm text-indigo-100 font-semibold">Diproses</p>
       </div>
 
-      <!-- Selesai -->
       <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-xl p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between mb-3">
           <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
@@ -103,7 +98,6 @@ if ($hour < 11) {
       </div>
     </div>
 
-    <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
       <!-- CTA Card -->
       <div class="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-2xl p-6 hover:scale-105 transition-transform duration-300 relative overflow-hidden">
@@ -130,7 +124,6 @@ if ($hour < 11) {
         </div>
       </div>
 
-      <!-- Info Card -->
       <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-2xl p-6 hover:scale-105 transition-transform duration-300 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
         <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
@@ -154,7 +147,6 @@ if ($hour < 11) {
       </div>
     </div>
 
-    <!-- Recent Activity -->
     <?php if (!empty($pengaduan)): ?>
     <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
       <div class="px-6 py-4 bg-ui-header">
@@ -209,7 +201,6 @@ if ($hour < 11) {
       <?php endif; ?>
     </div>
     <?php else: ?>
-    <!-- Empty State -->
     <div class="bg-white rounded-xl shadow-2xl p-12 text-center">
       <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
         <svg class="w-12 h-12 text-ui-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
