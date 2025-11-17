@@ -200,19 +200,6 @@ if ($hour < 11) {
       </div>
       <?php endif; ?>
     </div>
-    <?php else: ?>
-    <div class="bg-white rounded-xl shadow-2xl p-12 text-center">
-      <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-        <svg class="w-12 h-12 text-ui-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-        </svg>
-      </div>
-      <h3 class="text-2xl font-bold text-gray-900 mb-2">Belum Ada Pengaduan</h3>
-      <p class="text-gray-600 mb-6 text-lg">Mulai buat pengaduan pertama Anda sekarang</p>
-      <a href="<?= base_url('user') ?>" class="btn-ui px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl">
-        Buat Pengaduan Sekarang
-      </a>
-    </div>
     <?php endif; ?>
 
   </div>

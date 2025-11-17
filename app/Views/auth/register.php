@@ -35,7 +35,7 @@
         }
     </style>
 </head>
-<body class="bg-emerald-600 min-h-screen flex items-center justify-center p-4">
+<body class="bg-blue-600 min-h-screen flex items-center justify-center p-4">
 
     <!-- Back to Home -->
     <a href="<?= base_url('/') ?>" class="fixed top-6 left-6 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-4 py-2 rounded-xl font-semibold shadow-lg transition-all flex items-center gap-2 z-10">
@@ -70,7 +70,7 @@
                             <i data-lucide="user" class="w-5 h-5 text-gray-400"></i>
                         </div>
                         <input type="text" name="nama_pengguna" id="nama_pengguna" placeholder="Masukkan nama lengkap Anda"
-                               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all font-medium" required>
+                               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium" required>
                     </div>
                 </div>
 
@@ -81,7 +81,7 @@
                             <i data-lucide="at-sign" class="w-5 h-5 text-gray-400"></i>
                         </div>
                         <input type="text" name="username" id="username" placeholder="Pilih username unik"
-                               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all font-medium" required>
+                               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium" required>
                     </div>
                 </div>
 
@@ -92,7 +92,7 @@
                             <i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
                         </div>
                         <input type="password" name="password" id="password" placeholder="Minimal 6 karakter" minlength="6"
-                               class="w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all font-medium" required>
+                               class="w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium" required>
                         <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600">
                             <i data-lucide="eye" class="w-5 h-5"></i>
                         </button>
@@ -113,7 +113,7 @@
                 </div>
 
                 <button type="submit"
-                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                     <span>Daftar Sekarang</span>
                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                 </button>
@@ -130,7 +130,7 @@
 
                 <p class="text-center text-gray-600 font-medium">
                 Sudah punya akun?
-                <a href="<?= base_url('auth/login') ?>" class="text-emerald-600 hover:text-emerald-700 font-bold hover:underline">Masuk Sekarang</a>
+                <a href="<?= base_url('auth/login') ?>" class="text-indigo-600 hover:text-indigo-700 font-bold hover:underline">Masuk Sekarang</a>
             </p>
         </div>
 
