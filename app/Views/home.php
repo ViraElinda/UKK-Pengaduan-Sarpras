@@ -107,7 +107,7 @@
         <div class="mt-10 flex flex-wrap gap-6">
           <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20">
             <i data-lucide="users" class="w-5 h-5 text-yellow-300"></i>
-            <span class="text-white font-bold">Proses Cepat</span>
+            <span class="text-white font-bold">User Friendly</span>
           </div>
           <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20">
             <i data-lucide="check-circle" class="w-5 h-5 text-green-300"></i>
