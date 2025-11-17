@@ -17,14 +17,4 @@ class PetugasModel extends Model
 
     protected $useSoftDeletes = false;
     protected $useTimestamps  = false;
-    
-    // Explicitly disable soft deletes behavior
-    protected $deletedField = false;
-    
-    // Override to ensure no soft delete queries
-    protected function doFind(bool $singleton, $id = null)
-    {
-        $this->tempUseSoftDeletes = false;
-        return parent::doFind($singleton, $id);
-    }
 }
