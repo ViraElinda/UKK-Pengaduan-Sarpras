@@ -74,7 +74,7 @@ class PengaduanController extends BaseController
             'id_lokasi'      => 'required|integer',
             'id_item'        => 'permit_empty|integer',
             'item_baru'      => 'permit_empty|string',
-            'foto'           => 'uploaded[foto]|is_image[foto]|max_size[foto,2048]',
+            'foto'           => 'uploaded[foto]|is_image[foto]|max_size[foto,3072]',
         ];
 
         if (!$this->validate($rules)) {

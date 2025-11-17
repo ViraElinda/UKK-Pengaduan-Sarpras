@@ -284,14 +284,14 @@ Form Pengaduan Baru
         return false;
       }
       
-      // Validasi ukuran file (max 2MB)
+      // Validasi ukuran file (max 3MB)
       const file = fotoInput.files[0];
-      if (file.size > 2048 * 1024) {
+      if (file.size > 3072 * 1024) {
         e.preventDefault();
         Swal.fire({
           icon: 'error',
           title: 'File Terlalu Besar!',
-          text: 'Ukuran foto maksimal 2MB',
+          text: 'Ukuran foto maksimal 3MB',
           confirmButtonColor: '#ef4444',
           confirmButtonText: 'Mengerti'
         });
