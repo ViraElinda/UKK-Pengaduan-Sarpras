@@ -221,27 +221,45 @@ class LaporanController extends BaseController
 
     $html = view('admin/laporan/pdf_template', $data);
 
-        // Try to use Dompdf (pure-PHP HTML->PDF). If not available, instruct to install.
-        if (!class_exists('\\Dompdf\\Dompdf')) {
+        // Try to use Dompdf (pure-PHP HTML->PDF). If not available, try TCPDF fallback.
+        if (!class_exists('Dompdf\\Dompdf')) {
             $autoload = ROOTPATH . 'vendor/autoload.php';
             if (is_file($autoload)) require_once $autoload;
         }
-        if (!class_exists('\\Dompdf\\Dompdf')) {
-            return service('response')->setStatusCode(500)->setBody("Dompdf tidak ditemukan. Jalankan 'composer require dompdf/dompdf' di direktori proyek.\n");
-        }
 
-        // Dompdf options: enable remote (for external resources) and set DPI/html5 parser
-    $options = new \Dompdf\Options();
-    $options->set('isRemoteEnabled', true);
-    // increase DPI to improve sizing fidelity and enable HTML5 parser for better CSS handling
-    $options->set('dpi', 150);
-    $options->set('isHtml5ParserEnabled', true);
-    $dompdf = new \Dompdf\Dompdf($options);
-        // Force A4 landscape to match our template when a wide table is used
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->loadHtml($html);
-        $dompdf->render();
-        $output = $dompdf->output();
+        if (class_exists('Dompdf\\Dompdf')) {
+            // Dompdf available
+            $options = new \Dompdf\Options();
+            $options->set('isRemoteEnabled', true);
+            $options->set('dpi', 150);
+            $options->set('isHtml5ParserEnabled', true);
+            $dompdf = new \Dompdf\Dompdf($options);
+            $dompdf->setPaper('A4', 'landscape');
+            $dompdf->loadHtml($html);
+            $dompdf->render();
+            $output = $dompdf->output();
+        } elseif (class_exists('TCPDF')) {
+            // TCPDF fallback if installed on the host
+            // Minimal TCPDF usage to render the same HTML
+            $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetAuthor('Sistem Pengaduan');
+            $pdf->SetTitle($filename);
+            $pdf->SetMargins(10, 10, 10);
+            $pdf->setPrintHeader(false);
+            $pdf->setPrintFooter(false);
+            $pdf->AddPage('L', 'A4');
+            $pdf->writeHTML($html, true, false, true, false, '');
+            $output = $pdf->Output('', 'S');
+        } else {
+            // Neither library is available — return informative error for the host admin
+            $msg = "Dompdf tidak ditemukan pada server.\n";
+            $msg .= "Solusi cepat: jalankan di direktori proyek:\n";
+            $msg .= "  composer require dompdf/dompdf --no-dev -o\n";
+            $msg .= "Atau upload folder vendor/ hasil composer install dari lingkungan development.\n";
+            $msg .= "Pastikan ekstensi PHP yang diperlukan terpasang: ext-gd, ext-mbstring, ext-fileinfo.\n";
+            return service('response')->setStatusCode(500)->setBody($msg);
+        }
 
         return service('response')
             ->setHeader('Content-Type', 'application/pdf')
