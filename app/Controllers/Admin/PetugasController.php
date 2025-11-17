@@ -3,14 +3,12 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Models\PetugasModel;
 use App\Models\UserModel;
 
 class PetugasController extends BaseController
 {
     public function index()
     {
-        $petugasModel = new PetugasModel();
         $db = \Config\Database::connect();
 
         // join with user to display username when available
@@ -35,22 +33,23 @@ class PetugasController extends BaseController
 
     public function store()
     {
-        $petugasModel = new PetugasModel();
+        $db = \Config\Database::connect();
 
         $data = [
-            'id_user' => $this->request->getPost('id_user') ?: null,
-            'nama'    => $this->request->getPost('nama'),
+            'id_user'    => $this->request->getPost('id_user') ?: null,
+            'nama'       => $this->request->getPost('nama'),
+            'created_at' => date('Y-m-d H:i:s')
         ];
 
-        $petugasModel->insert($data);
+        $db->table('petugas')->insert($data);
 
         return redirect()->to('/admin/petugas')->with('success', 'Petugas berhasil ditambahkan');
     }
 
     public function edit($id)
     {
-        $petugasModel = new PetugasModel();
-        $petugas = $petugasModel->find($id);
+        $db = \Config\Database::connect();
+        $petugas = $db->table('petugas')->where('id_petugas', $id)->get()->getRowArray();
 
         if (!$petugas) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Petugas tidak ditemukan');
@@ -65,22 +64,22 @@ class PetugasController extends BaseController
 
     public function update($id)
     {
-        $petugasModel = new PetugasModel();
+        $db = \Config\Database::connect();
 
         $data = [
             'id_user' => $this->request->getPost('id_user') ?: null,
             'nama'    => $this->request->getPost('nama'),
         ];
 
-        $petugasModel->update($id, $data);
+        $db->table('petugas')->where('id_petugas', $id)->update($data);
 
         return redirect()->to('/admin/petugas')->with('success', 'Petugas berhasil diperbarui');
     }
 
     public function delete($id)
     {
-        $petugasModel = new PetugasModel();
-        $petugasModel->delete($id);
+        $db = \Config\Database::connect();
+        $db->table('petugas')->where('id_petugas', $id)->delete();
 
         return redirect()->to('/admin/petugas')->with('success', 'Petugas berhasil dihapus');
     }

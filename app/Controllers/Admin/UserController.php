@@ -4,7 +4,6 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
-use App\Models\PetugasModel;
 
 class UserController extends BaseController
 {
@@ -23,7 +22,6 @@ class UserController extends BaseController
     public function store()
     {
         $userModel = new UserModel();
-        $petugasModel = new PetugasModel();
 
         $fotoName = null;
 
@@ -46,11 +44,13 @@ class UserController extends BaseController
             'foto'          => $fotoName,
         ]);
 
-        // Jika role petugas, insert juga ke tabel petugas
+        // Jika role petugas, insert juga ke tabel petugas menggunakan query builder
         if ($role === 'petugas' && $userId) {
-            $petugasModel->insert([
-                'id_user' => $userId,
-                'nama'    => $namaPengguna,
+            $db = \Config\Database::connect();
+            $db->table('petugas')->insert([
+                'id_user'    => $userId,
+                'nama'       => $namaPengguna,
+                'created_at' => date('Y-m-d H:i:s')
             ]);
         }
 
@@ -72,7 +72,6 @@ class UserController extends BaseController
     public function update($id)
     {
         $userModel = new UserModel();
-        $petugasModel = new PetugasModel();
 
         $oldUser = $userModel->find($id);
         $newRole = $this->request->getPost('role');
@@ -98,27 +97,29 @@ class UserController extends BaseController
 
         $userModel->update($id, $dataUpdate);
 
-        // Sinkronisasi tabel petugas
-        $petugas = $petugasModel->where('id_user', $id)->first();
+        // Sinkronisasi tabel petugas menggunakan query builder langsung
+        $db = \Config\Database::connect();
+        $petugas = $db->table('petugas')->where('id_user', $id)->get()->getRowArray();
 
         if ($newRole === 'petugas') {
             // Jika role sekarang petugas
             if ($petugas) {
                 // Update data petugas yang sudah ada
-                $petugasModel->update($petugas['id_petugas'], [
-                    'nama' => $namaPengguna,
-                ]);
+                $db->table('petugas')
+                    ->where('id_petugas', $petugas['id_petugas'])
+                    ->update(['nama' => $namaPengguna]);
             } else {
                 // Buat data petugas baru
-                $petugasModel->insert([
-                    'id_user' => $id,
-                    'nama'    => $namaPengguna,
+                $db->table('petugas')->insert([
+                    'id_user'    => $id,
+                    'nama'       => $namaPengguna,
+                    'created_at' => date('Y-m-d H:i:s')
                 ]);
             }
         } else {
             // Jika role bukan petugas, hapus dari tabel petugas jika ada
             if ($petugas) {
-                $petugasModel->delete($petugas['id_petugas']);
+                $db->table('petugas')->where('id_petugas', $petugas['id_petugas'])->delete();
             }
         }
 
@@ -128,13 +129,10 @@ class UserController extends BaseController
     public function delete($id)
     {
         $userModel = new UserModel();
-        $petugasModel = new PetugasModel();
+        $db = \Config\Database::connect();
 
-        // Hapus dari tabel petugas jika ada
-        $petugas = $petugasModel->where('id_user', $id)->first();
-        if ($petugas) {
-            $petugasModel->delete($petugas['id_petugas']);
-        }
+        // Hapus dari tabel petugas jika ada menggunakan query builder langsung
+        $db->table('petugas')->where('id_user', $id)->delete();
 
         // Hapus dari tabel user
         $userModel->delete($id);

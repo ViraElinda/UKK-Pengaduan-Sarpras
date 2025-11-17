@@ -4,7 +4,6 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
-use App\Models\PetugasModel;
 
 class RegisterController extends BaseController
 {

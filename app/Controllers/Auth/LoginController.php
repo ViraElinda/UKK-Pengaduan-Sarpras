@@ -4,7 +4,6 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
-use App\Models\PetugasModel;
 
 class LoginController extends BaseController
 {
@@ -51,10 +50,10 @@ class LoginController extends BaseController
             'login_time'    => time(), // Timestamp login untuk tracking
         ];
 
-        // Jika petugas, ambil data petugas berdasarkan id_user
+        // Jika petugas, ambil data petugas berdasarkan id_user menggunakan query builder
         if ($role === 'petugas') {
-            $petugasModel = new PetugasModel();
-            $petugas = $petugasModel->where('id_user', $user['id_user'])->first();
+            $db = \Config\Database::connect();
+            $petugas = $db->table('petugas')->where('id_user', $user['id_user'])->get()->getRowArray();
             if ($petugas) {
                 $sessionData['id_petugas'] = $petugas['id_petugas'];
                 $sessionData['nama_petugas'] = $petugas['nama'];

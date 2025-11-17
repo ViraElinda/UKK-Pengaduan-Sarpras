@@ -12,10 +12,9 @@ class PetugasModel extends Model
     protected $allowedFields = [
         'id_user',
         'nama',
-        'created_at',
-        'deleted_at'
+        'created_at'
     ];
 
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
     protected $useTimestamps  = false;
 }
