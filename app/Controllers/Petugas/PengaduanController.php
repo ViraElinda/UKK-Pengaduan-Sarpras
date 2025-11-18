@@ -4,6 +4,7 @@ namespace App\Controllers\Petugas;
 
 use App\Controllers\BaseController;
 use App\Models\PengaduanModel;
+use App\Models\NotifModel;
 
 class PengaduanController extends BaseController
 {
@@ -203,6 +204,23 @@ class PengaduanController extends BaseController
     }
 
     $this->pengaduanModel->update($id, array_merge($postData, $updateFiles));
+
+    // Kirim notifikasi ke user pemilik pengaduan bahwa statusnya berubah
+    try {
+        $notifModel = new NotifModel();
+        $userId = $current['id_user'] ?? null;
+        if ($userId) {
+            $judul = 'Status Pengaduan Diperbarui';
+            $pesan = 'Status pengaduan "' . ($current['nama_pengaduan'] ?? 'Pengaduan') . '" telah diubah menjadi ' . ($postData['status'] ?? '') . '.';
+            // Link ke halaman detail user (relative)
+            $link = 'user/pengaduan/' . $id;
+            $notifModel->createNotif($userId, $judul, $pesan, 'info', $link);
+        }
+    } catch (\Throwable $e) {
+        if (function_exists('log_message')) {
+            log_message('error', '[Notif] Failed to create notif on petugas update: ' . $e->getMessage());
+        }
+    }
 
     return redirect()->to('/petugas/pengaduan')->with('success', 'Status pengaduan diperbarui.');
 }
