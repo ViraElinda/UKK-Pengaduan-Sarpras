@@ -305,4 +305,32 @@ class PengaduanController extends BaseController
         $this->pengaduanModel->delete($id);
         return redirect()->to('/admin/pengaduan')->with('success', 'Pengaduan berhasil dihapus.');
     }
+
+    /**
+     * Tampilkan detail pengaduan untuk Admin/Petugas (hanya melihat, tidak mengubah)
+     */
+    public function detail($id_pengaduan)
+    {
+        $role = session('role');
+        if (!in_array($role, ['admin', 'petugas'])) {
+            return view('errors/html/error_403');
+        }
+
+        $data['pengaduan'] = $this->pengaduanModel
+            ->select('pengaduan.*, lokasi.nama_lokasi, items.nama_item, user.nama_pengguna as nama_user, petugas.nama as nama_petugas')
+            ->join('lokasi', 'lokasi.id_lokasi = pengaduan.id_lokasi', 'left')
+            ->join('items', 'items.id_item = pengaduan.id_item', 'left')
+            ->join('user', 'user.id_user = pengaduan.id_user', 'left')
+            ->join('petugas', 'petugas.id_petugas = pengaduan.id_petugas', 'left')
+            ->where('pengaduan.id_pengaduan', $id_pengaduan)
+            ->asArray()
+            ->first();
+
+        if (!$data['pengaduan']) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Pengaduan tidak ditemukan');
+        }
+
+        // Reuse the user detail view for rendering content quickly
+        return view('user/detail', $data);
+    }
 }

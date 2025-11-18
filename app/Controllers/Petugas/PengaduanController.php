@@ -58,6 +58,34 @@ class PengaduanController extends BaseController
     }
 
     /**
+     * Tampilkan detail pengaduan untuk Petugas (hanya melihat)
+     */
+    public function detail($id_pengaduan)
+    {
+        $idPetugas = session('id_petugas');
+
+        if (!$idPetugas) {
+            return redirect()->to('/auth/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $data['pengaduan'] = $this->pengaduanModel
+            ->select('pengaduan.*, lokasi.nama_lokasi, items.nama_item, user.nama_pengguna as nama_user, petugas.nama as nama_petugas')
+            ->join('lokasi', 'lokasi.id_lokasi = pengaduan.id_lokasi', 'left')
+            ->join('items', 'items.id_item = pengaduan.id_item', 'left')
+            ->join('user', 'user.id_user = pengaduan.id_user', 'left')
+            ->join('petugas', 'petugas.id_petugas = pengaduan.id_petugas', 'left')
+            ->where('pengaduan.id_pengaduan', $id_pengaduan)
+            ->asArray()
+            ->first();
+
+        if (!$data['pengaduan']) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Pengaduan tidak ditemukan');
+        }
+
+        return view('user/detail', $data);
+    }
+
+    /**
      * Update status pengaduan (hanya untuk petugas)
      */
     public function update($id)

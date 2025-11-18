@@ -48,6 +48,7 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
         $routes->get('create', 'Admin\PengaduanController::create');
         $routes->post('store', 'Admin\PengaduanController::store');
         $routes->get('edit/(:num)', 'Admin\PengaduanController::edit/$1');
+        $routes->get('detail/(:num)', 'Admin\PengaduanController::detail/$1');
         $routes->post('update/(:num)', 'Admin\PengaduanController::update/$1');
         $routes->get('delete/(:num)', 'Admin\PengaduanController::delete/$1');
     });
@@ -108,6 +109,7 @@ $routes->group('petugas', ['filter' => 'role:petugas'], function ($routes) {
     $routes->group('pengaduan', function ($routes) {
         $routes->get('/', 'Petugas\PengaduanController::index');
         $routes->get('edit/(:num)', 'Petugas\PengaduanController::edit/$1');
+        $routes->get('detail/(:num)', 'Petugas\PengaduanController::detail/$1');
         $routes->post('update/(:num)', 'Petugas\PengaduanController::update/$1');
     });
 

@@ -95,9 +95,10 @@ Manajemen Aduan
                     $isLocked = in_array($statusLower, ['diproses', 'disetujui', 'ditolak', 'selesai']);
                   ?>
                   <?php if ($isLocked): ?>
-                    <span class="px-4 py-2 bg-gray-200 text-gray-400 rounded-xl cursor-not-allowed font-bold text-sm">Edit</span>
+                    <a href="<?= base_url('admin/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm">Lihat</a>
                   <?php else: ?>
                     <a href="<?= base_url('admin/pengaduan/edit/'.$p['id_pengaduan']) ?>" class="btn-ui px-4 py-2">Edit</a>
+                    <a href="<?= base_url('admin/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm">Lihat</a>
                   <?php endif; ?>
                   <button onclick="confirmDelete(<?= $p['id_pengaduan'] ?>, '<?= esc($p['nama_pengaduan']) ?>')" class="btn-danger-ui px-4 py-2">Hapus</button>
                 </div>

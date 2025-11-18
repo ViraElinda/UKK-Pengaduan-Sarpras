@@ -17,7 +17,7 @@ Tambah Petugas
         <?= function_exists('csrf_field') ? csrf_field() : '' ?>
 
         <div>
-          <label class="block text-sm font-bold mb-2">Akun Pengguna (opsional)</label>
+          <label class="block text-sm font-bold mb-2">Akun</label>
           <select name="id_user" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
             <option value="">-- Pilih Akun (role: petugas) --</option>
             <?php if (!empty($users)): foreach($users as $u): ?>

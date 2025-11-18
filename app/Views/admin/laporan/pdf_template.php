@@ -161,7 +161,7 @@
         <div class="signature-block">
             <div class="signature">
                 <div>Mengetahui,</div>
-                <div class="title">Kepala Sekolah / Penanggung Jawab</div>
+                <div class="title">Penanggung Jawab</div>
                 <div class="name">( ........................................ )</div>
             </div>
         </div>
