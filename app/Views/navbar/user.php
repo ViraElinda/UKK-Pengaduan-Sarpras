@@ -9,7 +9,7 @@ $inisial = strtoupper(substr($username, 0, 1));
 ?>
 
 <!-- NAVBAR MODERN GRADIENT TAILWIND USER -->
-<nav class="bg-ui-header shadow-lg sticky top-0 z-50">
+<nav class="bg-gradient-to-r from-indigo-600 via-blue-600 to-blue-500 shadow-lg sticky top-0 z-50 backdrop-blur-sm border-b border-white/10">
   <div class="w-full px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       
@@ -122,7 +122,7 @@ $inisial = strtoupper(substr($username, 0, 1));
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobileMenu" class="md:hidden hidden border-t border-white/30 mobile-menu-ui">
+  <div id="mobileMenu" class="md:hidden hidden bg-gradient-to-b from-indigo-600 to-blue-500 border-t border-white/10 mobile-menu-ui">
     <div class="px-4 py-3 space-y-1">
       <?php 
         $role = session()->get('role') ?? 'user';
