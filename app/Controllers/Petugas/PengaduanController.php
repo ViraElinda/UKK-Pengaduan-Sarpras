@@ -160,14 +160,19 @@ class PengaduanController extends BaseController
     $allowedExt = ['jpg','jpeg','png','webp'];
     $maxBytes = 3 * 1024 * 1024; // 3MB (changed from 5MB to enforce smaller balasan uploads)
 
-    // Validate Foto Balasan when provided
-    if ($fotoBalasan && $fotoBalasan->getName() !== '' && $fotoBalasan->isValid() && !$fotoBalasan->hasMoved()) {
+    // Enforce Foto Balasan is required when petugas mengelola pengaduan
+    if (!($fotoBalasan && $fotoBalasan->getName() !== '' && $fotoBalasan->isValid() && !$fotoBalasan->hasMoved())) {
+        $errors[] = 'Foto Balasan wajib diunggah saat mengelola pengaduan.';
+    } else {
+        // Validate Foto Balasan when provided
+        if ($fotoBalasan && $fotoBalasan->getName() !== '' && $fotoBalasan->isValid() && !$fotoBalasan->hasMoved()) {
         $ext = strtolower($fotoBalasan->getExtension());
         if (!in_array($ext, $allowedExt, true)) {
             $errors[] = 'Format Foto Balasan harus jpg, jpeg, png, atau webp.';
         }
         if ($fotoBalasan->getSize() > $maxBytes) {
             $errors[] = 'Ukuran Foto Balasan maksimal 3MB.';
+        }
         }
     }
 
