@@ -114,6 +114,20 @@ class PengaduanController extends BaseController
             log_message('info', "[ITEM_BARU] Item sudah ada di temporary_item dengan ID: {$idTemp}");
         }
         
+        // ✅ VALIDASI: Cek apakah item baru ini sudah pernah diajukan dan masih aktif
+        if (isset($idTemp)) {
+            $existingItemBaru = $this->pengaduanModel
+                ->where('id_temporary', $idTemp)
+                ->where('status !=', 'Selesai')
+                ->first();
+            
+            if ($existingItemBaru) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Item "' . esc($itemBaru) . '" di lokasi ' . esc($namaLokasi) . ' sudah pernah dilaporkan dan masih dalam proses. Silakan tunggu hingga selesai sebelum mengajukan kembali.');
+            }
+        }
+        
         // Reset id_item karena kita pakai item baru
         $idItem = null;
     }

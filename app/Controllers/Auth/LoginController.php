@@ -46,6 +46,7 @@ class LoginController extends BaseController
             'username'      => $user['username'],
             'nama_pengguna' => $user['nama_pengguna'] ?? $user['username'],
             'role'          => $role,
+            'foto'          => $user['foto'] ?? null,
             'isLoggedIn'    => true,
             'login_time'    => time(), // Timestamp login untuk tracking
         ];

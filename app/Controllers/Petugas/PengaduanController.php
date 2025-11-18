@@ -64,7 +64,38 @@ class PengaduanController extends BaseController
     // Pastikan petugas login
     $idPetugas = session('id_petugas');
     if (!$idPetugas) {
-        return redirect()->to('/auth/login')->with('error', 'Silakan login terlebih dahulu.');
+        // Jika session id_petugas tidak ada, coba resolve dari session id_user
+        $userId = session('id_user');
+        if ($userId && session('role') === 'petugas') {
+            try {
+                $db = \Config\Database::connect();
+                $petugasRow = $db->table('petugas')->where('id_user', $userId)->get()->getRowArray();
+                if ($petugasRow) {
+                    $idPetugas = $petugasRow['id_petugas'];
+                    session()->set('id_petugas', $idPetugas);
+                } else {
+                    // Jika belum ada record petugas, buat otomatis (safety: use username/nama_pengguna)
+                    $userModel = new \App\Models\UserModel();
+                    $user = $userModel->find($userId);
+                    if ($user) {
+                        $insert = [
+                            'id_user' => $userId,
+                            'nama'    => $user['nama_pengguna'] ?? $user['username'],
+                            'created_at' => date('Y-m-d H:i:s')
+                        ];
+                        $db->table('petugas')->insert($insert);
+                        $idPetugas = $db->insertID();
+                        session()->set('id_petugas', $idPetugas);
+                    }
+                }
+            } catch (\Throwable $e) {
+                // ignore DB errors here; we'll handle missing idPetugas below
+            }
+        }
+
+        if (!$idPetugas) {
+            return redirect()->to('/auth/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
     }
 
     // Pastikan kolom before/after tersedia (fallback jika migrasi belum jalan)

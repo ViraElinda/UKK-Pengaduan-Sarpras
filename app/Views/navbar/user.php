@@ -1,9 +1,10 @@
 <?php
 $session = session();
-$user = $session->get('user') ?? [];
 
-$username = $user['username'] ?? 'U';
-$foto = $user['foto'] ?? null;
+// Ambil dari session langsung, bukan dari array user
+$username = $session->get('username') ?? $session->get('nama_pengguna') ?? 'User';
+$foto = $session->get('foto') ?? null;
+$role = $session->get('role') ?? 'user';
 $inisial = strtoupper(substr($username, 0, 1));
 ?>
 
