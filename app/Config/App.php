@@ -105,18 +105,30 @@ class App extends BaseConfig
         $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
 
         if ($host) {
-            $scheme = $https ? 'https' : 'http';
-            // ensure trailing slash
-            $this->baseURL = rtrim($scheme . '://' . $host, '/') . '/';
+            // If this is the known production domain, force HTTPS baseURL and
+            // set cookie/domain settings appropriate for modern browsers.
+            if (str_contains($host, 'viraelinda.my.id')) {
+                $this->baseURL = 'https://viraelinda.my.id/';
+                // Set cookie domain so browser sends cookies for this domain.
+                // Use the bare domain (no leading dot) which works for the host.
+                $this->cookieDomain = 'viraelinda.my.id';
+                // When serving over HTTPS and cross-site cookies are required
+                // (e.g., AJAX from subdomains or third-party contexts), SameSite
+                // must be 'None' and Secure true.
+                $this->cookieSameSite = 'None';
+                $this->cookieSecure = true;
+            } else {
+                $scheme = $https ? 'https' : 'http';
+                // ensure trailing slash
+                $this->baseURL = rtrim($scheme . '://' . $host, '/') . '/';
+                // Ensure cookie secure flag matches whether the request is HTTPS.
+                $this->cookieSecure = $https ? true : false;
+            }
         } else {
-            // fallback to localhost:8080 for CLI or missing server vars
+            // fallback to localhost:8000 for CLI or missing server vars
             $this->baseURL = 'http://localhost:8000/';
+            $this->cookieSecure = false;
         }
-
-        // Ensure cookie secure flag matches whether the request is HTTPS.
-        // On hosted environments using HTTPS this must be true so the browser
-        // will send the session cookie over secure connections.
-        $this->cookieSecure = $https ? true : false;
 
         parent::__construct();
     }
@@ -237,6 +249,10 @@ class App extends BaseConfig
     public string $cookiePrefix = '';
     public string $cookieDomain = '';
     public string $cookiePath = '/';
-    public bool $cookieSecure = false;     public bool $cookieHTTPOnly = true;
-    public string $cookieSameSite = 'Lax';
+    public bool $cookieSecure = false;
+    public bool $cookieHTTPOnly = true;
+    // Use 'None' to allow cookies in cross-site contexts (required when using
+    // AJAX with credentials on HTTPS). We will override this to 'None' when
+    // the domain matches the production host above.
+    public string $cookieSameSite = 'None';
 }
