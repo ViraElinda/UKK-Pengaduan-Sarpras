@@ -56,7 +56,7 @@
             // Load notifications then mark them as read (Instagram-like)
             loadNotifications().then(() => {
                 // After notifications are loaded and rendered, mark all as read on the server
-                fetch('<?= base_url('notif/read-all') ?>', { method: 'POST' })
+                fetch('<?= base_url('notif/read-all') ?>', { method: 'POST', credentials: 'include' })
                     .then(() => {
                         // Clear badge locally
                         updateNotifBadge(0);
@@ -77,11 +77,19 @@
 
     // Load notifications via AJAX
     function loadNotifications() {
-        fetch('<?= base_url('notif/get') ?>')
-            .then(response => response.json())
+        fetch('<?= base_url('notif/get') ?>', { credentials: 'include' })
+            .then(response => {
+                // If server redirected to login page, response will be HTML not JSON
+                const ct = response.headers.get('content-type') || '';
+                if (!ct.includes('application/json')) {
+                    console.warn('Notif: unexpected response content-type', ct);
+                    return { notifications: [], unread_count: 0 };
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('Notif data:', data); // Debug
-                if (data.success || data.notifications) {
+                if (data && (data.success || data.notifications)) {
                     updateNotifBadge(data.unread_count || 0);
                     renderNotifications(data.notifications || []);
                 }
@@ -153,13 +161,15 @@
         const link = element.dataset.link;
 
         // Mark as read
-        fetch(`<?= base_url('notif/read/') ?>${id}`, { method: 'POST' })
+        fetch(`<?= base_url('notif/read/') ?>${id}`, { method: 'POST', credentials: 'include' })
             .then(() => {
                 if (link && link !== 'null' && link !== '') {
                     window.location.href = '<?= base_url() ?>' + link;
                 } else {
                     loadNotifications();
                 }
+            }).catch(err => {
+                console.warn('Gagal menandai notif sebagai dibaca:', err);
             });
     };
 
@@ -183,8 +193,12 @@
 
     // Load notifications on page load to populate badge and set baseline
     function initialLoad() {
-        return fetch('<?= base_url('notif/get') ?>')
-            .then(response => response.json())
+        return fetch('<?= base_url('notif/get') ?>', { credentials: 'include' })
+            .then(response => {
+                const ct = response.headers.get('content-type') || '';
+                if (!ct.includes('application/json')) return { notifications: [], unread_count: 0 };
+                return response.json();
+            })
             .then(data => {
                 if (data && (data.success || data.notifications)) {
                     updateNotifBadge(data.unread_count || 0);
@@ -199,8 +213,12 @@
 
     // Auto-poll notifikasi setiap 15 detik; if there's a new unread > lastUnread, fetch latest and show toast
     setInterval(function() {
-        fetch('<?= base_url('notif/get') ?>')
-            .then(response => response.json())
+        fetch('<?= base_url('notif/get') ?>', { credentials: 'include' })
+            .then(response => {
+                const ct = response.headers.get('content-type') || '';
+                if (!ct.includes('application/json')) return null;
+                return response.json();
+            })
             .then(data => {
                 if (!data) return;
                 const unread = data.unread_count || 0;
@@ -209,10 +227,14 @@
 
                 if (unread > lastUnread) {
                     // New notification(s) arrived. Fetch the latest notifications to display popup content.
-                    fetch('<?= base_url('notif/get') ?>')
-                        .then(r => r.json())
+                    fetch('<?= base_url('notif/get') ?>', { credentials: 'include' })
+                        .then(r => {
+                            const ct = r.headers.get('content-type') || '';
+                            if (!ct.includes('application/json')) return null;
+                            return r.json();
+                        })
                         .then(d => {
-                            const newest = (d.notifications && d.notifications[0]) ? d.notifications[0] : null;
+                            const newest = (d && d.notifications && d.notifications[0]) ? d.notifications[0] : null;
                             if (newest) {
                                 // Show toast popup using SweetAlert2
                                 Swal.fire({
