@@ -236,6 +236,16 @@ Form Pengaduan Baru
     }
 
     // Initialize Choices (if applicable) then wire change handler
+    // Support both native select change and Choices.js change event
+    if (lokasiChoices) {
+      try {
+        lokasiChoices.passedElement.element.addEventListener('change', function(e){
+          loadItems(e.target.value);
+        });
+      } catch (err) {
+        // ignore if passedElement is not available
+      }
+    }
 
     $('#lokasi').change(function () {
       loadItems($(this).val());
