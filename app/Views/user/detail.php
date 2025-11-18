@@ -89,13 +89,21 @@
               </div>
             </div>
             <div class="flex-1">
-              <?php if (!empty($pengaduan['foto'])): ?>
-                <div class="group relative inline-block rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow">
-                  <img src="<?= base_url('uploads/foto_pengaduan/' . $pengaduan['foto']) ?>" 
-                       alt="Foto Pengaduan" 
-                       class="max-w-full h-auto max-h-96 object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-300">
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                </div>
+                <?php if (!empty($pengaduan['foto'])): ?>
+                  <?php
+                    // Build two candidate URLs: one assuming public/ is document root,
+                    // another when project root is served directly (some hosts).
+                    $fotoFile = 'uploads/foto_pengaduan/' . rawurlencode($pengaduan['foto']);
+                    $fotoUrl = base_url($fotoFile);
+                    $fotoUrlAlt = base_url('public/' . $fotoFile);
+                  ?>
+                  <div class="group relative inline-block rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow">
+                    <img src="<?= $fotoUrl ?>" 
+                         alt="Foto Pengaduan" 
+                         class="max-w-full h-auto max-h-96 object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-300"
+                         onerror="this.onerror=null; this.src='<?= $fotoUrlAlt ?>';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </div>
               <?php else: ?>
                 <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center">
                   <svg class="w-16 h-16 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,11 +148,16 @@
                     </div>
                   </div>
                   <div class="p-4">
-                    <img src="<?= base_url('uploads/foto_balasan/' . $pengaduan['foto_balasan']) ?>" 
-                         alt="Foto Balasan Petugas" 
-                         class="w-full h-auto object-contain rounded-xl shadow-md mx-auto"
-                         style="max-height: 400px;"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <?php
+          $balasanFile = 'uploads/foto_balasan/' . rawurlencode($pengaduan['foto_balasan']);
+          $balasanUrl = base_url($balasanFile);
+          $balasanUrlAlt = base_url('public/' . $balasanFile);
+        ?>
+        <img src="<?= $balasanUrl ?>" 
+          alt="Foto Balasan Petugas" 
+          class="w-full h-auto object-contain rounded-xl shadow-md mx-auto"
+          style="max-height: 400px;"
+          onerror="this.onerror=null; this.src='<?= $balasanUrlAlt ?>'; this.nextElementSibling.style.display='block';">
                     <div style="display:none;" class="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-4 text-center">
                       <svg class="w-12 h-12 mx-auto text-yellow-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>

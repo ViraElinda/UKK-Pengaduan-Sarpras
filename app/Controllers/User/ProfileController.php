@@ -101,6 +101,18 @@ class ProfileController extends BaseController
                 mkdir($uploadPath, 0777, true);
             }
 
+            // Pastikan folder bisa ditulis oleh proses PHP
+            if (!is_writable($uploadPath)) {
+                // Coba set permission yang lebih permisif; ini bisa gagal on some hosts
+                @chmod($uploadPath, 0775);
+
+                if (!is_writable($uploadPath)) {
+                    // Log detail supaya bisa dianalisa di server
+                    log_message('error', "Upload gagal: folder tidak writable: {$uploadPath}");
+                    return redirect()->back()->with('error', 'Direktori upload tidak dapat ditulis. Periksa permission folder uploads/foto_user pada server.');
+                }
+            }
+
             // ✅ Hapus file lama
             if (!empty($user['foto']) && $user['foto'] !== 'default.png') {
                 $oldPath = $uploadPath . '/' . $user['foto'];
