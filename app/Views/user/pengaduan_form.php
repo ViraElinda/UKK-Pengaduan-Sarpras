@@ -41,13 +41,9 @@ Form Pengaduan Baru
     <div class="max-w-2xl mx-auto">
       <!-- use ui-card for consistent look -->
       <form action="<?= base_url('user/pengaduan/store') ?>" method="POST" enctype="multipart/form-data" class="ui-card p-4 md:p-6 space-y-4 md:space-y-5">
-        <div class="text-center mb-4 md:mb-6">
-          <div class="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full mb-2 md:mb-3 shadow-lg">
-            <svg class="w-6 h-6 md:w-7 md:h-7 text-ui-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
-          </div>
-          <h2 class="text-lg md:text-xl font-bold text-ui-primary">Formulir Pengaduan</h2>
+        <div class="text-center mb-3">
+          <h2 class="text-xl font-semibold text-gray-800">Buat Pengaduan</h2>
+          <p class="text-sm text-gray-500">Laporkan masalah sarana dan prasarana</p>
         </div>
 
         <!-- Error Messages -->
@@ -59,11 +55,8 @@ Form Pengaduan Baru
 
         <!-- Nama Pengaduan -->
         <div>
-          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
-            <span class="inline-flex items-center gap-1.5 md:gap-2">
-              📌 Nama Pengaduan
-              <span class="text-red-500">*</span>
-            </span>
+          <label class="block font-medium text-gray-700 mb-1 text-sm">
+            Nama Pengaduan <span class="text-red-500">*</span>
           </label>
           <input type="text" name="nama_pengaduan" value="<?= old('nama_pengaduan') ?>" required
             class="form-input w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base"
@@ -72,11 +65,8 @@ Form Pengaduan Baru
 
         <!-- Deskripsi -->
         <div>
-          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
-            <span class="inline-flex items-center gap-1.5 md:gap-2">
-              📄 Deskripsi
-              <span class="text-red-500">*</span>
-            </span>
+          <label class="block font-medium text-gray-700 mb-1 text-sm">
+            Deskripsi <span class="text-red-500">*</span>
           </label>
           <textarea name="deskripsi" rows="3" required
             class="form-textarea w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium resize-none text-sm md:text-base"
@@ -86,12 +76,7 @@ Form Pengaduan Baru
         <!-- Pilih Lokasi & Item (responsive two-column) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           <div>
-            <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
-              <span class="inline-flex items-center gap-1.5 md:gap-2">
-                📍 Pilih Lokasi
-                <span class="text-red-500">*</span>
-              </span>
-            </label>
+            <label class="block font-medium text-gray-700 mb-1 text-sm">Pilih Lokasi <span class="text-red-500">*</span></label>
             <select id="lokasi" name="id_lokasi" required
               class="form-select w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base">
               <option value="">-- Pilih Lokasi --</option>
@@ -102,11 +87,7 @@ Form Pengaduan Baru
           </div>
 
           <div>
-            <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
-              <span class="inline-flex items-center gap-1.5 md:gap-2">
-                🔧 Pilih Item
-              </span>
-            </label>
+            <label class="block font-medium text-gray-700 mb-1 text-sm">Pilih Item</label>
             <select id="item" name="id_item"
               class="form-select w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base">
               <option value="">Pilih lokasi terlebih dahulu</option>
@@ -114,31 +95,26 @@ Form Pengaduan Baru
           </div>
         </div>
 
-        <!-- Item Baru -->
+        <!-- Item Baru (collapsed by default) -->
         <div>
-          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
-            <span class="inline-flex items-center gap-1.5 md:gap-2">
-              ➕ Item Tidak Ada? Tulis di sini
-            </span>
-          </label>
-          <input type="text" name="item_baru" placeholder="Masukkan nama item baru"
-            class="form-input w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base">
-          <p class="text-xs md:text-sm text-blue-600 mt-1">💡 <strong>Tip:</strong> Jika Anda mengisi field ini, pilihan item di atas akan diabaikan</p>
+          <div>
+            <label class="block font-medium text-gray-700 mb-1 text-sm">Item baru (opsional)</label>
+            <div id="item-baru-wrapper" class="mt-2">
+              <input type="text" name="item_baru" id="item-baru-input" value="<?= esc(old('item_baru')) ?>" placeholder="Nama item baru"
+                class="form-input w-full p-2.5 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-sm">
+              <p class="text-xs text-gray-500 mt-1">Mengisi item baru akan mengabaikan pilihan item di atas.</p>
+            </div>
+          </div>
         </div>
 
         <!-- Upload Foto with preview -->
         <div>
-          <label class="block font-semibold md:font-bold text-gray-700 mb-1.5 md:mb-2 text-sm md:text-base">
-            <span class="inline-flex items-center gap-1.5 md:gap-2">
-              📷 Upload Foto
-              <span class="text-red-500">*</span>
-            </span>
-          </label>
-          <div class="relative">
+          <label class="block font-medium text-gray-700 mb-1 text-sm">Foto bukti <span class="text-red-500">*</span></label>
+          <div>
             <input type="file" name="foto" accept="image/*" id="foto-input" required
-              class="w-full p-2.5 md:p-3 border-2 border-dashed border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-xs md:text-sm file:mr-2 md:file:mr-4 file:py-1.5 md:file:py-2 file:px-3 md:file:px-4 file:rounded-lg file:border-0 file:bg-purple-100 file:text-purple-700 file:font-semibold file:text-xs md:file:text-sm hover:file:bg-purple-200">
+              class="w-full p-2 border border-dashed border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-sm">
           </div>
-          <div id="foto-preview" class="mt-2 md:mt-3 hidden">
+          <div id="foto-preview" class="mt-2 hidden">
             <div class="inline-flex items-center gap-2 md:gap-3">
               <img id="foto-preview-img" src="#" alt="Preview" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg shadow-sm border" />
               <div>
@@ -147,7 +123,7 @@ Form Pengaduan Baru
               </div>
             </div>
           </div>
-          <p class="text-xs md:text-sm text-gray-500 mt-1">* Foto wajib diunggah untuk mendukung pengaduan Anda</p>
+          <p class="text-xs text-gray-500 mt-1">* Foto wajib untuk mendukung pengaduan</p>
         </div>
 
         <!-- Submit Button -->
@@ -224,10 +200,12 @@ Form Pengaduan Baru
               if (data.length > 0) {
                 const choices = [];
                 data.forEach(function(it){ choices.push({value: it.id_item, label: it.nama_item}); });
+                // add a special 'Lainnya' option at the end
+                choices.push({value: 'lainnya', label: '➕ Lainnya (Tambah item baru)'});
                 itemChoices.setChoices(choices, 'value', 'label', true);
                 if (selected) itemChoices.setChoiceByValue(selected);
               } else {
-                itemChoices.setChoices([{value:'',label:'❌ Tidak ada item di lokasi ini'}], 'value', 'label', true);
+                itemChoices.setChoices([{value:'',label:'❌ Tidak ada item di lokasi ini'},{value: 'lainnya', label: '➕ Lainnya (Tambah item baru)'}], 'value', 'label', true);
               }
             } else {
               itemSelect.empty();
@@ -236,6 +214,7 @@ Form Pengaduan Baru
                   let sel = (selected == item.id_item) ? 'selected' : '';
                   itemSelect.append('<option value="' + item.id_item + '" '+sel+'>' + item.nama_item + '</option>');
                 });
+                itemSelect.append('<option value="lainnya">➕ Lainnya (Tambah item baru)</option>');
               } else {
                 itemSelect.append('<option value="">❌ Tidak ada item di lokasi ini</option>');
               }
@@ -246,8 +225,6 @@ Form Pengaduan Baru
               itemChoices.setChoices([{value:'',label:'⚠️ Gagal memuat item'}], 'value', 'label', true);
             } else {
               itemSelect.html('<option value="">⚠️ Gagal memuat item</option>');
-            }
-          }
         });
       } else {
         if (useChoices && itemChoices) {
@@ -259,7 +236,6 @@ Form Pengaduan Baru
     }
 
     // Initialize Choices (if applicable) then wire change handler
-    initChoicesIfNeeded();
 
     $('#lokasi').change(function () {
       loadItems($(this).val());
@@ -313,6 +289,8 @@ Form Pengaduan Baru
         `);
       }
     });
+
+    // Note: manual item input is always visible (simpler UX)
   });
 </script>
 

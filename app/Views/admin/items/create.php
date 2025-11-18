@@ -8,12 +8,10 @@ Tambah Item Baru
 <div class="min-h-screen bg-ui-page py-8 px-4 sm:px-6 lg:px-8">
   <div class="max-w-3xl mx-auto">
     
-    <!-- Header -->
-    <div class="mb-6">
-      <h1 class="text-3xl font-bold text-gray-900 mb-2">
-        ➕ Tambah Item Sarpras Baru
-      </h1>
-      <p class="text-gray-600 font-medium">Tambahkan sarana dan prasarana baru ke sistem</p>
+    <!-- Header (compact) -->
+    <div class="mb-4">
+      <h1 class="text-2xl font-semibold text-gray-900 mb-1">Tambah Item Sarpras</h1>
+      <p class="text-sm text-gray-600">Tambahkan sarana dan prasarana baru ke sistem</p>
     </div>
 
     <!-- Success/Error Messages -->
@@ -35,24 +33,19 @@ Tambah Item Baru
       </div>
     <?php endif; ?>
 
-    <!-- Form Card -->
-    <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/30">
-      <form action="<?= base_url('admin/items/store') ?>" method="post" enctype="multipart/form-data" class="space-y-6">
+    <!-- Form Card (compact) -->
+    <div class="bg-white/90 rounded-lg shadow p-4 border border-gray-100">
+      <form action="<?= base_url('admin/items/store') ?>" method="post" enctype="multipart/form-data" class="space-y-4">
         
         <!-- Nama Item -->
         <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">
-            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-            </svg>
-            Nama Item <span class="text-red-500">*</span>
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Nama Item <span class="text-red-500">*</span></label>
           <input 
             type="text" 
             name="nama_item" 
             placeholder="Contoh: Meja Belajar, Kursi Lipat, Proyektor" 
             required
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-sm"
           >
         </div>
 
@@ -66,19 +59,19 @@ Tambah Item Baru
             Tersedia di Lokasi <span class="text-red-500">*</span>
           </label>
           <p class="text-xs text-gray-500 mb-2">Pilih satu atau lebih lokasi dimana item ini tersedia</p>
-          <div class="border border-gray-300 rounded-xl p-4 max-h-60 overflow-y-auto space-y-2">
+          <div class="border border-gray-300 rounded-md p-3 max-h-56 overflow-y-auto space-y-2">
             <?php if(empty($lokasi)): ?>
               <p class="text-gray-500 text-sm italic">Belum ada data lokasi. Tambahkan lokasi terlebih dahulu.</p>
             <?php else: ?>
               <?php foreach($lokasi as $lok): ?>
-                <label class="flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg cursor-pointer transition-colors">
+                <label class="flex items-center gap-3 p-2 hover:bg-blue-50 rounded-md cursor-pointer transition-colors">
                   <input 
                     type="checkbox" 
                     name="lokasi_ids[]" 
                     value="<?= $lok['id_lokasi'] ?>"
                     class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   >
-                  <span class="text-gray-700 font-medium">📍 <?= esc($lok['nama_lokasi']) ?></span>
+                  <span class="text-gray-700 font-medium"><?= esc($lok['nama_lokasi']) ?></span>
                 </label>
               <?php endforeach; ?>
             <?php endif; ?>
@@ -87,43 +80,33 @@ Tambah Item Baru
 
         <!-- Deskripsi -->
         <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">
-            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
-            </svg>
-            Deskripsi <span class="text-red-500">*</span>
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi <span class="text-red-500">*</span></label>
           <textarea 
             name="deskripsi" 
             placeholder="Jelaskan detail item, kondisi, spesifikasi, dll..." 
             rows="4"
             required
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-sm"
           ></textarea>
         </div>
 
         <!-- Foto -->
         <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">
-            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-            Foto Item
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Foto Item</label>
           <input 
             type="file" 
             name="foto" 
             accept="image/*"
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-sm"
           >
           <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WEBP (Max: 4MB)</p>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex gap-3 pt-4">
+        <div class="flex gap-3 pt-3">
           <button 
             type="submit" 
-            class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2.5 rounded-md font-semibold transition-all flex items-center justify-center gap-2 text-sm"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -132,7 +115,7 @@ Tambah Item Baru
           </button>
           <a 
             href="<?= base_url('admin/items') ?>" 
-            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            class="px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md font-semibold transition-all text-sm flex items-center justify-center gap-2"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
