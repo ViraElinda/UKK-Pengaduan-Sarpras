@@ -81,7 +81,9 @@ Form Pengaduan Baru
               class="form-select w-full p-3 md:p-3.5 border-2 border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition font-medium text-sm md:text-base">
               <option value="">-- Pilih Lokasi --</option>
               <?php foreach($lokasi as $lok): ?>
-                <option value="<?= $lok['id_lokasi'] ?>"><?= esc($lok['nama_lokasi']) ?></option>
+                <option value="<?= $lok['id_lokasi'] ?>" <?= old('id_lokasi') == $lok['id_lokasi'] ? 'selected' : '' ?>>
+                  <?= esc($lok['nama_lokasi']) ?>
+                </option>
               <?php endforeach; ?>
             </select>
           </div>
@@ -142,7 +144,6 @@ Form Pengaduan Baru
   </div>
 </div>
 
-
 <?= $this->section('scripts') ?>
 <!-- jQuery (used for ajax) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -153,8 +154,8 @@ Form Pengaduan Baru
 
 <script>
   $(document).ready(function () {
-  // Force Choices on all devices to avoid native huge dropdowns; Choices will render a scrollable HTML list
-  const useChoices = true;
+    // Force Choices on all devices to avoid native huge dropdowns; Choices will render a scrollable HTML list
+    const useChoices = true;
     let lokasiChoices = null;
     let itemChoices = null;
 
@@ -200,12 +201,10 @@ Form Pengaduan Baru
               if (data.length > 0) {
                 const choices = [];
                 data.forEach(function(it){ choices.push({value: it.id_item, label: it.nama_item}); });
-                // add a special 'Lainnya' option at the end
-                choices.push({value: 'lainnya', label: '➕ Lainnya (Tambah item baru)'});
                 itemChoices.setChoices(choices, 'value', 'label', true);
                 if (selected) itemChoices.setChoiceByValue(selected);
               } else {
-                itemChoices.setChoices([{value:'',label:'❌ Tidak ada item di lokasi ini'},{value: 'lainnya', label: '➕ Lainnya (Tambah item baru)'}], 'value', 'label', true);
+                itemChoices.setChoices([{value:'',label:'❌ Tidak ada item di lokasi ini'}], 'value', 'label', true);
               }
             } else {
               itemSelect.empty();
@@ -214,7 +213,6 @@ Form Pengaduan Baru
                   let sel = (selected == item.id_item) ? 'selected' : '';
                   itemSelect.append('<option value="' + item.id_item + '" '+sel+'>' + item.nama_item + '</option>');
                 });
-                itemSelect.append('<option value="lainnya">➕ Lainnya (Tambah item baru)</option>');
               } else {
                 itemSelect.append('<option value="">❌ Tidak ada item di lokasi ini</option>');
               }
@@ -225,6 +223,8 @@ Form Pengaduan Baru
               itemChoices.setChoices([{value:'',label:'⚠️ Gagal memuat item'}], 'value', 'label', true);
             } else {
               itemSelect.html('<option value="">⚠️ Gagal memuat item</option>');
+            }
+          }
         });
       } else {
         if (useChoices && itemChoices) {
@@ -235,25 +235,20 @@ Form Pengaduan Baru
       }
     }
 
-    // Initialize Choices (if applicable) then wire change handler
-    // Support both native select change and Choices.js change event
-    if (lokasiChoices) {
-      try {
-        lokasiChoices.passedElement.element.addEventListener('change', function(e){
-          loadItems(e.target.value);
-        });
-      } catch (err) {
-        // ignore if passedElement is not available
-      }
-    }
+    // Initialize Choices
+    initChoicesIfNeeded();
 
+    // Event handler for lokasi change
     $('#lokasi').change(function () {
       loadItems($(this).val());
     });
 
+    // Load items if old lokasi exists
     let oldLokasi = '<?= old('id_lokasi') ?>';
     let oldItem = '<?= old('id_item') ?>';
-    if(oldLokasi) loadItems(oldLokasi, oldItem);
+    if(oldLokasi) {
+      loadItems(oldLokasi, oldItem);
+    }
 
     // Validasi foto sebelum submit
     $('form').on('submit', function(e) {
@@ -299,8 +294,6 @@ Form Pengaduan Baru
         `);
       }
     });
-
-    // Note: manual item input is always visible (simpler UX)
   });
 </script>
 
