@@ -113,6 +113,11 @@ class App extends BaseConfig
             $this->baseURL = 'http://localhost:8000/';
         }
 
+        // Ensure cookie secure flag matches whether the request is HTTPS.
+        // On hosted environments using HTTPS this must be true so the browser
+        // will send the session cookie over secure connections.
+        $this->cookieSecure = $https ? true : false;
+
         parent::__construct();
     }
 
