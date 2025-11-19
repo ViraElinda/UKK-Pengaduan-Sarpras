@@ -29,13 +29,8 @@ class ProfileController extends BaseController
 
         $user['foto'] = $user['foto'] ?? 'default.png';
 
-        // Refresh session user data so navbar and other views show latest values
-        session()->set('user', $user);
-        session()->set([
-            'username'      => $user['username'] ?? session()->get('username'),
-            'nama_pengguna' => $user['nama_pengguna'] ?? session()->get('nama_pengguna'),
-            'foto'          => $user['foto'] ?? (session()->get('foto') ?? 'default.png'),
-        ]);
+        // Refresh session user data dengan data terbaru
+        $this->refreshUserSession($user);
 
         return view('user/profile', compact('user'));
     }
@@ -66,7 +61,6 @@ class ProfileController extends BaseController
         }
 
         if (!$this->validate($rules)) {
-            // Periksa apakah error karena password
             $errors = service('validation')->getErrors();
             if (isset($errors['password'])) {
                 return redirect()->back()->withInput()->with('error', 'Password minimal 6 karakter jika ingin mengganti.');
@@ -109,13 +103,10 @@ class ProfileController extends BaseController
                 mkdir($uploadPath, 0777, true);
             }
 
-            // Pastikan folder bisa ditulis oleh proses PHP
+            // Pastikan folder bisa ditulis
             if (!is_writable($uploadPath)) {
-                // Coba set permission yang lebih permisif; ini bisa gagal on some hosts
                 @chmod($uploadPath, 0775);
-
                 if (!is_writable($uploadPath)) {
-                    // Log detail supaya bisa dianalisa di server
                     log_message('error', "Upload gagal: folder tidak writable: {$uploadPath}");
                     return redirect()->back()->with('error', 'Direktori upload tidak dapat ditulis. Periksa permission folder uploads/foto_user pada server.');
                 }
@@ -132,6 +123,9 @@ class ProfileController extends BaseController
             // Move file
             if ($file->move($uploadPath, $newName)) {
                 $data['foto'] = $newName;
+                
+                // Clear browser cache untuk foto yang baru
+                $this->clearImageCache($uploadPath . '/' . $newName);
             } else {
                 return redirect()->back()->with('error', 'Gagal mengupload foto');
             }
@@ -139,20 +133,42 @@ class ProfileController extends BaseController
 
         // Update database
         if ($this->userModel->update($userId, $data)) {
-            // Update session dengan data terbaru
+            // Ambil data user yang sudah di-update
             $updatedUser = $this->userModel->find($userId);
-            // Keep the full user array for convenience
-            session()->set('user', $updatedUser);
-            // Also update individual session keys that views/navbar expect
-            session()->set([
-                'username'      => $updatedUser['username'] ?? session()->get('username'),
-                'nama_pengguna' => $updatedUser['nama_pengguna'] ?? session()->get('nama_pengguna'),
-                'foto'          => $updatedUser['foto'] ?? (session()->get('foto') ?? 'default.png'),
-            ]);
+            
+            // Refresh session dengan data terbaru
+            $this->refreshUserSession($updatedUser);
 
             return redirect()->to('user/profile')->with('success', 'Profil berhasil diperbarui!');
         } else {
             return redirect()->back()->with('error', 'Gagal memperbarui profil');
+        }
+    }
+
+    /**
+     * Refresh session user dengan data terbaru
+     */
+    private function refreshUserSession($userData)
+    {
+        $sessionData = [
+            'user' => $userData,
+            'username' => $userData['username'] ?? '',
+            'nama_pengguna' => $userData['nama_pengguna'] ?? '',
+            'foto' => $userData['foto'] ?? 'default.png',
+            'last_profile_update' => time() // Timestamp untuk cache busting
+        ];
+        
+        session()->set($sessionData);
+    }
+
+    /**
+     * Clear image cache dengan mengubah modified time
+     */
+    private function clearImageCache($imagePath)
+    {
+        if (file_exists($imagePath)) {
+            // Ubah modified time untuk memaksa browser reload
+            touch($imagePath);
         }
     }
 }
