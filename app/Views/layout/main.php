@@ -20,26 +20,28 @@
     <!-- Global UI styles to complement Tailwind -->
     <link rel="stylesheet" href="<?= base_url('css/ui.css') ?>">
 
-        <!-- Minimal dark-mode CSS overrides (toggle by adding class 'dark-mode' to <html>) -->
+        <!-- Minimal dark-mode CSS overrides (toggle by adding class 'dark-mode' to <html>).
+             NOTE: these overrides are intentionally scoped to the navbar and its mobile menu only
+             so they do NOT change page-level backgrounds or form input colors. -->
         <style>
             :root{
-                --page-bg: #f8fafc;
-                --card-bg: #ffffff;
-                --text-color: #111827;
-                --muted: #6b7280;
                 --nav-gradient: linear-gradient(to right, #4f46e5, #2563eb, #1e40af);
+                --nav-text: #ffffff;
+                --nav-muted: rgba(255,255,255,0.8);
             }
             html.dark-mode {
-                --page-bg: #0b1220;
-                --card-bg: #0f1724;
-                --text-color: #e6eef8;
-                --muted: #9ca3af;
+                /* Dark-mode colors for navbar only */
                 --nav-gradient: linear-gradient(90deg,#0f1724,#071033);
+                --nav-text: #e6eef8;
+                --nav-muted: rgba(156,163,175,0.95);
             }
-            body { background: var(--page-bg); color: var(--text-color); }
-            .ui-card { background: var(--card-bg); color: var(--text-color); }
+
+            /* Apply only to navbar / mobile menu UI elements */
             nav.bg-gradient-to-r { background: var(--nav-gradient) !important; }
-            .text-gray-600 { color: var(--muted) !important; }
+            nav, nav * { color: var(--nav-text) !important; }
+            .mobile-menu-ui { background: var(--nav-gradient) !important; }
+            /* muted text inside nav (overrides utility classes where needed) */
+            nav .text-gray-600, nav .text-indigo-100 { color: var(--nav-muted) !important; }
         </style>
 
         <!-- Apply saved theme ASAP to avoid flash -->
