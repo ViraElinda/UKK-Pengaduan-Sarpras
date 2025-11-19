@@ -87,9 +87,9 @@ $profileImg = $foto && $foto !== 'default.png' ? base_url('uploads/foto_user/' .
 
       <!-- Submit Button -->
       <div class="flex gap-3">
-        <button type="submit" class="flex-1 btn-ui px-6 py-3.5">
-          <i class="fas fa-save mr-2"></i>Simpan Perubahan
-        </button>
+            <button type="submit" id="profile-submit" class="flex-1 btn-ui px-6 py-3.5">
+              <i class="fas fa-save mr-2"></i>Simpan Perubahan
+            </button>
         <?php 
           $role = session()->get('role') ?? 'siswa';
           $dashboardRoutes = [
@@ -135,6 +135,86 @@ $profileImg = $foto && $foto !== 'default.png' ? base_url('uploads/foto_user/' .
       errEl.classList.add('hidden');
     }
   });
+</script>
+<script>
+  // AJAX submit profile form and update navbar avatar/username instantly
+  (function () {
+    const form = document.getElementById('profile-form');
+    const submitBtn = document.getElementById('profile-submit');
+    const previewImg = document.getElementById('preview-img');
+
+    form.addEventListener('submit', async function (e) {
+      // If the form was triggered by normal submit (no files changed), still use AJAX
+      e.preventDefault();
+
+      const fd = new FormData(form);
+
+      // Disable button while submitting
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+
+      try {
+        const resp = await fetch(form.action, {
+          method: 'POST',
+          body: fd,
+          credentials: 'same-origin',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+
+        // Try parse JSON
+        const data = await resp.json().catch(() => null);
+
+        if (data && data.success) {
+          // update navbar avatar and username
+          if (data.avatar) {
+            const a = document.getElementById('nav-avatar');
+            const am = document.getElementById('nav-avatar-mobile');
+            if (a) a.src = data.avatar;
+            if (am) am.src = data.avatar;
+            // also update preview in profile card
+            if (previewImg && previewImg.src.indexOf('?v=') === -1) {
+              // ensure preview uses blob if user selected file; otherwise set to avatar URL
+            }
+          }
+          if (data.username) {
+            const u = document.getElementById('nav-username');
+            const um = document.getElementById('nav-mobile-username');
+            if (u) u.textContent = data.username;
+            if (um) um.textContent = data.username;
+          }
+
+          // show inline success message
+          showInlineMessage('success', data.message || 'Profil berhasil diperbarui!');
+        } else {
+          // fallback: if server returned non-JSON or error, reload page to show messages
+          // try to extract message
+          let msg = 'Gagal memperbarui profil';
+          if (data && data.message) msg = data.message;
+          showInlineMessage('error', msg);
+        }
+      } catch (err) {
+        console.error(err);
+        showInlineMessage('error', 'Terjadi kesalahan saat mengirim data');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+      }
+    });
+
+    function showInlineMessage(type, text) {
+      const existing = document.getElementById('profile-inline-msg');
+      if (existing) existing.remove();
+      const el = document.createElement('div');
+      el.id = 'profile-inline-msg';
+      el.className = type === 'success' ? 'bg-green-50 text-green-700 px-5 py-3 rounded-xl mb-4 text-center shadow-lg font-medium' : 'bg-red-50 text-red-700 px-5 py-3 rounded-xl mb-4 text-center shadow-lg font-medium';
+      el.innerHTML = (type === 'success' ? '<i class="fas fa-check-circle mr-2"></i>' : '<i class="fas fa-exclamation-circle mr-2"></i>') + text;
+      form.parentNode.insertBefore(el, form);
+      // auto remove after 4s
+      setTimeout(() => el.remove(), 4000);
+    }
+  })();
 </script>
 <?= $this->endSection() ?>
 

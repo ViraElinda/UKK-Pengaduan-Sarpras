@@ -83,12 +83,12 @@ $inisial = strtoupper(substr($username, 0, 1));
         <div class="relative" x-data="{ open: false }">
           <button @click="open = !open" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/20 transition-all duration-200">
             <?php if (!empty($foto)): ?>
-              <img src="<?= esc($avatarUrl) ?>" alt="profile" class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-lg">
+              <img id="nav-avatar" src="<?= esc($avatarUrl) ?>" alt="profile" class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-lg">
             <?php else: ?>
               <div class="w-9 h-9 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center font-bold text-white shadow-lg"><?= $inisial ?></div>
             <?php endif; ?>
             <div class="hidden lg:block text-left">
-              <p class="text-sm font-bold text-white drop-shadow"><?= esc($username) ?></p>
+              <p id="nav-username" class="text-sm font-bold text-white drop-shadow"><?= esc($username) ?></p>
               <p class="text-xs text-indigo-100 font-medium"><?= ucfirst($role) ?></p>
             </div>
             <svg class="w-4 h-4 text-white" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,12 +174,12 @@ $inisial = strtoupper(substr($username, 0, 1));
       <!-- User Info Mobile -->
       <div class="flex items-center gap-3 px-4 py-3">
         <?php if (!empty($foto)): ?>
-          <img src="<?= esc($avatarUrl) ?>" alt="profile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg">
+          <img id="nav-avatar-mobile" src="<?= esc($avatarUrl) ?>" alt="profile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg">
         <?php else: ?>
           <div class="w-10 h-10 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center font-bold text-white shadow-lg"><?= $inisial ?></div>
         <?php endif; ?>
         <div>
-          <p class="text-sm font-bold text-white drop-shadow"><?= esc($username) ?></p>
+          <p id="nav-mobile-username" class="text-sm font-bold text-white drop-shadow"><?= esc($username) ?></p>
           <p class="text-xs text-indigo-100 font-medium"><?= ucfirst($role) ?></p>
         </div>
       </div>

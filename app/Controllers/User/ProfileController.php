@@ -135,9 +135,31 @@ class ProfileController extends BaseController
         if ($this->userModel->update($userId, $data)) {
             // Ambil data user yang sudah di-update
             $updatedUser = $this->userModel->find($userId);
-            
+
             // Refresh session dengan data terbaru
             $this->refreshUserSession($updatedUser);
+
+            // Jika request via AJAX, kembalikan JSON dengan info avatar & username
+            if ($this->request->isAJAX()) {
+                $fotoName = $updatedUser['foto'] ?? null;
+                $avatarUrl = null;
+                if (!empty($fotoName) && $fotoName !== 'default.png') {
+                    $localPath = FCPATH . 'uploads/foto_user/' . $fotoName;
+                    $avatarUrl = base_url('uploads/foto_user/' . $fotoName);
+                    if (is_file($localPath)) {
+                        $avatarUrl .= '?v=' . filemtime($localPath);
+                    }
+                } else {
+                    $avatarUrl = base_url('assets/images/default-avatar.png');
+                }
+
+                return $this->response->setJSON([
+                    'success' => true,
+                    'avatar' => $avatarUrl,
+                    'username' => $updatedUser['nama_pengguna'] ?? $updatedUser['username'] ?? session()->get('username'),
+                    'message' => 'Profil berhasil diperbarui!'
+                ]);
+            }
 
             return redirect()->to('user/profile')->with('success', 'Profil berhasil diperbarui!');
         } else {
