@@ -9,7 +9,12 @@ $avatarUrl = null;
 if (!empty($foto) && $foto !== 'default.png') {
   $localPath = FCPATH . 'uploads/foto_user/' . $foto;
   $avatarUrl = base_url('uploads/foto_user/' . $foto);
-  if (is_file($localPath)) {
+  // Prefer session-based timestamp for cache-busting (set after update)
+  $profileTs = $session->get('last_profile_update');
+  if (!empty($profileTs)) {
+    $avatarUrl .= '?v=' . (int) $profileTs;
+  } elseif (is_file($localPath)) {
+    // fallback to file mtime if session ts not available
     $avatarUrl .= '?v=' . filemtime($localPath);
   }
 } else {
