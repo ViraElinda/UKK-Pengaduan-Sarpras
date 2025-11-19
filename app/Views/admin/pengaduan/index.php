@@ -85,9 +85,7 @@ Manajemen Aduan
                       <i data-lucide="eye" class="w-4 h-4"></i>
                     </a>
                   <?php endif; ?>
-                  <button onclick="confirmDelete(<?= $p['id_pengaduan'] ?>, '<?= esc($p['nama_pengaduan']) ?>')" class="inline-flex items-center justify-center w-9 h-9 btn-danger-ui" title="Hapus" aria-label="Hapus pengaduan">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                  </button>
+                  <!-- Delete action removed per request -->
                 </div>
               </td>
             </tr>
@@ -129,24 +127,7 @@ Manajemen Aduan
       position: 'top-end'
     });
   <?php endif; ?>
-
-  function confirmDelete(id, nama) {
-    Swal.fire({
-      title: 'Hapus Pengaduan?',
-      html: `Apakah Anda yakin ingin menghapus pengaduan:<br><strong>${nama}</strong>?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#ef4444',
-      cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Ya, Hapus!',
-      cancelButtonText: 'Batal',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = '<?= base_url('admin/pengaduan/delete/') ?>' + id;
-      }
-    });
-  }
+  // Delete functionality was removed from Manajemen Aduan (UI-only removal).
 </script>
 
 <?= $this->endSection() ?>

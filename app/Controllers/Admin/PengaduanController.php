@@ -315,8 +315,11 @@ class PengaduanController extends BaseController
             return view('errors/html/error_403');
         }
 
-        $this->pengaduanModel->delete($id);
-        return redirect()->to('/admin/pengaduan')->with('success', 'Pengaduan berhasil dihapus.');
+        // Deletion has been disabled from the admin UI and server-side to prevent accidental or
+        // unauthorized data removal. Keep this endpoint non-destructive and provide a
+        // clear message to the user. If you want to permanently remove this route,
+        // remove it from Routes.php or add stricter ACL checks here.
+        return redirect()->to('/admin/pengaduan')->with('error', 'Fitur hapus pengaduan telah dinonaktifkan.');
     }
 
     public function detail($id_pengaduan)

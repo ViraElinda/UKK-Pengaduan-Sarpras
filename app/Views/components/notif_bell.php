@@ -37,11 +37,8 @@
     </div>
 </div>
 
-<!-- SweetAlert2 for popup toasts -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
-// Notification JavaScript
+// Notification JavaScript (uses in-page toasts)
 (function() {
     const notifBtn = document.getElementById('notifBtn');
     const notifMenu = document.getElementById('notifMenu');
@@ -236,16 +233,12 @@
                         .then(d => {
                             const newest = (d && d.notifications && d.notifications[0]) ? d.notifications[0] : null;
                             if (newest) {
-                                // Show toast popup using SweetAlert2
-                                Swal.fire({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 5000,
-                                    icon: newest.tipe || 'info',
-                                    title: newest.judul || 'Notifikasi',
-                                    text: newest.pesan || ''
-                                });
+                                    // Show toast popup using in-page toast
+                                    showToast({
+                                        type: newest.tipe || 'info',
+                                        title: newest.judul || 'Notifikasi',
+                                        message: newest.pesan || ''
+                                    });
                             }
                         }).catch(() => {});
                 }
@@ -257,4 +250,60 @@
             });
     }, 15000);
 })();
+</script>
+
+<!-- Inline minimal toast implementation (replaces SweetAlert2 toasts) -->
+<style>
+    #toastContainer{ position: fixed; top: 1rem; right: 1rem; z-index: 99999; display: flex; flex-direction: column; gap: .5rem; }
+    .toastItem{ min-width: 240px; max-width: 360px; background: #111827; color: #fff; padding: .75rem 1rem; border-radius: .5rem; box-shadow: 0 6px 18px rgba(17,24,39,0.35); display:flex; gap:.75rem; align-items:flex-start; }
+    .toastItem .toastIcon{ width:32px;height:32px;border-radius:.375rem;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff }
+    .toastItem .toastContent{ flex:1 }
+    .toastItem .toastTitle{ font-weight:600; font-size:0.95rem }
+    .toastItem .toastMsg{ font-size:0.85rem; opacity:0.9 }
+    .toast-success{ background: linear-gradient(90deg,#065f46,#10b981); }
+    .toast-info{ background: linear-gradient(90deg,#0f1724,#2563eb); }
+    .toast-warning{ background: linear-gradient(90deg,#92400e,#f59e0b); }
+    .toast-danger{ background: linear-gradient(90deg,#7f1d1d,#ef4444); }
+</style>
+
+<div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+function showToast({ type = 'info', title = '', message = '', timeout = 5000 }){
+    try{
+        const container = document.getElementById('toastContainer');
+        if(!container) return;
+        const item = document.createElement('div');
+        item.className = 'toastItem toast-' + (type || 'info');
+
+        const icon = document.createElement('div');
+        icon.className = 'toastIcon';
+        if(type === 'success') icon.textContent = '✓';
+        else if(type === 'warning') icon.textContent = '!';
+        else if(type === 'danger' || type === 'error') icon.textContent = '✕';
+        else icon.textContent = 'i';
+
+        const content = document.createElement('div');
+        content.className = 'toastContent';
+        const t = document.createElement('div'); t.className = 'toastTitle'; t.textContent = title;
+        const m = document.createElement('div'); m.className = 'toastMsg'; m.textContent = message;
+        content.appendChild(t); content.appendChild(m);
+
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'ml-2 text-sm text-white opacity-80';
+        closeBtn.textContent = '×';
+        closeBtn.style.background = 'transparent';
+        closeBtn.style.border = 'none';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.addEventListener('click', () => { item.remove(); });
+
+        item.appendChild(icon);
+        item.appendChild(content);
+        item.appendChild(closeBtn);
+        container.prepend(item);
+
+        setTimeout(() => { item.remove(); }, timeout);
+    }catch(e){ console.warn('Toast error', e); }
+}
 </script>
