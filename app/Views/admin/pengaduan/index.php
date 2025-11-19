@@ -37,10 +37,7 @@ Manajemen Aduan
               <th class="px-6 py-4 text-left font-bold text-sm uppercase tracking-wider">Nama User</th>
               <th class="px-6 py-4 text-left font-bold text-sm uppercase tracking-wider">Lokasi</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Tgl</th>
-              <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Foto User</th>
-              <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Foto Balasan</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Status</th>
-              <th class="px-6 py-4 text-left font-bold text-sm uppercase tracking-wider">Petugas</th>
               <th class="px-6 py-4 text-center font-bold text-sm uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
@@ -52,24 +49,6 @@ Manajemen Aduan
               <td data-label="Nama User" class="px-6 py-4 text-gray-700 font-medium"><?= esc($p['nama_user'] ?? '-') ?></td>
               <td data-label="Lokasi" class="px-6 py-4 text-gray-700 font-medium"><?= esc($p['lokasi']) ?></td>
               <td data-label="Tanggal" class="px-6 py-4 text-center text-gray-600"><?= !empty($p['tgl_pengajuan']) ? date('d/m/Y', strtotime($p['tgl_pengajuan'])) : '-' ?></td>
-              <td data-label="Foto User" class="px-6 py-4 text-center">
-                <?php if (!empty($p['foto'])): ?>
-                  <?php $fotoFile = 'foto_pengaduan/' . $p['foto']; $fotoUrl = base_url('uploads/' . rawurlencode($fotoFile)); ?>
-                  <a href="<?= esc($fotoUrl) ?>" target="_blank">
-                    <img src="<?= esc($fotoUrl) ?>" alt="Foto" class="w-12 h-12 object-cover rounded-lg shadow-md mx-auto">
-                  </a>
-                <?php else: ?>
-                  <span class="text-gray-400 text-sm">-</span>
-                <?php endif; ?>
-              </td>
-
-              <td data-label="Foto Balasan" class="px-6 py-4 text-center">
-                <?php if (!empty($p['foto_balasan'])): ?>
-                  <a href="<?= base_url('uploads/foto_balasan/' . $p['foto_balasan']) ?>" target="_blank" class="text-blue-600 hover:text-blue-800 font-semibold text-sm underline">Lihat</a>
-                <?php else: ?>
-                  <span class="text-gray-400 text-sm">Belum ada</span>
-                <?php endif; ?>
-              </td>
               <td data-label="Status" class="px-6 py-4 text-center">
                 <?php 
                   $status = strtolower($p['status']);
@@ -86,21 +65,29 @@ Manajemen Aduan
                   <?= esc(ucfirst($p['status'])) ?>
                 </span>
               </td>
-              <td data-label="Petugas" class="px-6 py-4 text-gray-600"><?= esc($p['nama_petugas'] ?? '-') ?></td>
-              <td data-label="Aksi" class="px-6 py-4">
-                <div class="flex gap-2 justify-center items-center flex-nowrap">
+              
+              <td data-label="Aksi" class="px-6 py-4 align-middle">
+                <div class="flex gap-2 justify-center items-center whitespace-nowrap">
                   <?php 
                     $statusLower = strtolower($p['status']);
                     // Admin tidak bisa edit jika petugas sudah memproses (Diproses, Disetujui, Ditolak, Selesai)
                     $isLocked = in_array($statusLower, ['diproses', 'disetujui', 'ditolak', 'selesai']);
                   ?>
                   <?php if ($isLocked): ?>
-                    <a href="<?= base_url('admin/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm">Lihat</a>
+                    <a href="<?= base_url('admin/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="inline-flex items-center justify-center w-9 h-9 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm" title="Lihat" aria-label="Lihat pengaduan">
+                      <i data-lucide="eye" class="w-4 h-4"></i>
+                    </a>
                   <?php else: ?>
-                    <a href="<?= base_url('admin/pengaduan/edit/'.$p['id_pengaduan']) ?>" class="btn-ui px-4 py-2">Edit</a>
-                    <a href="<?= base_url('admin/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm">Lihat</a>
+                    <a href="<?= base_url('admin/pengaduan/edit/'.$p['id_pengaduan']) ?>" class="btn-ui inline-flex items-center justify-center w-9 h-9" title="Edit" aria-label="Edit pengaduan">
+                      <i data-lucide="edit-2" class="w-4 h-4"></i>
+                    </a>
+                    <a href="<?= base_url('admin/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="inline-flex items-center justify-center w-9 h-9 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm" title="Lihat" aria-label="Lihat pengaduan">
+                      <i data-lucide="eye" class="w-4 h-4"></i>
+                    </a>
                   <?php endif; ?>
-                  <button onclick="confirmDelete(<?= $p['id_pengaduan'] ?>, '<?= esc($p['nama_pengaduan']) ?>')" class="btn-danger-ui px-4 py-2">Hapus</button>
+                  <button onclick="confirmDelete(<?= $p['id_pengaduan'] ?>, '<?= esc($p['nama_pengaduan']) ?>')" class="inline-flex items-center justify-center w-9 h-9 btn-danger-ui" title="Hapus" aria-label="Hapus pengaduan">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
                 </div>
               </td>
             </tr>

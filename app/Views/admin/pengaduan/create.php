@@ -82,13 +82,27 @@ Buat Pengaduan Baru
             </svg>
             Lokasi Kejadian <span class="text-red-500">*</span>
           </label>
-          <input 
-            type="text" 
-            name="lokasi" 
-            placeholder="Contoh: Ruang Kelas X-1" 
-            required
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-          >
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <select name="id_lokasi" id="id_lokasi" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white">
+                <option value="">-- Pilih Lokasi --</option>
+                <?php if (!empty($lokasi)): ?>
+                  <?php foreach ($lokasi as $l): ?>
+                    <option value="<?= esc($l['id_lokasi']) ?>"><?= esc($l['nama_lokasi']) ?></option>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </select>
+            </div>
+            <div>
+              <input 
+                type="text" 
+                name="lokasi" 
+                id="lokasi_text"
+                placeholder="Opsional: tulis lokasi jika tidak ada di daftar"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              >
+            </div>
+          </div>
         </div>
 
         <!-- Foto -->
@@ -151,21 +165,26 @@ Buat Pengaduan Baru
               >
             </div>
 
-            <!-- ID Item -->
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">
+            <!-- Item selection (filtered by Lokasi) -->
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">
                 <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                 </svg>
-                ID Item
-              </label>
-              <input 
-                type="number" 
-                name="id_item" 
-                placeholder="Masukkan ID Item"
-                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              >
-            </div>
+                    Item (pilih berdasarkan lokasi)
+                  </label>
+                  <select name="id_item" id="id_item" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white">
+                    <option value="">-- Pilih Item --</option>
+                    <!-- Options will be loaded by JS when lokasi selected -->
+                  </select>
+                  <p class="text-xs text-gray-500 mt-1">Jika item tidak ada, isi kolom "Item Baru" di bawah.</p>
+                </div>
+
+                <!-- Item Baru (manual) -->
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Item Baru (opsional)</label>
+                  <input type="text" name="item_baru" id="item_baru" placeholder="Masukkan nama item baru jika tidak ditemukan" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                </div>
 
             <!-- Tanggal Selesai -->
             <div>
@@ -201,7 +220,7 @@ Buat Pengaduan Baru
           </div>
         </div>
 
-        <!-- Action Buttons -->
+  <!-- Action Buttons -->
         <div class="flex gap-3 pt-4">
           <button 
             type="submit" 
@@ -232,6 +251,63 @@ Buat Pengaduan Baru
   const statusSelect = document.getElementById('status');
   const alasanDiv = document.getElementById('alasanPenolakanDiv');
   const alasanTextarea = document.getElementById('alasan_penolakan');
+
+  // Load items when lokasi changes (AJAX)
+  const lokasiSelect = document.getElementById('id_lokasi');
+  const itemSelect = document.getElementById('id_item');
+
+  async function loadItemsForLokasi(lokasiId) {
+    if (!lokasiId) {
+      itemSelect.innerHTML = '<option value="">-- Pilih Item --</option>';
+      return;
+    }
+
+    try {
+      const res = await fetch('<?= base_url('user/pengaduan/getItems/') ?>' + lokasiId, { credentials: 'include' });
+      if (!res.ok) throw new Error('Network error');
+      const items = await res.json();
+
+      itemSelect.innerHTML = '<option value="">-- Pilih Item --</option>';
+      items.forEach(i => {
+        const opt = document.createElement('option');
+        opt.value = i.id_item;
+        opt.textContent = i.nama_item;
+        itemSelect.appendChild(opt);
+      });
+    } catch (err) {
+      console.error('Gagal memuat item:', err);
+    }
+  }
+
+  if (lokasiSelect) {
+    lokasiSelect.addEventListener('change', function() {
+      loadItemsForLokasi(this.value);
+    });
+    // load initially if selected
+    if (lokasiSelect.value) loadItemsForLokasi(lokasiSelect.value);
+  }
+
+  // If admin types a custom lokasi text, clear lokasiSelect and reset items
+  const lokasiTextInput = document.getElementById('lokasi_text');
+  if (lokasiTextInput) {
+    lokasiTextInput.addEventListener('input', function() {
+      if (this.value.trim() !== '') {
+        // clear select and items so admin knows items are not filtered by a selected lokasi
+        if (lokasiSelect) lokasiSelect.value = '';
+        if (itemSelect) itemSelect.innerHTML = '<option value="">-- Pilih Item --</option>';
+      }
+    });
+  }
+
+  // If admin types an item_baru, clear id_item selection
+  const itemBaruInput = document.getElementById('item_baru');
+  if (itemBaruInput) {
+    itemBaruInput.addEventListener('input', function() {
+      if (this.value.trim() !== '' && itemSelect) {
+        itemSelect.value = '';
+      }
+    });
+  }
 
   function toggleAlasanPenolakan() {
     if (statusSelect && statusSelect.value === 'Ditolak') {

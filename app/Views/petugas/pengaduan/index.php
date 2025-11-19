@@ -56,22 +56,23 @@ Manajemen Pengaduan - Petugas
                     <?= esc(ucfirst($p['status'])) ?>
                   </span>
                 </td>
-                <td class="px-6 py-4">
-                  <div class="flex gap-2 justify-center">
+                <td class="px-6 py-4 align-middle">
+                  <div class="flex gap-2 justify-center items-center whitespace-nowrap">
                     <?php 
                       $statusLower = strtolower($p['status']);
                       $isSelesai = ($statusLower === 'selesai');
                     ?>
                     <?php if ($isSelesai): ?>
-                      <a href="<?= base_url('petugas/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm">Lihat</a>
-                    <?php else: ?>
-                      <a href="<?= base_url('petugas/pengaduan/edit/'.$p['id_pengaduan']) ?>" class="btn-ui px-4 py-2 text-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                        Kelola
+                      <a href="<?= base_url('petugas/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="inline-flex items-center justify-center w-9 h-9 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm" title="Lihat" aria-label="Lihat pengaduan">
+                        <i data-lucide="eye" class="w-4 h-4"></i>
                       </a>
-                      <a href="<?= base_url('petugas/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm">Lihat</a>
+                    <?php else: ?>
+                      <a href="<?= base_url('petugas/pengaduan/edit/'.$p['id_pengaduan']) ?>" class="btn-ui inline-flex items-center justify-center w-9 h-9 text-sm" title="Kelola" aria-label="Kelola pengaduan">
+                        <i data-lucide="edit-2" class="w-4 h-4"></i>
+                      </a>
+                      <a href="<?= base_url('petugas/pengaduan/detail/'.$p['id_pengaduan']) ?>" class="inline-flex items-center justify-center w-9 h-9 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm" title="Lihat" aria-label="Lihat pengaduan">
+                        <i data-lucide="eye" class="w-4 h-4"></i>
+                      </a>
                     <?php endif; ?>
                   </div>
                 </td>
