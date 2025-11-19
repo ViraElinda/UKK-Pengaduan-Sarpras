@@ -297,6 +297,80 @@ Form Pengaduan Baru
   });
 </script>
 
+<!-- Autosave draft for Ajukan Aduan form -->
+<script>
+  (function(){
+    const FORM_KEY = 'draft_pengaduan_v1';
+    const form = document.querySelector('form[action="<?= base_url('user/pengaduan/store') ?>"]');
+    if(!form) return;
+
+    const fields = ['nama_pengaduan','deskripsi','id_lokasi','id_item','item_baru'];
+    const saveDelay = 600; // ms
+    let timer = null;
+
+    function saveDraft(){
+      const data = {};
+      fields.forEach(f => {
+        const el = form.querySelector('[name="'+f+'"]');
+        if(!el) return;
+        if(el.type === 'checkbox' || el.type === 'radio') data[f] = el.checked;
+        else data[f] = el.value;
+      });
+      try { localStorage.setItem(FORM_KEY, JSON.stringify({ts: Date.now(), data})); } catch(e) {}
+    }
+
+    function scheduleSave(){
+      clearTimeout(timer);
+      timer = setTimeout(saveDraft, saveDelay);
+    }
+
+    // Restore draft if available
+    try {
+      const raw = localStorage.getItem(FORM_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && parsed.data){
+          // Ask user if they'd like to restore
+          if(confirm('Ditemukan draf pengaduan yang belum dikirim. Pulihkan draf?')){
+            const d = parsed.data;
+            fields.forEach(f => {
+              const el = form.querySelector('[name="'+f+'"]');
+              if(!el) return;
+              el.value = d[f] || '';
+              if(f === 'id_lokasi' && d[f]) {
+                // trigger change to load items
+                const ev = new Event('change', { bubbles: true });
+                el.dispatchEvent(ev);
+              }
+            });
+            // visual hint
+            const note = document.createElement('div');
+            note.className = 'bg-yellow-50 text-yellow-700 p-3 rounded-xl text-sm mb-3';
+            note.id = 'draft-restored-note';
+            note.innerHTML = 'Draf dipulihkan dari penyimpanan lokal. <button id="clear-draft" class="ml-2 underline font-semibold text-sm">Hapus draf</button>';
+            form.insertBefore(note, form.firstChild);
+            const clearBtn = document.getElementById('clear-draft');
+            if(clearBtn) clearBtn.addEventListener('click', function(e){ e.preventDefault(); localStorage.removeItem(FORM_KEY); note.remove(); });
+          }
+        }
+      }
+    } catch(e) { console.warn('Draft restore failed', e); }
+
+    // Attach listeners
+    fields.forEach(f => {
+      const el = form.querySelector('[name="'+f+'"]');
+      if(!el) return;
+      el.addEventListener('input', scheduleSave);
+      el.addEventListener('change', scheduleSave);
+    });
+
+    // Clear draft on successful submit
+    form.addEventListener('submit', function(){
+      try { localStorage.removeItem(FORM_KEY); } catch(e) {}
+    });
+  })();
+</script>
+
 <!-- SweetAlert2 CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

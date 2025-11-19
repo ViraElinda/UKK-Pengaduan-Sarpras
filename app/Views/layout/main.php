@@ -20,6 +20,38 @@
     <!-- Global UI styles to complement Tailwind -->
     <link rel="stylesheet" href="<?= base_url('css/ui.css') ?>">
 
+        <!-- Minimal dark-mode CSS overrides (toggle by adding class 'dark-mode' to <html>) -->
+        <style>
+            :root{
+                --page-bg: #f8fafc;
+                --card-bg: #ffffff;
+                --text-color: #111827;
+                --muted: #6b7280;
+                --nav-gradient: linear-gradient(to right, #4f46e5, #2563eb, #1e40af);
+            }
+            html.dark-mode {
+                --page-bg: #0b1220;
+                --card-bg: #0f1724;
+                --text-color: #e6eef8;
+                --muted: #9ca3af;
+                --nav-gradient: linear-gradient(90deg,#0f1724,#071033);
+            }
+            body { background: var(--page-bg); color: var(--text-color); }
+            .ui-card { background: var(--card-bg); color: var(--text-color); }
+            nav.bg-gradient-to-r { background: var(--nav-gradient) !important; }
+            .text-gray-600 { color: var(--muted) !important; }
+        </style>
+
+        <!-- Apply saved theme ASAP to avoid flash -->
+        <script>
+            (function(){
+                try {
+                    var t = localStorage.getItem('theme');
+                    if(t === 'dark') document.documentElement.classList.add('dark-mode');
+                } catch(e) { /* ignore */ }
+            })();
+        </script>
+
     <!-- Section untuk tambahan <head> jika diperlukan -->
     <?= $this->renderSection('head') ?>
 </head>
