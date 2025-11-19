@@ -133,7 +133,14 @@ class ProfileController extends BaseController
         if ($this->userModel->update($userId, $data)) {
             // Update session dengan data terbaru
             $updatedUser = $this->userModel->find($userId);
+            // Keep the full user array for convenience
             session()->set('user', $updatedUser);
+            // Also update individual session keys that views/navbar expect
+            session()->set([
+                'username'      => $updatedUser['username'] ?? session()->get('username'),
+                'nama_pengguna' => $updatedUser['nama_pengguna'] ?? session()->get('nama_pengguna'),
+                'foto'          => $updatedUser['foto'] ?? (session()->get('foto') ?? 'default.png'),
+            ]);
 
             return redirect()->to('user/profile')->with('success', 'Profil berhasil diperbarui!');
         } else {
