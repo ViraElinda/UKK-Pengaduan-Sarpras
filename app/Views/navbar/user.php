@@ -1,9 +1,10 @@
 <?php
 $session = session();
 
-// Ambil dari session langsung, bukan dari array user
-$username = $session->get('username') ?? $session->get('nama_pengguna') ?? 'User';
-$foto = $session->get('foto') ?? null;
+// Prefer 'user' array in session as single source of truth when available
+$userSession = $session->get('user') ?? [];
+$username = $userSession['username'] ?? $session->get('username') ?? $userSession['nama_pengguna'] ?? $session->get('nama_pengguna') ?? 'User';
+$foto = $userSession['foto'] ?? $session->get('foto') ?? null;
 $avatarUrl = null;
 if (!empty($foto) && $foto !== 'default.png') {
   $localPath = FCPATH . 'uploads/foto_user/' . $foto;

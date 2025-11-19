@@ -29,6 +29,14 @@ class ProfileController extends BaseController
 
         $user['foto'] = $user['foto'] ?? 'default.png';
 
+        // Refresh session user data so navbar and other views show latest values
+        session()->set('user', $user);
+        session()->set([
+            'username'      => $user['username'] ?? session()->get('username'),
+            'nama_pengguna' => $user['nama_pengguna'] ?? session()->get('nama_pengguna'),
+            'foto'          => $user['foto'] ?? (session()->get('foto') ?? 'default.png'),
+        ]);
+
         return view('user/profile', compact('user'));
     }
 
