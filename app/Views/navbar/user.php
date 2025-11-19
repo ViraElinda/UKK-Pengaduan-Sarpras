@@ -4,6 +4,16 @@ $session = session();
 // Ambil dari session langsung, bukan dari array user
 $username = $session->get('username') ?? $session->get('nama_pengguna') ?? 'User';
 $foto = $session->get('foto') ?? null;
+$avatarUrl = null;
+if (!empty($foto) && $foto !== 'default.png') {
+  $localPath = FCPATH . 'uploads/foto_user/' . $foto;
+  $avatarUrl = base_url('uploads/foto_user/' . $foto);
+  if (is_file($localPath)) {
+    $avatarUrl .= '?v=' . filemtime($localPath);
+  }
+} else {
+  $avatarUrl = base_url('assets/images/default-avatar.png');
+}
 $role = $session->get('role') ?? 'user';
 $inisial = strtoupper(substr($username, 0, 1));
 ?>
@@ -72,7 +82,7 @@ $inisial = strtoupper(substr($username, 0, 1));
         <div class="relative" x-data="{ open: false }">
           <button @click="open = !open" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/20 transition-all duration-200">
             <?php if (!empty($foto)): ?>
-              <img src="<?= base_url('uploads/foto_user/' . $foto) ?>" alt="profile" class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-lg">
+              <img src="<?= esc($avatarUrl) ?>" alt="profile" class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-lg">
             <?php else: ?>
               <div class="w-9 h-9 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center font-bold text-white shadow-lg"><?= $inisial ?></div>
             <?php endif; ?>
@@ -163,7 +173,7 @@ $inisial = strtoupper(substr($username, 0, 1));
       <!-- User Info Mobile -->
       <div class="flex items-center gap-3 px-4 py-3">
         <?php if (!empty($foto)): ?>
-          <img src="<?= base_url('uploads/foto_user/' . $foto) ?>" alt="profile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg">
+          <img src="<?= esc($avatarUrl) ?>" alt="profile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg">
         <?php else: ?>
           <div class="w-10 h-10 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center font-bold text-white shadow-lg"><?= $inisial ?></div>
         <?php endif; ?>
